@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#171719">
+<title>Модный приговор — Битва примархов</title>
+<style>
+:root{
+  --bg:#171719;--panel:#222226;--panel2:#2b2a2c;--ink:#eee6d7;--muted:#b5aa98;
+  --gold:#c8a66a;--gold2:#8f7042;--red:#8e3539;--line:#514637;--green:#657b61;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#35302b 0,#1c1b1d 42%,#121214 100%);color:var(--ink);font-family:Georgia,"Times New Roman",serif;min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+a{color:var(--gold)}
+.wrap{max-width:1180px;margin:auto;padding:24px 18px 60px}
+header{text-align:center;padding:36px 12px 26px;border:1px solid var(--line);background:linear-gradient(135deg,#282326,#1c1b1d 60%,#30271f);position:relative}
+header:before,header:after{content:"✦";color:var(--gold);position:absolute;top:18px;font-size:22px}
+header:before{left:22px}header:after{right:22px}
+.kicker{color:var(--gold);letter-spacing:.25em;text-transform:uppercase;font:12px Arial,sans-serif}
+h1{font-size:clamp(34px,7vw,66px);line-height:.98;margin:12px 0 8px;color:#e4c995;text-transform:uppercase;font-weight:normal;text-shadow:0 2px 18px #000}
+.subtitle{font:13px Arial,sans-serif;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+.header-rule{width:150px;height:1px;background:var(--gold2);margin:22px auto}
+.intro{max-width:700px;margin:auto;color:#d2c5b2;line-height:1.55}
+nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:22px 0}
+.tab{border:1px solid var(--line);background:#211f20;color:var(--ink);padding:11px 17px;text-transform:uppercase;letter-spacing:.08em;font:12px Arial,sans-serif}
+.tab.active,.tab:hover{background:#493b2a;border-color:var(--gold);color:#f5dfb5}
+.section{display:none}.section.active{display:block}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:30px 0 16px;border-bottom:1px solid var(--line);padding-bottom:12px}
+h2{font-size:27px;font-weight:normal;color:#e2c58f;margin:0}
+.small{font:12px Arial,sans-serif;color:var(--muted);line-height:1.5}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid var(--gold2);background:#392f25;color:#f1dfbd;padding:10px 14px;font:12px Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase}
+.btn:hover{background:#58452d}.btn.secondary{background:#242326;border-color:var(--line);color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:13px}
+.card{border:1px solid var(--line);background:linear-gradient(145deg,#29272a,#1e1d20);padding:15px;min-height:190px;display:flex;flex-direction:column;position:relative;transition:.18s}
+.card:hover{transform:translateY(-3px);border-color:var(--gold2)}
+.card-top{display:flex;justify-content:space-between;align-items:center;color:var(--gold);font:10px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
+.sig{width:46px;height:46px;border:1px solid var(--gold2);display:grid;place-items:center;color:#e1c18a;font-size:21px;margin:16px 0 10px;background:#211e1e}
+.card h3{font-size:21px;font-weight:normal;margin:0 0 6px;color:#f0dfc1}
+.card p{font:12px Arial,sans-serif;color:var(--muted);margin:0;line-height:1.5}
+.card .open{margin-top:auto;padding-top:16px;color:var(--gold);font:11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.1em}
+.status{display:inline-block;border:1px solid var(--line);padding:4px 7px;color:var(--muted);font:10px Arial,sans-serif}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
+.stat{background:#222124;border:1px solid var(--line);padding:15px;text-align:center}
+.stat strong{display:block;font-size:27px;color:var(--gold);font-weight:normal}.stat span{font:10px Arial,sans-serif;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
+.bracket-tools{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.bracket{display:grid;grid-template-columns:repeat(5,minmax(170px,1fr));gap:12px;overflow-x:auto;padding-bottom:12px}
+.round{min-width:170px}
+.round h3{font:12px Arial,sans-serif;color:var(--gold);letter-spacing:.13em;text-transform:uppercase;border-bottom:1px solid var(--line);padding-bottom:10px}
+.match{border:1px solid var(--line);background:#211f21;padding:10px;margin:12px 0;position:relative}
+.match .match-label{font:10px Arial,sans-serif;color:var(--muted);margin-bottom:8px}
+.contender{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:8px 7px;margin:4px 0;background:#2a2728;border:1px solid transparent;color:var(--ink);font-size:13px;text-align:left;width:100%}
+.contender:hover{border-color:var(--gold2)}.contender.winner{border-color:var(--green);background:#293329;color:#e5ebdc}
+.contender.loser{opacity:.45;text-decoration:line-through}
+.contender:disabled{cursor:default}
+.match-note{font:10px Arial,sans-serif;color:var(--muted);margin-top:7px;line-height:1.4}
+.empty{border:1px dashed var(--line);padding:14px;color:#8f877b;font:12px Arial,sans-serif;text-align:center}
+.champion{border:1px solid var(--gold);background:radial-gradient(ellipse at center,#4a3a26,#211e1e 72%);text-align:center;padding:25px;margin:20px 0}
+.champion .crown{font-size:38px;color:var(--gold)}.champion h3{font-size:27px;font-weight:normal;color:#f0d49d;margin:8px}
+.modal{display:none;position:fixed;inset:0;background:#000c;z-index:10;overflow:auto;padding:20px}
+.modal.show{display:block}
+.modal-box{max-width:760px;margin:25px auto;background:#211f21;border:1px solid var(--gold2);box-shadow:0 20px 70px #000;padding:24px;position:relative}
+.close{position:absolute;right:14px;top:10px;background:none;border:0;color:var(--gold);font-size:27px}
+.profile-kicker{font:11px Arial,sans-serif;color:var(--gold);letter-spacing:.18em;text-transform:uppercase}
+.profile-title{font-size:38px;font-weight:normal;color:#e8ce9d;margin:8px 35px 4px 0}
+.profile-sub{color:var(--muted);font:13px Arial,sans-serif;margin-bottom:18px}
+.profile-placeholder{height:210px;border:1px dashed var(--gold2);display:grid;place-items:center;text-align:center;color:#9d8d74;background:linear-gradient(135deg,#302a27,#1a191b);margin:15px 0;font:12px Arial,sans-serif;padding:20px}
+.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.info{border-top:1px solid var(--line);padding:12px 0}.info h4{font:11px Arial,sans-serif;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:0 0 7px}.info p{font-size:14px;line-height:1.55;color:#d2c7b8;margin:0}
+.info.full{grid-column:1/-1}
+.note{border-left:2px solid var(--gold2);padding:10px 13px;color:var(--muted);font:12px Arial,sans-serif;line-height:1.5;margin:18px 0}
+footer{text-align:center;color:#766d61;font:11px Arial,sans-serif;margin-top:45px;line-height:1.6}
+@media(max-width:650px){.wrap{padding:12px 10px 40px}.stats{grid-template-columns:1fr 1fr 1fr}.bracket{grid-template-columns:repeat(5,175px)}.profile-grid{grid-template-columns:1fr}.info.full{grid-column:auto}.section-head{align-items:start;flex-direction:column}.modal-box{padding:18px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="kicker">Имперский модный дом представляет</div>
+  <h1>Модный приговор</h1>
+  <div class="subtitle">Королевская битва примархов</div>
+  <div class="header-rule"></div>
+  <p class="intro">Восемнадцать сынов Императора. Одна случайная жеребьёвка. Семнадцать поединков. И только один получит корону самого стильного примарха эпохи начала Ереси Хоруса.</p>
+</header>
+<nav>
+  <button class="tab active" data-tab="participants">Участники</button>
+  <button class="tab" data-tab="tournament">Турнирная сетка</button>
+  <button class="tab" data-tab="hall">Зал славы</button>
+</nav>
+
+<section id="participants" class="section active">
+  <div class="section-head"><div><h2>Каталог участников</h2><div class="small">Выбери примарха, чтобы открыть его досье.</div></div><span class="status">18 участников</span></div>
+  <div class="grid" id="participantGrid"></div>
+</section>
+
+<section id="tournament" class="section">
+  <div class="section-head"><div><h2>Турнирная арена</h2><div class="small">Победителя каждого поединка выбираешь ты. Нажми на имя победителя.</div></div></div>
+  <div class="bracket-tools">
+    <button class="btn" id="drawBtn">Провести случайную жеребьёвку</button>
+    <button class="btn secondary" id="resetBtn">Сбросить турнир</button>
+  </div>
+  <div id="tournamentIntro" class="note">Жеребьёвка сформирует две предварительные пары. Остальные четырнадцать участников получат пропуск в основную сетку из 16 человек.</div>
+  <div id="bracketArea"></div>
+</section>
+
+<section id="hall" class="section">
+  <div class="section-head"><div><h2>Зал славы</h2><div class="small">Здесь появится чемпион, когда завершится турнир.</div></div></div>
+  <div id="hallContent"><div class="empty">Корона пока ждёт своего владельца.</div></div>
+</section>
+
+<footer>НЕ ИМПЕРСКИЙ ДОКУМЕНТ · НЕ ЯВЛЯЕТСЯ КАНОНИЧЕСКИМ ИСТОЧНИКОМ<br>Досье участников будут постепенно дополнены проверенными сведениями и иллюстрациями.</footer>
+</div>
+
+<div class="modal" id="profileModal" aria-modal="true" role="dialog">
+  <div class="modal-box">
+    <button class="close" id="closeModal" aria-label="Закрыть">×</button>
+    <div id="profileContent"></div>
+  </div>
+</div>
+
+<script>
+const primarchs = [
+ {id:1,name:"Лион Эль’Джонсон",legion:"I легион — Тёмные Ангелы",world:"Калибан",symbol:"I",alias:"Первый",bio:"",character:"",armor:"",weapon:""},
+ {id:2,name:"Фулгрим",legion:"III легион — Дети Императора",world:"Хемос",symbol:"III",alias:"Фениксий",bio:"",character:"",armor:"",weapon:""},
+ {id:3,name:"Пертурабо",legion:"IV легион — Железные Воины",world:"Олимпия",symbol:"IV",alias:"Мастер осады",bio:"",character:"",armor:"",weapon:""},
+ {id:4,name:"Джагатай-хан",legion:"V легион — Белые Шрамы",world:"Чогорис",symbol:"V",alias:"Великий хан",bio:"",character:"",armor:"",weapon:""},
+ {id:5,name:"Леман Русс",legion:"VI легион — Космические Волки",world:"Фенрис",symbol:"VI",alias:"Волчий король",bio:"",character:"",armor:"",weapon:""},
+ {id:6,name:"Рогал Дорн",legion:"VII легион — Имперские Кулаки",world:"Инwit",symbol:"VII",alias:"Имперский скала",bio:"",character:"",armor:"",weapon:""},
+ {id:7,name:"Конрад Кёрз",legion:"VIII легион — Повелители Ночи",world:"Нострамо",symbol:"VIII",alias:"Ночной призрак",bio:"",character:"",armor:"",weapon:""},
+ {id:8,name:"Сангвиний",legion:"IX легион — Кровавые Ангелы",world:"Баал",symbol:"IX",alias:"Великий Ангел",bio:"",character:"",armor:"",weapon:""},
+ {id:9,name:"Феррус Манус",legion:"X легион — Железные Руки",world:"Медуза",symbol:"X",alias:"Горгон",bio:"",character:"",armor:"",weapon:""},
+ {id:10,name:"Ангрон",legion:"XII легион — Пожиратели Миров",world:"Нуцерия",symbol:"XII",alias:"Красный Ангел",bio:"",character:"",armor:"",weapon:""},
+ {id:11,name:"Робут Жиллиман",legion:"XIII легион — Ультрамарины",world:"Макрагг",symbol:"XIII",alias:"Господарь Ультрамара",bio:"",character:"",armor:"",weapon:""},
+ {id:12,name:"Мортарион",legion:"XIV легион — Гвардия Смерти",world:"Барбарус",symbol:"XIV",alias:"Бледный король",bio:"",character:"",armor:"",weapon:""},
+ {id:13,name:"Магнус Красный",legion:"XV легион — Тысяча Сынов",world:"Просперо",symbol:"XV",alias:"Красный король",bio:"",character:"",armor:"",weapon:""},
+ {id:14,name:"Хорус Луперкаль",legion:"XVI легион — Лунные Волки",world:"Ктания",symbol:"XVI",alias:"Воитель",bio:"",character:"",armor:"",weapon:""},
+ {id:15,name:"Лоргар Аврелиан",legion:"XVII легион — Несущие Слово",world:"Колхида",symbol:"XVII",alias:"Первосвященник",bio:"",character:"",armor:"",weapon:""},
+ {id:16,name:"Вулкан",legion:"XVIII легион — Саламандры",world:"Nocturne",symbol:"XVIII",alias:"Повелитель огня",bio:"",character:"",armor:"",weapon:""},
+ {id:17,name:"Коракс",legion:"XIX легион — Гвардия Ворона",world:"Deliverance (Ликей)",symbol:"XIX",alias:"Тень Императора",bio:"",character:"",armor:"",weapon:""},
+ {id:20,name:"Альфарий / Омегон",legion:"XX легион — Альфа-Легион",world:"Не подтверждена однозначно",symbol:"XX",alias:"Два примарха, один участник",bio:"",character:"",armor:"Братья выступают как один участник: их ранняя броня практически идентична.",weapon:""}
+];
+
+let tournament = null;
+const $ = s => document.querySelector(s);
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function renderParticipants(){
+ $('#participantGrid').innerHTML=primarchs.map(p=>`
+ <article class="card">
+  <div class="card-top"><span>Легион ${esc(p.symbol)}</span><span class="status">Участник</span></div>
+  <div class="sig">${esc(p.symbol)}</div>
+  <h3>${esc(p.name)}</h3><p>${esc(p.legion)}</p>
+  <div class="open"><button class="btn secondary" data-profile="${p.id}">Открыть досье →</button></div>
+ </article>`).join('');
+}
+function openProfile(id){
+ const p=primarchs.find(x=>x.id===id); if(!p)return;
+ const fields=[
+  ["Кто он","bio","Биография участника будет добавлена в досье."],
+  ["Характер","character","Разберём темперамент, привычки и особенности личности."],
+  ["Броня и стиль","armor","Здесь будет подробный разбор брони начала Ереси Хоруса."],
+  ["Оружие","weapon","Добавим основное оружие и его особенности."]
+ ];
+ $('#profileContent').innerHTML=`
+  <div class="profile-kicker">Досье участника · Легион ${esc(p.symbol)}</div>
+  <h2 class="profile-title">${esc(p.name)}</h2>
+  <div class="profile-sub">${esc(p.alias)} · ${esc(p.legion)}</div>
+  <div class="profile-placeholder">МЕСТО ДЛЯ ПОРТРЕТА ИЛИ ИЗОБРАЖЕНИЯ БРОНИ<br><br>Добавим подходящий арт после проверки версии образа.</div>
+  <div class="profile-grid">
+   <div class="info"><h4>Родная планета</h4><p>${esc(p.world)}</p></div>
+   <div class="info"><h4>Легион</h4><p>${esc(p.legion)}</p></div>
+   ${fields.map(([title,key,fallback])=>`<div class="info full"><h4>${title}</h4><p>${esc(p[key]||fallback)}</p></div>`).join('')}
+  </div>
+  <div class="note">Историческая рамка проекта: начало Ереси Хоруса. Поздние демонические и послевоенные облики в основной конкурс не включаются.</div>`;
+ $('#profileModal').classList.add('show');document.body.style.overflow='hidden';
+}
+function closeProfile(){$('#profileModal').classList.remove('show');document.body.style.overflow='';}
+function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+function makeMatch(a,b,label){return {a,b,label,winner:null};}
+function drawTournament(){
+ const s=shuffle(primarchs);
+ const prelim=[makeMatch(s[0],s[1],"Предварительный бой 1"),makeMatch(s[2],s[3],"Предварительный бой 2")];
+ const byes=s.slice(4);
+ const slots=[...byes,null,null]; // 14 direct qualifiers + 2 preliminary winners
+ const r1=[];
+ for(let i=0;i<14;i+=2)r1.push(makeMatch(slots[i],slots[i+1],`1/8 финала · бой ${r1.length+1}`));
+ // The two preliminary winners occupy the final two slots in round one.
+ r1.push(makeMatch(null,null,"1/8 финала · бой 8"));
+ tournament={prelim,byes,rounds:[r1,Array(4).fill(null),Array(2).fill(null),[null]],drawn:true};
+ renderBracket();
+}
+function advance(){
+ if(!tournament)return;
+ let prev=tournament.prelim.map(m=>m.winner);
+ if(prev.some(x=>!x)){renderBracket();return;}
+ let r1=tournament.rounds[0];
+ r1[7].a=prev[0];r1[7].b=prev[1];
+ for(let round=0;round<3;round++){
+  const matches=tournament.rounds[round];
+  const next=tournament.rounds[round+1];
+  if(!matches.every(m=>m&&m.winner))break;
+  if(round<3 && (!next[0] || !next[0].a)){
+   for(let i=0;i<next.length;i++){
+    next[i]=makeMatch(matches[i*2].winner,matches[i*2+1].winner,
+      round===0?`Четвертьфинал · бой ${i+1}`:round===1?`Полуфинал · бой ${i+1}`:"Гранд-финал");
+   }
+  }
+ }
+ renderBracket();
+}
+function matchHTML(m,idx,group){
+ if(!m)return `<div class="match"><div class="empty">Ожидаем участников</div></div>`;
+ const names=[m.a,m.b];
+ return `<div class="match"><div class="match-label">${esc(m.label||"Поединок")}</div>
+ ${names.map((p,i)=>p?`<button class="contender ${m.winner===p?'winner':m.winner&&m.winner!==p?'loser':''}" data-pick="${group}:${idx}:${i}" ${m.winner?'disabled':''}><span>${esc(p.name)}</span><span>${m.winner===p?'👑':'›'}</span></button>`:`<div class="contender" style="opacity:.35">Ожидаем победителя</div>`).join('')}
+ ${m.winner?`<div class="match-note">Победитель: ${esc(m.winner.name)}</div>`:`<div class="match-note">Нажми на участника, которого выбираешь победителем.</div>`}</div>`;
+}
+function renderBracket(){
+ if(!tournament){$('#bracketArea').innerHTML='<div class="empty">Сначала проведи жеребьёвку.</div>';return;}
+ const rounds=[
+  {title:"Предварительный раунд",matches:tournament.prelim,group:"p"},
+  {title:"1/8 финала",matches:tournament.rounds[0],group:"r0"},
+  {title:"Четвертьфинал",matches:tournament.rounds[1],group:"r1"},
+  {title:"Полуфинал",matches:tournament.rounds[2],group:"r2"},
+  {title:"Финал",matches:tournament.rounds[3],group:"r3"}
+ ];
+ $('#bracketArea').innerHTML=`<div class="stats">
+ <div class="stat"><strong>18</strong><span>Участников</span></div>
+ <div class="stat"><strong>${countWinners()}</strong><span>Решено поединков</span></div>
+ <div class="stat"><strong>${tournament.rounds[3][0]?.winner?'1':'—'}</strong><span>Чемпион</span></div>
+ </div><div class="bracket">${rounds.map((r,ri)=>`<div class="round"><h3>${r.title}</h3>${r.matches.map((m,i)=>matchHTML(m,i,r.group)).join('')}</div>`).join('')}</div>
+ <div class="note">В первом раунде две пары разыгрывают два места, ещё четырнадцать примархов проходят напрямую. После предварительных боёв образуется сетка на 16 участников.</div>`;
+ const champ=tournament.rounds[3][0]?.winner;
+ $('#hallContent').innerHTML=champ?`<div class="champion"><div class="crown">♛</div><div class="kicker">Победитель турнира</div><h3>${esc(champ.name)}</h3><p class="small">${esc(champ.legion)}</p></div>`:'<div class="empty">Корона пока ждёт своего владельца.</div>';
+}
+function countWinners(){if(!tournament)return 0;return [...tournament.prelim,...tournament.rounds.flat()].filter(m=>m&&m.winner).length;}
+function pick(group,idx,side){
+ let m;
+ if(group==='p')m=tournament.prelim[idx];
+ else m=tournament.rounds[Number(group.slice(1))][idx];
+ if(!m||m.winner)return;
+ const chosen=side===0?m.a:m.b;if(!chosen)return;
+ m.winner=chosen;
+ advance();
+}
+document.addEventListener('click',e=>{
+ const profile=e.target.closest('[data-profile]');if(profile)openProfile(Number(profile.dataset.profile));
+ const pickBtn=e.target.closest('[data-pick]');if(pickBtn){const [g,i,s]=pickBtn.dataset.pick.split(':');pick(g,Number(i),Number(s));}
+ const tab=e.target.closest('[data-tab]');if(tab){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===tab));document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===tab.dataset.tab));}
+});
+$('#closeModal').addEventListener('click',closeProfile);
+$('#profileModal').addEventListener('click',e=>{if(e.target.id==='profileModal')closeProfile();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeProfile();});
+$('#drawBtn').addEventListener('click',()=>{if(tournament&&!confirm('Новая жеребьёвка сбросит текущие результаты. Продолжить?'))return;drawTournament();});
+$('#resetBtn').addEventListener('click',()=>{if(confirm('Полностью сбросить турнир и результаты?')){tournament=null;renderBracket();$('#hallContent').innerHTML='<div class="empty">Корона пока ждёт своего владельца.</div>'; }});
+renderParticipants();renderBracket();
+</script>
+</body>
+</html>
