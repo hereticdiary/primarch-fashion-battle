@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#171719">
+<meta name="description" content="Модный приговор — фанатский турнир брони примархов времён Ереси Хоруса.">
 <title>Модный приговор — Битва примархов</title>
 <style>
 :root{
@@ -74,18 +75,301 @@ h2{font-size:27px;font-weight:normal;color:#e2c58f;margin:0}
 .note{border-left:2px solid var(--gold2);padding:10px 13px;color:var(--muted);font:12px Arial,sans-serif;line-height:1.5;margin:18px 0}
 footer{text-align:center;color:#766d61;font:11px Arial,sans-serif;margin-top:45px;line-height:1.6}
 @media(max-width:650px){.wrap{padding:12px 10px 40px}.stats{grid-template-columns:1fr 1fr 1fr}.bracket{grid-template-columns:repeat(5,175px)}.profile-grid{grid-template-columns:1fr}.info.full{grid-column:auto}.section-head{align-items:start;flex-direction:column}.modal-box{padding:18px}}
+
+/* HERETIC DIARY — общий стиль с главной страницей */
+body{
+  background:
+    radial-gradient(ellipse at 50% 0%,rgba(91,42,42,.22),transparent 42%),
+    radial-gradient(ellipse at top,#30272a 0,#1c1a1d 43%,#121214 100%);
+}
+.wrap{max-width:1180px;padding-top:28px}
+header{
+  border-color:#66503a;
+  background:
+    linear-gradient(135deg,rgba(48,34,38,.97),rgba(25,24,27,.98) 58%,rgba(48,37,30,.97));
+  box-shadow:0 18px 55px #0005,inset 0 0 35px #0003;
+}
+.site-mark{
+  display:inline-block;
+  color:#e5d2b0;
+  text-decoration:none;
+  font: bold 11px Arial,sans-serif;
+  letter-spacing:.28em;
+  margin-bottom:20px;
+}
+.site-mark:hover{color:#fff0d0}
+.kicker{color:#c8a66a}
+h1{color:#e4c995}
+nav{
+  position:sticky;
+  top:0;
+  z-index:5;
+  padding:12px 10px;
+  margin:18px 0 24px;
+  background:rgba(22,21,23,.92);
+  border-top:1px solid rgba(143,112,66,.35);
+  border-bottom:1px solid rgba(143,112,66,.35);
+  backdrop-filter:blur(12px);
+}
+.home-link{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:11px 16px;
+  border:1px solid #8f7042;
+  color:#e8d4b0;
+  background:linear-gradient(135deg,#4a292d,#302326);
+  text-decoration:none;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  font:12px Arial,sans-serif;
+  transition:.18s;
+}
+.home-link:hover{background:#63383b;border-color:#c8a66a;color:#fff0d0}
+.tab{transition:.18s}
+.section-head{border-bottom-color:#514637}
+footer{
+  border-top:1px solid rgba(143,112,66,.45);
+  padding:24px 18px 8px;
+  margin-top:54px;
+  color:#a99b88;
+  font:12px Arial,sans-serif;
+  letter-spacing:0;
+  line-height:1.65;
+}
+.footer-brand{
+  display:block;
+  color:#c8a66a;
+  font:bold 10px Arial,sans-serif;
+  letter-spacing:.24em;
+  margin-bottom:8px;
+}
+footer p{max-width:760px;margin:0 auto}
+@media(max-width:650px){
+  .wrap{padding:12px 10px 34px}
+  nav{top:0;gap:7px;padding:10px 7px}
+  .home-link,.tab{padding:10px 11px;font-size:10px}
+  .site-mark{margin-bottom:16px}
+  footer{margin-top:38px;padding:20px 8px 4px}
+}
+
+
+/* HERETIC DIARY — оформление в едином стиле с главной страницей */
+:root{
+  --bg:#171214;
+  --panel:#241b1d;
+  --panel2:#2d2225;
+  --gold:#c9a66b;
+  --gold2:#9a7547;
+  --light:#ead5ad;
+  --ink:#f0e6d6;
+  --muted:#b8a99a;
+  --line:rgba(201,166,107,.28);
+  --red:#8f3037;
+  --green:#657b61;
+}
+html{scroll-behavior:smooth}
+body{
+  color:var(--ink);
+  background:
+    radial-gradient(ellipse at 50% -15%,#8f30373b,transparent 55%),
+    linear-gradient(#1d1618,var(--bg) 55%,#120f10);
+  font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+a{color:var(--light)}
+.wrap{width:min(1080px,calc(100% - 36px));max-width:1080px;padding:34px 0 30px}
+.top{
+  position:sticky;top:0;z-index:1000;
+  border-bottom:1px solid var(--line);
+  background:rgba(16,13,14,.92);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.top-inner{
+  width:min(1080px,calc(100% - 36px));min-height:66px;margin:auto;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+}
+.brand{font:17px Georgia,serif;letter-spacing:.18em;color:var(--light);text-decoration:none}
+.all-projects{
+  color:var(--muted);font-size:13px;text-decoration:none;
+  transition:color .18s;
+}
+.all-projects:hover{color:var(--light)}
+header{
+  text-align:center;padding:40px 18px 30px;border:0;border-bottom:1px solid var(--line);
+  background:transparent;box-shadow:none;
+}
+header:before,header:after{color:var(--gold)}
+.kicker{color:var(--gold);font:11px system-ui,sans-serif;letter-spacing:.2em}
+h1{color:var(--light);font-family:Georgia,"Times New Roman",serif;text-shadow:0 2px 18px #0008}
+.subtitle{font:11px system-ui,sans-serif;letter-spacing:.16em;color:var(--muted)}
+.header-rule{background:var(--gold);opacity:.65}
+.intro{color:var(--muted);font:14px/1.7 system-ui,sans-serif}
+nav{
+  position:sticky;top:66px;z-index:900;
+  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  margin:0 0 28px;padding:12px 8px;
+  background:rgba(22,17,19,.94);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+}
+.home-link{
+  display:inline-flex;align-items:center;justify-content:center;
+  padding:11px 16px;border:1px solid var(--gold2);
+  color:var(--light);background:var(--panel);
+  text-decoration:none;text-transform:uppercase;letter-spacing:.06em;
+  font:12px system-ui,sans-serif;transition:.18s;
+}
+.home-link:hover{background:#3a2529;border-color:var(--gold);color:#fff0d0}
+.tab{
+  border:1px solid var(--line);background:#241b1d;color:var(--muted);
+  padding:11px 17px;text-transform:uppercase;letter-spacing:.06em;
+  font:12px system-ui,sans-serif;transition:.18s;
+}
+.tab.active,.tab:hover{background:#3a2529;border-color:var(--gold);color:var(--light)}
+h2{color:var(--light);font-family:Georgia,"Times New Roman",serif}
+.section-head{border-bottom-color:var(--line)}
+.small,.card p,.match .match-label,.match-note{color:var(--muted)}
+.card,.match,.stat,.modal-box{
+  background:linear-gradient(145deg,#2b2023,#201719);
+  border-color:var(--line);
+}
+.card h3,.profile-title,.champion h3{color:var(--light)}
+.sig{background:#241b1d;border-color:var(--gold2);color:var(--light)}
+.status{border-color:var(--line);color:var(--muted)}
+.btn{border-color:var(--gold2);background:#382328;color:var(--light);font-family:system-ui,sans-serif}
+.btn:hover{background:#503037;border-color:var(--gold)}
+.btn.secondary{background:#241b1d;border-color:var(--line);color:var(--muted)}
+.contender{background:#302326;color:var(--ink)}
+.contender.winner{border-color:var(--green);background:#293329}
+.champion{border-color:var(--gold);background:radial-gradient(ellipse at center,#49352a,#211719 72%)}
+.note{border-left-color:var(--gold);color:var(--muted)}
+.modal-box{border-color:var(--gold2)}
+.profile-placeholder{border-color:var(--gold2);background:linear-gradient(135deg,#302326,#1a1416)}
+.info{border-top-color:var(--line)}
+.info p{color:#d8cbbb}
+footer{
+  border-top:1px solid var(--line);
+  padding:24px 18px 8px;margin-top:54px;
+  color:var(--muted);font:12px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;
+  letter-spacing:0;text-align:center;
+}
+.footer-brand{display:block;color:var(--gold);font:bold 10px system-ui,sans-serif;letter-spacing:.24em;margin-bottom:8px}
+footer p{max-width:760px;margin:0 auto}
+@media(max-width:650px){
+  .wrap{width:calc(100% - 24px);padding:20px 0 26px}
+  .top-inner{width:calc(100% - 24px);min-height:58px}
+  .brand{font-size:14px}
+  .all-projects{font-size:12px}
+  nav{top:58px;gap:7px;padding:9px 5px}
+  .home-link,.tab{padding:10px 11px;font-size:10px}
+  header{padding:30px 8px 24px}
+  footer{margin-top:38px;padding:20px 8px 4px}
+}
+
+
+/* Финальные точечные правки */
+html,body{min-height:100%}
+body{min-height:100vh;display:flex;flex-direction:column}
+.wrap{flex:1 0 auto;width:min(1080px,calc(100% - 36px));}
+footer{
+  flex:0 0 auto;width:100%;margin-top:0!important;
+  padding:15px 18px 17px!important;
+  border-top:1px solid var(--line);
+  text-align:center;
+}
+footer p{
+  max-width:none;margin:0 auto;
+  white-space:nowrap;font-size:11px;line-height:1.4;
+}
+.intro{font-size:16px!important;line-height:1.65}
+.header-rule{position:relative;width:min(420px,72%);margin:24px auto}
+.header-rule:before,.header-rule:after{
+  content:"✦";position:absolute;top:50%;transform:translateY(-50%);
+  color:var(--gold);font-size:19px;line-height:1;
+  text-shadow:0 0 12px #c9a66b66;
+}
+.header-rule:before{left:-30px}
+.header-rule:after{right:-30px}
+.all-projects{
+  position:relative;display:inline-flex;align-items:center;gap:10px;
+  padding:10px 17px 10px 14px;
+  border:1px solid rgba(201,166,107,.62);
+  border-radius:2px;
+  color:#f0dfc0;
+  background:linear-gradient(135deg,rgba(113,48,55,.42),rgba(48,31,33,.9));
+  box-shadow:inset 0 0 0 1px rgba(201,166,107,.08),0 3px 14px #0005;
+  text-decoration:none;text-transform:uppercase;
+  font-size:11px;font-weight:650;letter-spacing:.13em;
+  transition:background .2s,border-color .2s,box-shadow .2s,transform .2s;
+}
+.all-projects:before{
+  content:"";position:absolute;inset:3px;border:1px solid rgba(201,166,107,.16);
+  pointer-events:none;
+}
+.all-projects:hover{
+  color:#fff0d0;border-color:var(--gold);
+  background:linear-gradient(135deg,rgba(143,48,55,.72),rgba(67,39,41,.98));
+  box-shadow:0 0 18px rgba(143,48,55,.25),0 4px 16px #0007;
+  transform:translateY(-1px);
+}
+.projects-arrow{font-size:16px;color:var(--gold);line-height:1}
+@media(max-width:760px){
+  footer p{white-space:normal;max-width:680px}
+  .intro{font-size:16px!important}
+}
+@media(max-width:480px){
+  .all-projects{padding:9px 11px;gap:7px;font-size:10px;letter-spacing:.08em}
+  .header-rule{width:65%}
+  .header-rule:before{left:-23px}
+  .header-rule:after{right:-23px}
+  footer p{font-size:10px}
+}
+
+
+/* Финальная компоновка страницы и верхний блок в стиле главной */
+html,body{min-height:100%;height:100%}
+body{min-height:100vh;height:auto;display:flex;flex-direction:column}
+.top{flex:0 0 auto}
+.wrap{flex:1 0 auto;width:min(1080px,calc(100% - 36px));}
+footer{flex:0 0 auto;width:100%;margin-top:0!important}
+header{
+  position:relative;
+  border:1px solid var(--line)!important;
+  border-bottom:1px solid var(--line)!important;
+  border-radius:2px;
+  background:
+    linear-gradient(135deg,rgba(65,37,42,.96),rgba(31,22,25,.98) 58%,rgba(66,45,34,.96))!important;
+  box-shadow:0 18px 55px #0005,inset 0 0 35px #0003!important;
+}
+header:before,header:after{content:none!important;display:none!important}
+@media(max-width:650px){
+  .wrap{flex:1 0 auto}
+}
+
+
+/* Убираем резкий переход фона: единый фон на всю высоту окна и при прокрутке */
+html,body{background-color:#171214!important}
+body{
+  background-image:radial-gradient(ellipse at 50% 0%,rgba(143,48,55,.20),transparent 58%)!important;
+  background-repeat:no-repeat!important;
+  background-attachment:fixed!important;
+  background-size:100% 100%!important;
+}
+
 </style>
 </head>
 <body>
+<div class="top"><div class="top-inner"><a class="brand" href="https://hereticdiary.github.io/">HERETIC DIARY</a><a class="all-projects" href="https://hereticdiary.github.io/"><span>Все проекты</span></a></div></div>
 <div class="wrap">
 <header>
-  <div class="kicker">Имперский модный дом представляет</div>
+  <div class="kicker">Архив еретички · Досье № 001</div>
   <h1>Модный приговор</h1>
   <div class="subtitle">Королевская битва примархов</div>
   <div class="header-rule"></div>
   <p class="intro">Восемнадцать сынов Императора. Одна случайная жеребьёвка. Семнадцать поединков. И только один получит корону самого стильного примарха эпохи начала Ереси Хоруса.</p>
 </header>
-<nav>
+<nav aria-label="Навигация турнира">
   <button class="tab active" data-tab="participants">Участники</button>
   <button class="tab" data-tab="tournament">Турнирная сетка</button>
   <button class="tab" data-tab="hall">Зал славы</button>
@@ -111,8 +395,10 @@ footer{text-align:center;color:#766d61;font:11px Arial,sans-serif;margin-top:45p
   <div id="hallContent"><div class="empty">Корона пока ждёт своего владельца.</div></div>
 </section>
 
-<footer>НЕ ИМПЕРСКИЙ ДОКУМЕНТ · НЕ ЯВЛЯЕТСЯ КАНОНИЧЕСКИМ ИСТОЧНИКОМ<br>Досье участников будут постепенно дополнены проверенными сведениями и иллюстрациями.</footer>
+
 </div>
+
+<footer><p>Независимый фанатский проект. Все права на вселенную Warhammer 40,000, её персонажей, названия и оригинальные материалы принадлежат Games Workshop.</p></footer>
 
 <div class="modal" id="profileModal" aria-modal="true" role="dialog">
   <div class="modal-box">
