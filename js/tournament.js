@@ -126,7 +126,7 @@ function restoreSavedTournament() {
   }
   if (pendingTransition) {
     votingLocked = true;
-    transitionTimer = setTimeout(completeVoteTransition, 2300);
+    transitionTimer = setTimeout(completeVoteTransition, 1500);
   }
 }
 
@@ -442,7 +442,7 @@ function vote(side) {
   pendingTransition = true;
   saveCurrentTournament();
   renderAll();
-  transitionTimer = setTimeout(completeVoteTransition, 2300);
+  transitionTimer = setTimeout(completeVoteTransition, 1500);
 }
 
 function completeVoteTransition() {
