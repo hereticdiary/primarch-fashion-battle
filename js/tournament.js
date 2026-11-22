@@ -492,35 +492,26 @@ function renderDrawButton() {
 }
 
 function renderStats() {
-  const completed = countWinners();
-  const remaining = Math.max(0, TOTAL_MATCHES - completed);
-  const percentage = Math.round(completed / TOTAL_MATCHES * 100);
-  const champion = getChampion();
-  const remainingWord = remaining === 1 ? 'поединок'
-    : remaining >= 2 && remaining <= 4 ? 'поединка' : 'поединков';
-  const remainingLabel = remaining === 0
-    ? (champion ? 'Все поединки завершены · корона найдена' : 'Все поединки завершены')
-    : `${tournament ? 'Осталось' : 'Впереди'} ${remaining} ${remainingWord}`;
+  if (!tournament) {
+    $('#arenaStats').innerHTML = `
+      <div class="arena-prelude">
+        <span class="arena-prelude-mark" aria-hidden="true">✦</span>
+        <strong>Здесь оценивают не силу легионов, а стиль их примархов.</strong>
+        <p>Силуэт, палитра, детали брони и общее впечатление — решаем, чей образ достоин короны.</p>
+      </div>`;
+    return;
+  }
 
+  const completed = countWinners();
+  const percentage = Math.round(completed / TOTAL_MATCHES * 100);
   $('#arenaStats').innerHTML = `
-    <div class="progress-head">
-      <div class="progress-title">
-        <span class="progress-kicker">Путь к короне</span>
-        <strong>Прогресс турнира</strong>
+    <div class="progress-line-wrap">
+      <span class="progress-count">${completed} / ${TOTAL_MATCHES} поединков</span>
+      <div class="progress-track" role="progressbar" aria-label="Прогресс турнира"
+           aria-valuemin="0" aria-valuemax="${TOTAL_MATCHES}" aria-valuenow="${completed}"
+           aria-valuetext="${completed} из ${TOTAL_MATCHES} поединков завершено">
+        <span class="progress-fill" style="width:${percentage}%"></span>
       </div>
-      <div class="progress-count">
-        <strong>${completed}<small> / ${TOTAL_MATCHES}</small></strong>
-        <span>поединков завершено</span>
-      </div>
-    </div>
-    <div class="progress-track" role="progressbar" aria-label="Прогресс турнира"
-         aria-valuemin="0" aria-valuemax="${TOTAL_MATCHES}" aria-valuenow="${completed}"
-         aria-valuetext="${completed} из ${TOTAL_MATCHES} поединков завершено">
-      <span class="progress-fill" style="width:${percentage}%"></span>
-    </div>
-    <div class="progress-foot">
-      <span>${remainingLabel}</span>
-      <strong>${percentage}%</strong>
     </div>`;
 }
 function renderArena() {
