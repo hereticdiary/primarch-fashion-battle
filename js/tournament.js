@@ -495,9 +495,7 @@ function renderStats() {
   if (!tournament) {
     $('#arenaStats').innerHTML = `
       <div class="arena-prelude">
-        <span class="arena-prelude-mark" aria-hidden="true">✦</span>
         <strong>Здесь оценивают не силу легионов, а стиль их примархов.</strong>
-        <p>Силуэт, палитра, детали брони и общее впечатление — решаем, чей образ достоин короны.</p>
       </div>`;
     return;
   }
@@ -506,7 +504,7 @@ function renderStats() {
   const percentage = Math.round(completed / TOTAL_MATCHES * 100);
   $('#arenaStats').innerHTML = `
     <div class="progress-line-wrap">
-      <span class="progress-count">${completed} / ${TOTAL_MATCHES} поединков</span>
+      <span class="progress-count">${completed} / ${TOTAL_MATCHES}</span>
       <div class="progress-track" role="progressbar" aria-label="Прогресс турнира"
            aria-valuemin="0" aria-valuemax="${TOTAL_MATCHES}" aria-valuenow="${completed}"
            aria-valuetext="${completed} из ${TOTAL_MATCHES} поединков завершено">
