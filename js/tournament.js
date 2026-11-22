@@ -1,22 +1,22 @@
 const primarchs = [
- {id:1,name:"Лион Эль’Джонсон",image:"images/primarchs/lion-el-jonson.webp",legion:"I легион — Тёмные Ангелы",world:"Калибан",symbol:"I",alias:"Первый",bio:"",character:"",armor:"",weapon:""},
+ {id:1,name:"Лев Эль’Джонсон",image:"images/primarchs/lion-el-jonson.webp",legion:"I легион — Тёмные Ангелы",world:"Калибан",symbol:"I",alias:"Первый",bio:"",character:"",armor:"",weapon:""},
  {id:2,name:"Фулгрим",image:"images/primarchs/fulgrim.webp",legion:"III легион — Дети Императора",world:"Хемос",symbol:"III",alias:"Фениксий",bio:"",character:"",armor:"",weapon:""},
  {id:3,name:"Пертурабо",image:"images/primarchs/perturabo.webp",legion:"IV легион — Железные Воины",world:"Олимпия",symbol:"IV",alias:"Мастер осады",bio:"",character:"",armor:"",weapon:""},
- {id:4,name:"Джагатай-хан",image:"images/primarchs/jaghatai-khan.webp",legion:"V легион — Белые Шрамы",world:"Чогорис",symbol:"V",alias:"Великий хан",bio:"",character:"",armor:"",weapon:""},
+ {id:4,name:"Джагатай Хан",image:"images/primarchs/jaghatai-khan.webp",legion:"V легион — Белые Шрамы",world:"Чогорис",symbol:"V",alias:"Великий хан",bio:"",character:"",armor:"",weapon:""},
  {id:5,name:"Леман Русс",image:"images/primarchs/leman-russ.webp",legion:"VI легион — Космические Волки",world:"Фенрис",symbol:"VI",alias:"Волчий король",bio:"",character:"",armor:"",weapon:""},
- {id:6,name:"Рогал Дорн",image:"images/primarchs/rogal-dorn.webp",legion:"VII легион — Имперские Кулаки",world:"Инwit",symbol:"VII",alias:"Имперский скала",bio:"",character:"",armor:"",weapon:""},
+ {id:6,name:"Рогал Дорн",image:"images/primarchs/rogal-dorn.webp",legion:"VII легион — Имперские Кулаки",world:"Инвит",symbol:"VII",alias:"Имперский скала",bio:"",character:"",armor:"",weapon:""},
  {id:7,name:"Конрад Кёрз",image:"images/primarchs/konrad-curze.webp",legion:"VIII легион — Повелители Ночи",world:"Нострамо",symbol:"VIII",alias:"Ночной призрак",bio:"",character:"",armor:"",weapon:""},
  {id:8,name:"Сангвиний",image:"images/primarchs/sanguinius.webp",legion:"IX легион — Кровавые Ангелы",world:"Баал",symbol:"IX",alias:"Великий Ангел",bio:"",character:"",armor:"",weapon:""},
  {id:9,name:"Феррус Манус",image:"images/primarchs/ferrus-manus.webp",legion:"X легион — Железные Руки",world:"Медуза",symbol:"X",alias:"Горгон",bio:"",character:"",armor:"",weapon:""},
  {id:10,name:"Ангрон",image:"images/primarchs/angron.webp",legion:"XII легион — Пожиратели Миров",world:"Нуцерия",symbol:"XII",alias:"Красный Ангел",bio:"",character:"",armor:"",weapon:""},
- {id:11,name:"Робут Жиллиман",image:"images/primarchs/roboute-guilliman.webp",legion:"XIII легион — Ультрамарины",world:"Макрагг",symbol:"XIII",alias:"Господарь Ультрамара",bio:"",character:"",armor:"",weapon:""},
+ {id:11,name:"Робаут Жиллиман",image:"images/primarchs/roboute-guilliman.webp",legion:"XIII легион — Ультрамарины",world:"Макрагг",symbol:"XIII",alias:"Господарь Ультрамара",bio:"",character:"",armor:"",weapon:""},
  {id:12,name:"Мортарион",image:"images/primarchs/mortarion.webp",legion:"XIV легион — Гвардия Смерти",world:"Барбарус",symbol:"XIV",alias:"Бледный король",bio:"",character:"",armor:"",weapon:""},
  {id:13,name:"Магнус Красный",image:"images/primarchs/magnus-the-red.webp",legion:"XV легион — Тысяча Сынов",world:"Просперо",symbol:"XV",alias:"Красный король",bio:"",character:"",armor:"",weapon:""},
- {id:14,name:"Хорус Луперкаль",image:"images/primarchs/horus-lupercal.webp",legion:"XVI легион — Лунные Волки",world:"Ктания",symbol:"XVI",alias:"Воитель",bio:"",character:"",armor:"",weapon:""},
+ {id:14,name:"Хорус Луперкаль",image:"images/primarchs/horus-lupercal.webp",legion:"XVI легион — Лунные Волки",world:"Хтония",symbol:"XVI",alias:"Воитель",bio:"",character:"",armor:"",weapon:""},
  {id:15,name:"Лоргар Аврелиан",image:"images/primarchs/lorgar.webp",legion:"XVII легион — Несущие Слово",world:"Колхида",symbol:"XVII",alias:"Первосвященник",bio:"",character:"",armor:"",weapon:""},
- {id:16,name:"Вулкан",image:"images/primarchs/vulkan.webp",legion:"XVIII легион — Саламандры",world:"Nocturne",symbol:"XVIII",alias:"Повелитель огня",bio:"",character:"",armor:"",weapon:""},
- {id:17,name:"Коракс",image:"images/primarchs/corvus-corax.webp",legion:"XIX легион — Гвардия Ворона",world:"Deliverance (Ликей)",symbol:"XIX",alias:"Тень Императора",bio:"",character:"",armor:"",weapon:""},
- {id:20,name:"Альфарий / Омегон",image:"images/primarchs/alpharius-omegon.webp",legion:"XX легион — Альфа-Легион",world:"Не подтверждена однозначно",symbol:"XX",alias:"Два примарха, один участник",bio:"",character:"",armor:"Братья выступают как один участник: их ранняя броня практически идентична.",weapon:""}
+ {id:16,name:"Вулкан",image:"images/primarchs/vulkan.webp",legion:"XVIII легион — Саламандры",world:"Ноктюрн",symbol:"XVIII",alias:"Повелитель огня",bio:"",character:"",armor:"",weapon:""},
+ {id:17,name:"Корвус Коракс",image:"images/primarchs/corvus-corax.webp",legion:"XIX легион — Гвардия Ворона",world:"Освобождение (бывший Ликей, луна Киавара)",symbol:"XIX",alias:"Тень Императора",bio:"",character:"",armor:"",weapon:""},
+ {id:20,name:"Альфарий и Омегон",image:"images/primarchs/alpharius-omegon.webp",legion:"XX легион — Альфа-Легион",world:"Терра? (Альфарий); Омегон — неизвестно",symbol:"XX",alias:"Два примарха, один участник",bio:"",character:"",armor:"Братья выступают как один участник: их ранняя броня практически идентична.",weapon:""}
 ];
 
 const ROUND_NAMES = ["Предварительный этап", "1/8 финала", "Четвертьфинал", "Полуфинал", "Финал"];
@@ -91,7 +91,7 @@ function openProfile(id) {
     <div class="profile-sub">${esc(p.alias)} · ${esc(p.legion)}</div>
     <div class="profile-art"><img src="${esc(p.image)}" alt="${esc(p.name)} — полный образ" loading="lazy" decoding="async"></div>
     <div class="profile-grid">
-      <div class="info"><h4>Родная планета</h4><p>${esc(p.world)}</p></div>
+      <div class="info"><h4>Родной мир</h4><p>${esc(p.world)}</p></div>
       <div class="info"><h4>Легион</h4><p>${esc(p.legion)}</p></div>
       ${fields.map(([title,key,fallback]) => `<div class="info full"><h4>${title}</h4><p>${esc(p[key] || fallback)}</p></div>`).join('')}
     </div>
