@@ -92,11 +92,10 @@ h2{margin:0;color:var(--light);font:normal 27px Georgia,"Times New Roman",serif}
 .stat strong small{color:var(--muted);font:12px system-ui,sans-serif}
 .stat span{color:var(--muted);font:9px system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
 .arena-controls{display:flex;align-items:center;justify-content:flex-start;gap:18px;margin:0 0 24px;min-height:54px}
-.draw-status{flex:1;min-width:0;min-height:48px;padding:8px 13px;border:1px solid rgba(201,166,107,.34);background:linear-gradient(90deg,rgba(88,61,39,.38),rgba(44,30,32,.62));display:flex;flex-direction:column;justify-content:center}
+.draw-status{flex:1;min-width:0;width:100%;height:48px;min-height:48px;padding:0 13px;border:1px solid rgba(201,166,107,.34);background:linear-gradient(90deg,rgba(88,61,39,.38),rgba(44,30,32,.62));display:flex;align-items:center;overflow:hidden}
 .draw-status:empty{visibility:hidden}
-.draw-status strong{display:block;color:#f0d39a;font:normal 16px/1.3 Georgia,serif}
-.draw-status span{display:block;margin-top:3px;color:var(--muted);font:11px/1.4 system-ui,sans-serif}
-#drawBtn{min-width:230px;padding:13px 22px;box-shadow:0 5px 18px #0005,inset 0 1px 0 #fff5}
+.draw-status strong{display:block;min-width:0;overflow:hidden;color:#f0d39a;font:normal 15px/1.2 Georgia,serif;white-space:nowrap;text-overflow:ellipsis}
+#drawBtn{min-width:230px;height:48px;padding:0 22px;box-shadow:0 5px 18px #0005,inset 0 1px 0 #fff5}
 #drawBtn.primary{box-shadow:0 0 0 1px rgba(255,226,172,.22),0 7px 22px rgba(201,166,107,.24),inset 0 1px 0 #fff8}
 .arena-section{max-width:980px;margin:0 auto 34px}
 .arena-empty{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;border:1px dashed rgba(201,166,107,.32);background:linear-gradient(145deg,rgba(44,31,34,.6),rgba(27,20,22,.65));text-align:center}
@@ -208,7 +207,7 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   header{padding:30px 8px 24px}
   .arena-controls{align-items:flex-start;flex-direction:column;gap:11px}
   #drawBtn{width:100%;max-width:330px}
-  .draw-status{width:100%;max-width:330px;min-height:48px}
+  .draw-status{width:100%;max-width:330px;height:48px;min-height:48px}
   .fighters-grid{gap:9px}
   .fighter-card{min-height:250px;padding:12px 10px}
   .fighter-card .fighter-actions{flex-direction:column}
