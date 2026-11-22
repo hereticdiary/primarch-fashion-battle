@@ -28,7 +28,6 @@ let viewedRoundIndex = -1;
 let votingLocked = false;
 let drawing = false;
 let transitionTimer = null;
-let drawTimer = null;
 
 function esc(value) {
   return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
@@ -96,40 +95,32 @@ function closeProfile() {
 function drawTournament() {
   if (drawing) return;
   if (tournament && !window.confirm('Новая жеребьёвка сбросит текущие результаты. Продолжить?')) return;
+
   clearTimeout(transitionTimer);
-  clearTimeout(drawTimer);
   tournament = null;
   activeRoundIndex = -1;
   activeMatchIndex = 0;
   viewedRoundIndex = -1;
   votingLocked = false;
   drawing = true;
-  const shuffled = shuffle(primarchs);
-  $('#drawBtn').disabled = true;
-  $('#drawBtn').textContent = 'Перемешиваем досье…';
-  $('#arenaContent').innerHTML = `
-    <div class="draw-ceremony"><span class="sigil">✦</span><strong>Жеребьёвка проводится</strong><span>Участники занимают свои места в турнирной сетке</span></div>`;
-  $('#bracketArea').innerHTML = '<div class="bracket-empty">Жеребьёвка распределяет пары…</div>';
-  $('#roundHistory').hidden = true;
-  drawTimer = setTimeout(() => {
-    const byes = shuffled.slice(4);
-    tournament = {
-      prelim: [
-        makeMatch(shuffled[0], shuffled[1], 'Предварительная пара I'),
-        makeMatch(shuffled[2], shuffled[3], 'Предварительная пара II')
-      ],
-      byes,
-      rounds: [null, null, null, null],
-      champion: null
-    };
-    drawing = false;
-    $('#drawBtn').disabled = false;
-    $('#drawBtn').classList.remove('primary');
-    $('#drawBtn').textContent = 'Провести новую жеребьёвку';
-    renderAll();
-  }, 1150);
-}
 
+  const shuffled = shuffle(primarchs);
+  tournament = {
+    prelim: [
+      makeMatch(shuffled[0], shuffled[1], 'Предварительная пара I'),
+      makeMatch(shuffled[2], shuffled[3], 'Предварительная пара II')
+    ],
+    byes: shuffled.slice(4),
+    rounds: [null, null, null, null],
+    champion: null
+  };
+
+  drawing = false;
+  $('#drawBtn').disabled = false;
+  $('#drawBtn').classList.remove('primary');
+  $('#drawBtn').textContent = 'Провести новую жеребьёвку';
+  renderAll();
+}
 function createRoundOf16() {
   const matches = [];
   for (let i = 0; i < 14; i += 2) {
