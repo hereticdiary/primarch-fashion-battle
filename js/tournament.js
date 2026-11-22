@@ -1,6 +1,7 @@
 const primarchs = [{"id":1,"name":"Лев Эль’Джонсон","image":"images/primarchs/lion-el-jonson.webp","legion":"I легион — Тёмные Ангелы","world":"Калибан","symbol":"I","alias":"Первый"},{"id":2,"name":"Фулгрим","image":"images/primarchs/fulgrim.webp","legion":"III легион — Дети Императора","world":"Хемос","symbol":"III","alias":"Фениксий"},{"id":3,"name":"Пертурабо","image":"images/primarchs/perturabo.webp","legion":"IV легион — Железные Воины","world":"Олимпия","symbol":"IV","alias":"Мастер осады"},{"id":4,"name":"Джагатай Хан","image":"images/primarchs/jaghatai-khan.webp","legion":"V легион — Белые Шрамы","world":"Чогорис","symbol":"V","alias":"Великий хан"},{"id":5,"name":"Леман Русс","image":"images/primarchs/leman-russ.webp","legion":"VI легион — Космические Волки","world":"Фенрис","symbol":"VI","alias":"Волчий король"},{"id":6,"name":"Рогал Дорн","image":"images/primarchs/rogal-dorn.webp","legion":"VII легион — Имперские Кулаки","world":"Инвит","symbol":"VII","alias":"Имперский претор"},{"id":7,"name":"Конрад Кёрз","image":"images/primarchs/konrad-curze.webp","legion":"VIII легион — Повелители Ночи","world":"Нострамо","symbol":"VIII","alias":"Ночной призрак"},{"id":8,"name":"Сангвиний","image":"images/primarchs/sanguinius.webp","legion":"IX легион — Кровавые Ангелы","world":"Баал","symbol":"IX","alias":"Великий Ангел"},{"id":9,"name":"Феррус Манус","image":"images/primarchs/ferrus-manus.webp","legion":"X легион — Железные Руки","world":"Медуза","symbol":"X","alias":"Горгон"},{"id":10,"name":"Ангрон","image":"images/primarchs/angron.webp","legion":"XII легион — Пожиратели Миров","world":"Нуцерия","symbol":"XII","alias":"Красный Ангел"},{"id":11,"name":"Робаут Жиллиман","image":"images/primarchs/roboute-guilliman.webp","legion":"XIII легион — Ультрамарины","world":"Макрагг","symbol":"XIII","alias":"Господарь Ультрамара"},{"id":12,"name":"Мортарион","image":"images/primarchs/mortarion.webp","legion":"XIV легион — Гвардия Смерти","world":"Барбарус","symbol":"XIV","alias":"Бледный король"},{"id":13,"name":"Магнус Красный","image":"images/primarchs/magnus-the-red.webp","legion":"XV легион — Тысяча Сынов","world":"Просперо","symbol":"XV","alias":"Красный король"},{"id":14,"name":"Хорус Луперкаль","image":"images/primarchs/horus-lupercal.webp","legion":"XVI легион — Лунные Волки","world":"Хтония","symbol":"XVI","alias":"Воитель"},{"id":15,"name":"Лоргар Аврелиан","image":"images/primarchs/lorgar.webp","legion":"XVII легион — Несущие Слово","world":"Колхида","symbol":"XVII","alias":"Первосвященник"},{"id":16,"name":"Вулкан","image":"images/primarchs/vulkan.webp","legion":"XVIII легион — Саламандры","world":"Ноктюрн","symbol":"XVIII","alias":"Повелитель огня"},{"id":17,"name":"Корвус Коракс","image":"images/primarchs/corvus-corax.webp","legion":"XIX легион — Гвардия Ворона","world":"Освобождение (бывший Ликей, луна Киавара)","symbol":"XIX","alias":"Тень Императора"},{"id":20,"name":"Альфарий и Омегон","image":"images/primarchs/alpharius-omegon.webp","legion":"XX легион — Альфа-Легион","world":"Терра? (Альфарий); Омегон — неизвестно","symbol":"XX","alias":"Два примарха, один участник"}];
 
 const ROUND_NAMES = ["Предварительный этап", "1/8 финала", "Четвертьфинал", "Полуфинал", "Финал"];
+const TOTAL_MATCHES = 17;
 const $ = selector => document.querySelector(selector);
 let tournament = null;
 let activeRoundIndex = -1;
@@ -492,11 +493,35 @@ function renderDrawButton() {
 
 function renderStats() {
   const completed = countWinners();
+  const remaining = Math.max(0, TOTAL_MATCHES - completed);
+  const percentage = Math.round(completed / TOTAL_MATCHES * 100);
   const champion = getChampion();
+  const remainingWord = remaining === 1 ? 'поединок'
+    : remaining >= 2 && remaining <= 4 ? 'поединка' : 'поединков';
+  const remainingLabel = remaining === 0
+    ? (champion ? 'Все поединки завершены · корона найдена' : 'Все поединки завершены')
+    : `${tournament ? 'Осталось' : 'Впереди'} ${remaining} ${remainingWord}`;
+
   $('#arenaStats').innerHTML = `
-    <div class="stat"><strong>18</strong><span>Примархов</span></div>
-    <div class="stat"><strong>${completed}<small>/ 17</small></strong><span>Поединков решено</span></div>
-    <div class="stat"><strong>${champion ? '♛' : '—'}</strong><span>${champion ? 'Чемпион' : 'Одна корона'}</span></div>`;
+    <div class="progress-head">
+      <div class="progress-title">
+        <span class="progress-kicker">Путь к короне</span>
+        <strong>Прогресс турнира</strong>
+      </div>
+      <div class="progress-count">
+        <strong>${completed}<small> / ${TOTAL_MATCHES}</small></strong>
+        <span>поединков завершено</span>
+      </div>
+    </div>
+    <div class="progress-track" role="progressbar" aria-label="Прогресс турнира"
+         aria-valuemin="0" aria-valuemax="${TOTAL_MATCHES}" aria-valuenow="${completed}"
+         aria-valuetext="${completed} из ${TOTAL_MATCHES} поединков завершено">
+      <span class="progress-fill" style="width:${percentage}%"></span>
+    </div>
+    <div class="progress-foot">
+      <span>${remainingLabel}</span>
+      <strong>${percentage}%</strong>
+    </div>`;
 }
 function renderArena() {
   if (!tournament) {
