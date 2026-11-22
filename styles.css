@@ -429,3 +429,64 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
 @media(prefers-reduced-motion:reduce){
   .fighter-art-trigger img{transition:none}
 }
+
+
+/* Hall of Fame: completed tournament trees. */
+.hall-archive{display:flex;flex-direction:column;gap:28px}
+.hall-entry{
+  padding:22px;border:1px solid rgba(201,166,107,.34);
+  background:linear-gradient(145deg,rgba(44,31,34,.88),rgba(25,18,20,.94));
+  box-shadow:0 12px 34px #0004,inset 0 0 28px #0002;
+}
+.hall-entry-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.hall-entry-heading h3{margin:4px 0 0;color:var(--light);font:normal 23px Georgia,serif}
+.hall-entry-date{color:var(--gold);font:10px system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase}
+.hall-entry-number{color:#8f7b61;font:normal 18px Georgia,serif}
+.hall-tree{display:flex;flex-direction:column;align-items:center;padding-top:22px}
+.hall-champion-label{margin:0 0 10px;color:#e0bd7e;font:11px system-ui,sans-serif;letter-spacing:.2em;text-align:center;text-transform:uppercase}
+.hall-node{
+  display:flex;flex-direction:column;align-items:center;min-width:0;width:100%;padding:8px;
+  border:1px solid rgba(201,166,107,.25);background:linear-gradient(145deg,#302225,#211719);
+  color:var(--ink);text-align:center;transition:border-color .18s,background .18s;
+}
+.hall-node:hover{border-color:rgba(224,189,126,.8);background:linear-gradient(145deg,#3b292c,#281b1e)}
+.hall-node:focus-visible{outline:2px solid #f0d39a;outline-offset:3px}
+.hall-node-art{display:flex;align-items:center;justify-content:center;width:100%;height:112px;overflow:hidden;background:radial-gradient(ellipse at center,rgba(0,0,0,.2),transparent 72%)}
+.hall-node-art img{display:block;width:100%;height:100%;object-fit:contain;object-position:center}
+.hall-node-name{display:block;margin-top:7px;color:var(--light);font:normal 15px/1.25 Georgia,serif}
+.hall-node-legion{display:block;margin-top:5px;color:var(--muted);font:11px/1.35 system-ui,sans-serif}
+.hall-node-champion{
+  width:min(380px,100%);padding:15px 18px 17px;border-color:#d2ad70;
+  background:linear-gradient(145deg,rgba(105,72,43,.48),rgba(38,26,28,.98));
+  box-shadow:0 0 0 1px rgba(201,166,107,.24),0 12px 35px #0006,inset 0 0 32px rgba(201,166,107,.12);
+}
+.hall-node-champion .hall-node-art{height:390px}
+.hall-node-champion .hall-node-name{font-size:27px}
+.hall-node-champion .hall-node-legion{font-size:13px}
+.hall-level{
+  position:relative;width:100%;margin-top:24px;padding-top:20px;
+  border-top:1px solid rgba(201,166,107,.25);
+}
+.hall-level:before{content:"";position:absolute;left:50%;top:-25px;height:24px;border-left:1px solid rgba(201,166,107,.4)}
+.hall-level h3{margin:0 0 12px;color:#bda47f;text-align:center;font:11px system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.hall-level-grid{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:9px;align-items:stretch}
+.hall-level-finalists .hall-level-grid{grid-template-columns:repeat(2,minmax(0,150px));justify-content:center}
+.hall-level-quarter .hall-level-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.hall-level-prelim .hall-level-grid{grid-template-columns:repeat(2,minmax(0,150px));justify-content:center}
+.hall-level-r16 .hall-node-art{height:125px}
+@media(max-width:760px){
+  .hall-entry{padding:16px 12px}
+  .hall-node-art{height:100px}
+  .hall-level-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}
+  .hall-level-finalists .hall-level-grid,.hall-level-prelim .hall-level-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hall-node-name{font-size:13px}
+  .hall-node-champion{max-width:320px}
+  .hall-node-champion .hall-node-art{height:330px}
+  .hall-node-champion .hall-node-name{font-size:23px}
+}
+@media(max-width:440px){
+  .hall-level-grid,.hall-level-quarter .hall-level-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hall-level-finalists .hall-level-grid,.hall-level-prelim .hall-level-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hall-node-art{height:125px}
+  .hall-node-champion .hall-node-art{height:300px}
+}
