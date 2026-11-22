@@ -114,7 +114,7 @@ h2{margin:0;color:var(--light);font:normal 27px Georgia,"Times New Roman",serif}
 .profile-gallery{margin:15px 0 20px;min-width:0}
 .profile-art{position:relative;width:100%;display:flex;justify-content:center;align-items:flex-start;overflow:hidden;background:radial-gradient(ellipse at center,rgba(0,0,0,.18),transparent 72%)}
 .profile-art img{display:block;width:100%;height:auto;max-width:100%;max-height:none;object-fit:contain;object-position:center}
-.gallery-credit{display:flex;align-items:center;flex-wrap:wrap;gap:7px 14px;margin-top:9px;color:var(--muted);font:12px/1.4 system-ui,sans-serif}
+.gallery-credit{display:flex;align-items:center;flex-wrap:wrap;gap:7px 14px;margin:11px 8px 0;padding:11px 15px;border:1px solid rgba(201,166,107,.2);border-radius:6px;background:rgba(14,11,12,.48);color:var(--muted);font:12px/1.5 system-ui,sans-serif;box-sizing:border-box}
 .gallery-count{color:var(--gold);font-variant-numeric:tabular-nums}
 .gallery-credit a{color:var(--gold2);text-decoration:underline;text-underline-offset:2px}
 .gallery-arrow{position:absolute;top:50%;transform:translateY(-50%);width:38px;height:48px;border:1px solid rgba(201,166,107,.65);border-radius:5px;background:rgba(18,14,15,.78);color:var(--light);font-size:30px;line-height:1;cursor:pointer}
@@ -264,7 +264,7 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   .info.full{grid-column:auto}
   .profile-title{font-size:30px}
   .modal-box{padding:18px}
-  .gallery-credit{font-size:11px;gap:6px 10px}
+  .gallery-credit{margin:9px 4px 0;padding:10px 12px;font-size:11px;gap:6px 10px}
   .gallery-arrow{width:34px;height:42px}
   .gallery-thumb{flex-basis:56px;width:56px;height:72px}
   .header-rule{width:65%}.header-rule:before{left:-23px}.header-rule:after{right:-23px}
