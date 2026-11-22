@@ -215,7 +215,6 @@ function renderArena() {
   const stageIndex = activeRoundIndex + 1;
   const stageName = ROUND_NAMES[stageIndex];
   const isResolved = Boolean(match.winner);
-  const isStageEnd = isResolved && activeMatchIndex === matches.length - 1;
   const renderFighter = (p, side) => {
     const isWinner = isResolved && match.winner === p;
     const isLoser = isResolved && match.winner !== p;
@@ -230,15 +229,10 @@ function renderArena() {
         </div>
       </article>`;
   };
-  let result = '';
-  if (isResolved) {
-    result = `<div class="vote-result"><strong>Голос принят · Победитель — ${esc(match.winner.name)}!</strong><span>${stageIndex === 4 ? 'Финальный голос принят. Корона почти нашла владельца…' : isStageEnd ? 'Этап завершён. Готовим следующий раунд…' : 'Следующая пара появится через 3 секунды…'}</span></div>`;
-  }
   $('#arenaContent').innerHTML = `
     <div class="arena-eyebrow">${esc(stageName)} · ${esc(match.label)}</div>
     <h2 class="arena-title">Выбери победителя поединка</h2>
-    <div class="fighters-grid">${renderFighter(match.a, 0)}${renderFighter(match.b, 1)}</div>
-    ${result}`;
+    <div class="fighters-grid">${renderFighter(match.a, 0)}${renderFighter(match.b, 1)}</div>`;
 }
 
 function renderRoundHistory() {
@@ -295,8 +289,31 @@ function renderHall() {
     ? `<div class="champion"><div class="crown">♛</div><div class="kicker">Победитель турнира</div><h3>${esc(champion.name)}</h3><p class="small">${esc(champion.legion)}</p></div>`
     : '<div class="empty">Корона пока ждёт своего владельца.</div>';
 }
+function renderDrawStatus() {
+  const status = $('#drawStatus');
+  if (!tournament || getChampion()) {
+    status.innerHTML = '';
+    return;
+  }
+  const matches = currentMatches();
+  const match = matches[activeMatchIndex];
+  if (!match || !match.winner) {
+    status.innerHTML = '';
+    return;
+  }
+  const stageIndex = activeRoundIndex + 1;
+  const isStageEnd = activeMatchIndex === matches.length - 1;
+  const message = stageIndex === 4
+    ? 'Финальный голос принят. Корона почти нашла владельца…'
+    : isStageEnd
+      ? 'Этап завершён. Готовим следующий раунд…'
+      : 'Скоро появятся новые претенденты…';
+  status.innerHTML = `<strong>Голос принят · Победитель — ${esc(match.winner.name)}!</strong><span>${message}</span>`;
+}
+
 function renderAll() {
   renderStats();
+  renderDrawStatus();
   renderArena();
   renderBracket();
   renderHall();
