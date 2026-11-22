@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#171214">
 <meta name="description" content="Модный приговор — фанатский турнир брони примархов времён Ереси Хоруса.">
 <title>Модный приговор — Битва примархов</title>
-<link rel="stylesheet" href="styles.css?v=20261122-27">
+<link rel="stylesheet" href="styles.css?v=20261122-28">
 </head>
 <body>
 <div class="top">
@@ -40,10 +40,24 @@
   </section>
 
   <section id="tournament" class="section active">
-    <div class="stats arena-stats" id="arenaStats">
-      <div class="stat"><strong>18</strong><span>Примархов</span></div>
-      <div class="stat"><strong>0<small>/ 17</small></strong><span>Поединков решено</span></div>
-      <div class="stat"><strong>—</strong><span>Одна корона</span></div>
+    <div class="arena-progress" id="arenaStats" aria-live="polite">
+      <div class="progress-head">
+        <div class="progress-title">
+          <span class="progress-kicker">Путь к короне</span>
+          <strong>Прогресс турнира</strong>
+        </div>
+        <div class="progress-count">
+          <strong>0<small> / 17</small></strong>
+          <span>поединков завершено</span>
+        </div>
+      </div>
+      <div class="progress-track" role="progressbar" aria-label="Прогресс турнира" aria-valuemin="0" aria-valuemax="17" aria-valuenow="0">
+        <span class="progress-fill" style="width:0%"></span>
+      </div>
+      <div class="progress-foot">
+        <span>Впереди 17 поединков</span>
+        <span>0%</span>
+      </div>
     </div>
 
     <div class="arena-controls is-idle">
@@ -90,6 +104,6 @@
   </div>
 </div>
 
-<script src="js/tournament.js?v=20261122-27"></script>
+<script src="js/tournament.js?v=20261122-28"></script>
 </body>
 </html>
