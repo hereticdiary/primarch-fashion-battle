@@ -27,6 +27,7 @@ let activeMatchIndex = 0;
 let viewedRoundIndex = -1;
 let votingLocked = false;
 let drawing = false;
+let currentProfileIndex = -1;
 let transitionTimer = null;
 
 function esc(value) {
@@ -109,43 +110,60 @@ function renderProfileGallery(primarch, images, activeIndex) {
 }
 
 function renderParticipants() {
-  $('#participantGrid').innerHTML = primarchs.map(p => `
-    <article class="card">
-      <div class="card-top"><span>Легион ${esc(p.symbol)}</span><span class="status">Участник</span></div>
-      <div class="sig">${esc(p.symbol)}</div>
-      <h3>${esc(p.name)}</h3><p>${esc(p.legion)}</p>
-      <div class="open"><button class="btn secondary" data-profile="${p.id}">Открыть досье →</button></div>
-    </article>`).join('');
+  $('#participantGrid').innerHTML = primarchs.map(p => {
+    const legionName = p.legion.replace(/^[IVXLCDM]+\s+легион\s+—\s+/i, '');
+    return '<article class="card participant-card" data-profile="' + p.id + '" role="button" tabindex="0" aria-label="Открыть досье: ' + esc(p.name) + '">' +
+      '<div class="participant-roman" aria-hidden="true">' + esc(p.symbol) + '</div>' +
+      '<div class="participant-topline"><span>ПРИМАРХ</span><span class="participant-open" aria-hidden="true">↗</span></div>' +
+      '<h3>' + esc(p.name) + '</h3>' +
+      '<p class="participant-legion">' + esc(legionName) + '</p>' +
+      '<div class="participant-world"><span>РОДНОЙ МИР</span><strong>' + esc(p.world) + '</strong></div>' +
+    '</article>';
+  }).join('');
 }
 
 function openProfile(id, requestedImageIndex = 0) {
   const p = primarchs.find(item => item.id === id);
   if (!p) return;
-  const fields = [
-    ["Кто он", "bio", "Биография участника будет добавлена в досье."],
-    ["Характер", "character", "Разберём темперамент, привычки и особенности личности."],
-    ["Броня и стиль", "armor", "Здесь будет подробный разбор брони начала Ереси Хоруса."],
-    ["Оружие", "weapon", "Добавим основное оружие и его особенности."]
-  ];
+  currentProfileIndex = primarchs.findIndex(item => item.id === id);
+  const fields = [['Кто он', 'bio'], ['Характер', 'character'], ['Броня и стиль', 'armor'], ['Оружие', 'weapon']];
   const images = getProfileImages(p);
   const imageIndex = ((requestedImageIndex % images.length) + images.length) % images.length;
-  $('#profileContent').innerHTML = `
-    <div class="profile-kicker">Досье участника · Легион ${esc(p.symbol)}</div>
-    <h2 class="profile-title" id="profileTitle">${esc(p.name)}</h2>
-    <div class="profile-sub">${esc(p.alias)} · ${esc(p.legion)}</div>
-    ${renderProfileGallery(p, images, imageIndex)}
-    <div class="profile-grid">
-      <div class="info"><h4>Родной мир</h4><p>${esc(p.world)}</p></div>
-      <div class="info"><h4>Легион</h4><p>${esc(p.legion)}</p></div>
-      ${fields.map(([title,key,fallback]) => `<div class="info full"><h4>${title}</h4><p>${esc(p[key] || fallback)}</p></div>`).join('')}
-    </div>
-    <div class="note">Историческая рамка проекта: начало Ереси Хоруса. Поздние демонические и послевоенные облики в основной конкурс не включаются.</div>`;
+  const fieldsHtml = fields.map(([title, key]) => '<div class="info full"><h4>' + title + '</h4><p>' + esc(p[key]) + '</p></div>').join('');
+  const html = [
+    '<div class="profile-kicker">Досье участника · Легион ' + esc(p.symbol) + '</div>',
+    '<h2 class="profile-title" id="profileTitle">' + esc(p.name) + '</h2>',
+    '<div class="profile-sub">' + esc(p.alias) + '</div>',
+    '<div class="profile-switcher" aria-label="Переключение между примархами">',
+      '<button type="button" data-profile-step="-1" aria-label="Предыдущий примарх">← Предыдущий</button>',
+      '<span>' + String(currentProfileIndex + 1).padStart(2, '0') + ' / ' + primarchs.length + '</span>',
+      '<button type="button" data-profile-step="1" aria-label="Следующий примарх">Следующий →</button>',
+    '</div>',
+    renderProfileGallery(p, images, imageIndex),
+    '<div class="profile-grid">',
+      '<div class="info"><h4>Родной мир</h4><p>' + esc(p.world) + '</p></div>',
+      '<div class="info"><h4>Легион</h4><p>' + esc(p.legion) + '</p></div>',
+      fieldsHtml,
+    '</div>',
+    '<div class="profile-source"><span>Справочный материал:</span> <a href="' + esc(p.loreSource) + '" target="_blank" rel="noopener noreferrer">Lexicanum — ' + esc(p.name) + ' ↗</a></div>',
+    '<div class="note">Историческая рамка проекта: Великий крестовый поход и начало Ереси Хоруса. Описания брони и оружия относятся к этому периоду; поздние демонические и послевоенные облики не смешиваются с ранними версиями.</div>'
+  ].join('');
+  $('#profileContent').innerHTML = html;
   $('#profileModal').classList.add('show');
+  $('#profileModal').scrollTop = 0;
   document.body.style.overflow = 'hidden';
 }
+
+function stepProfile(direction) {
+  if (currentProfileIndex < 0) return;
+  const nextIndex = (currentProfileIndex + direction + primarchs.length) % primarchs.length;
+  openProfile(primarchs[nextIndex].id);
+}
+
 function closeProfile() {
   $('#profileModal').classList.remove('show');
   document.body.style.overflow = '';
+  currentProfileIndex = -1;
 }
 
 function drawTournament() {
@@ -387,9 +405,14 @@ document.addEventListener('click', event => {
     openProfile(Number(galleryThumb.dataset.galleryProfile), Number(galleryThumb.dataset.galleryIndex));
     return;
   }
-  const profileButton = event.target.closest('[data-profile]');
-  if (profileButton) {
-    openProfile(Number(profileButton.dataset.profile));
+  const profileStep = event.target.closest('[data-profile-step]');
+  if (profileStep) {
+    stepProfile(Number(profileStep.dataset.profileStep));
+    return;
+  }
+  const profileTrigger = event.target.closest('[data-profile]');
+  if (profileTrigger) {
+    openProfile(Number(profileTrigger.dataset.profile));
     return;
   }
   const voteButton = event.target.closest('[data-vote]');
@@ -412,9 +435,22 @@ document.addEventListener('click', event => {
   }
 });
 
+document.addEventListener('keydown', event => {
+  if (!event.target.matches('.participant-card')) return;
+  if (event.key === 'Enter' || event.key === ' ') {
+    event.preventDefault();
+    openProfile(Number(event.target.dataset.profile));
+  }
+});
 $('#closeModal').addEventListener('click', closeProfile);
 $('#profileModal').addEventListener('click', event => { if (event.target.id === 'profileModal') closeProfile(); });
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeProfile(); });
+document.addEventListener('keydown', event => {
+  if (!$('#profileModal').classList.contains('show')) return;
+  if (event.key === 'Escape') { closeProfile(); return; }
+  if (event.target.matches('input, textarea, select')) return;
+  if (event.key === 'ArrowLeft') { event.preventDefault(); stepProfile(-1); }
+  else if (event.key === 'ArrowRight') { event.preventDefault(); stepProfile(1); }
+});
 $('#drawBtn').addEventListener('click', drawTournament);
 
 
