@@ -108,6 +108,9 @@ h2{margin:0;color:var(--light);font:normal 27px Georgia,"Times New Roman",serif}
 .fighter-card{min-height:265px;padding:18px 18px 16px;border-color:rgba(201,166,107,.38);background:linear-gradient(145deg,#342427,#211719);box-shadow:0 7px 24px #0004;animation:fighterAppear .42s ease both}
 .fighter-art{height:500px;width:100%;margin:14px 0 12px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at center,rgba(0,0,0,.22),rgba(0,0,0,.08) 68%,transparent 100%)}
 .fighter-art img{display:block;height:100%;width:auto;max-width:none;max-height:none;flex:0 0 auto;object-fit:contain;object-position:center}
+.champion-art{height:620px;width:100%;margin:22px auto 4px;display:flex;align-items:center;justify-content:center;overflow:hidden;background:radial-gradient(ellipse at center,rgba(0,0,0,.24),transparent 72%)}
+.champion-art img{display:block;height:100%;width:auto;max-width:100%;max-height:100%;object-fit:contain;object-position:center}
+
 .profile-art{width:100%;margin:15px 0 20px;display:flex;justify-content:center;align-items:flex-start;overflow:hidden;background:radial-gradient(ellipse at center,rgba(0,0,0,.18),transparent 72%)}
 .profile-art img{display:block;width:100%;height:auto;max-width:100%;max-height:none;object-fit:contain;object-position:center}
 
@@ -214,7 +217,9 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   .draw-status{width:100%;max-width:none;height:48px;min-height:48px}
   .fighters-grid{gap:9px}
   .fighter-card{min-height:250px;padding:12px 10px}
-  .fighter-art{height:500px;margin:10px 0 9px}
+  .fighter-art{height:360px;margin:10px 0 9px}
+  .fighter-art img{max-width:100%}
+  .champion-art{height:430px;margin:18px auto 2px}
 
   .fighter-card .fighter-actions{flex-direction:column}
   .fighter-card h3{font-size:19px}
@@ -231,6 +236,9 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   .stat strong{font-size:21px}
   .stat span{font-size:8px;letter-spacing:.06em}
   .fighters-grid{grid-template-columns:1fr;max-width:340px}
+  .fighter-art{height:320px}
+  .champion-art{height:360px}
+
   .fighter-card{min-height:0}
   .fighter-card .fighter-actions{flex-direction:row}
   .fighter-card .sig{margin:12px 0 8px}
