@@ -490,3 +490,9 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   .hall-node-art{height:125px}
   .hall-node-champion .hall-node-art{height:300px}
 }
+
+/* A single finalist sits on the center axis of the Hall of Fame tree. */
+.hall-level-finalists .hall-level-grid{
+  grid-template-columns:minmax(0,150px);
+  justify-content:center;
+}
