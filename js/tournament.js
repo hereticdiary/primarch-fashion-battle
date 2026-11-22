@@ -77,7 +77,7 @@ function openProfile(id) {
     <div class="profile-kicker">Досье участника · Легион ${esc(p.symbol)}</div>
     <h2 class="profile-title" id="profileTitle">${esc(p.name)}</h2>
     <div class="profile-sub">${esc(p.alias)} · ${esc(p.legion)}</div>
-    <div class="profile-placeholder">МЕСТО ДЛЯ ПОРТРЕТА ИЛИ ИЗОБРАЖЕНИЯ БРОНИ<br><br>Добавим подходящий арт после проверки версии образа.</div>
+    <div class="profile-art"><img src="${esc(p.image)}" alt="${esc(p.name)} — полный образ" loading="lazy" decoding="async"></div>
     <div class="profile-grid">
       <div class="info"><h4>Родная планета</h4><p>${esc(p.world)}</p></div>
       <div class="info"><h4>Легион</h4><p>${esc(p.legion)}</p></div>
