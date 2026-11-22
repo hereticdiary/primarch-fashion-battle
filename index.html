@@ -3,874 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#171719">
+<meta name="theme-color" content="#171214">
 <meta name="description" content="Модный приговор — фанатский турнир брони примархов времён Ереси Хоруса.">
 <title>Модный приговор — Битва примархов</title>
-<style>
-:root{
-  --bg:#171719;--panel:#222226;--panel2:#2b2a2c;--ink:#eee6d7;--muted:#b5aa98;
-  --gold:#c8a66a;--gold2:#8f7042;--red:#8e3539;--line:#514637;--green:#657b61;
-}
-*{box-sizing:border-box}
-body{margin:0;background:radial-gradient(ellipse at top,#35302b 0,#1c1b1d 42%,#121214 100%);color:var(--ink);font-family:Georgia,"Times New Roman",serif;min-height:100vh}
-button,input{font:inherit}
-button{cursor:pointer}
-a{color:var(--gold)}
-.wrap{max-width:1180px;margin:auto;padding:24px 18px 60px}
-header{text-align:center;padding:36px 12px 26px;border:1px solid var(--line);background:linear-gradient(135deg,#282326,#1c1b1d 60%,#30271f);position:relative}
-header:before,header:after{content:"✦";color:var(--gold);position:absolute;top:18px;font-size:22px}
-header:before{left:22px}header:after{right:22px}
-.kicker{color:var(--gold);letter-spacing:.25em;text-transform:uppercase;font:12px Arial,sans-serif}
-h1{font-size:clamp(34px,7vw,66px);line-height:.98;margin:12px 0 8px;color:#e4c995;text-transform:uppercase;font-weight:normal;text-shadow:0 2px 18px #000}
-.subtitle{font:13px Arial,sans-serif;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
-.header-rule{width:150px;height:1px;background:var(--gold2);margin:22px auto}
-.intro{max-width:700px;margin:auto;color:#d2c5b2;line-height:1.55}
-nav{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:22px 0}
-.tab{border:1px solid var(--line);background:#211f20;color:var(--ink);padding:11px 17px;text-transform:uppercase;letter-spacing:.08em;font:12px Arial,sans-serif}
-.tab.active,.tab:hover{background:#493b2a;border-color:var(--gold);color:#f5dfb5}
-.section{display:none}.section.active{display:block}
-.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;margin:30px 0 16px;border-bottom:1px solid var(--line);padding-bottom:12px}
-h2{font-size:27px;font-weight:normal;color:#e2c58f;margin:0}
-.small{font:12px Arial,sans-serif;color:var(--muted);line-height:1.5}
-.actions{display:flex;gap:8px;flex-wrap:wrap}
-.btn{border:1px solid var(--gold2);background:#392f25;color:#f1dfbd;padding:10px 14px;font:12px Arial,sans-serif;letter-spacing:.05em;text-transform:uppercase}
-.btn:hover{background:#58452d}.btn.secondary{background:#242326;border-color:var(--line);color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:13px}
-.card{border:1px solid var(--line);background:linear-gradient(145deg,#29272a,#1e1d20);padding:15px;min-height:190px;display:flex;flex-direction:column;position:relative;transition:.18s}
-.card:hover{transform:translateY(-3px);border-color:var(--gold2)}
-.card-top{display:flex;justify-content:space-between;align-items:center;color:var(--gold);font:10px Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase}
-.sig{width:46px;height:46px;border:1px solid var(--gold2);display:grid;place-items:center;color:#e1c18a;font-size:21px;margin:16px 0 10px;background:#211e1e}
-.card h3{font-size:21px;font-weight:normal;margin:0 0 6px;color:#f0dfc1}
-.card p{font:12px Arial,sans-serif;color:var(--muted);margin:0;line-height:1.5}
-.card .open{margin-top:auto;padding-top:16px;color:var(--gold);font:11px Arial,sans-serif;text-transform:uppercase;letter-spacing:.1em}
-.status{display:inline-block;border:1px solid var(--line);padding:4px 7px;color:var(--muted);font:10px Arial,sans-serif}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0}
-.stat{background:#222124;border:1px solid var(--line);padding:15px;text-align:center}
-.stat strong{display:block;font-size:27px;color:var(--gold);font-weight:normal}.stat span{font:10px Arial,sans-serif;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}
-.bracket-tools{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
-.bracket{display:grid;grid-template-columns:repeat(5,minmax(170px,1fr));gap:12px;overflow-x:auto;padding-bottom:12px}
-.round{min-width:170px}
-.round h3{font:12px Arial,sans-serif;color:var(--gold);letter-spacing:.13em;text-transform:uppercase;border-bottom:1px solid var(--line);padding-bottom:10px}
-.match{border:1px solid var(--line);background:#211f21;padding:10px;margin:12px 0;position:relative}
-.match .match-label{font:10px Arial,sans-serif;color:var(--muted);margin-bottom:8px}
-.contender{display:flex;justify-content:space-between;align-items:center;gap:6px;padding:8px 7px;margin:4px 0;background:#2a2728;border:1px solid transparent;color:var(--ink);font-size:13px;text-align:left;width:100%}
-.contender:hover{border-color:var(--gold2)}.contender.winner{border-color:var(--green);background:#293329;color:#e5ebdc}
-.contender.loser{opacity:.45;text-decoration:line-through}
-.contender:disabled{cursor:default}
-.match-note{font:10px Arial,sans-serif;color:var(--muted);margin-top:7px;line-height:1.4}
-.empty{border:1px dashed var(--line);padding:14px;color:#8f877b;font:12px Arial,sans-serif;text-align:center}
-.champion{border:1px solid var(--gold);background:radial-gradient(ellipse at center,#4a3a26,#211e1e 72%);text-align:center;padding:25px;margin:20px 0}
-.champion .crown{font-size:38px;color:var(--gold)}.champion h3{font-size:27px;font-weight:normal;color:#f0d49d;margin:8px}
-.modal{display:none;position:fixed;inset:0;background:#000c;z-index:10;overflow:auto;padding:20px}
-.modal.show{display:block}
-.modal-box{max-width:760px;margin:25px auto;background:#211f21;border:1px solid var(--gold2);box-shadow:0 20px 70px #000;padding:24px;position:relative}
-.close{position:absolute;right:14px;top:10px;background:none;border:0;color:var(--gold);font-size:27px}
-.profile-kicker{font:11px Arial,sans-serif;color:var(--gold);letter-spacing:.18em;text-transform:uppercase}
-.profile-title{font-size:38px;font-weight:normal;color:#e8ce9d;margin:8px 35px 4px 0}
-.profile-sub{color:var(--muted);font:13px Arial,sans-serif;margin-bottom:18px}
-.profile-placeholder{height:210px;border:1px dashed var(--gold2);display:grid;place-items:center;text-align:center;color:#9d8d74;background:linear-gradient(135deg,#302a27,#1a191b);margin:15px 0;font:12px Arial,sans-serif;padding:20px}
-.profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.info{border-top:1px solid var(--line);padding:12px 0}.info h4{font:11px Arial,sans-serif;color:var(--gold);letter-spacing:.12em;text-transform:uppercase;margin:0 0 7px}.info p{font-size:14px;line-height:1.55;color:#d2c7b8;margin:0}
-.info.full{grid-column:1/-1}
-.note{border-left:2px solid var(--gold2);padding:10px 13px;color:var(--muted);font:12px Arial,sans-serif;line-height:1.5;margin:18px 0}
-footer{text-align:center;color:#766d61;font:11px Arial,sans-serif;margin-top:45px;line-height:1.6}
-@media(max-width:650px){.wrap{padding:12px 10px 40px}.stats{grid-template-columns:1fr 1fr 1fr}.bracket{grid-template-columns:repeat(5,175px)}.profile-grid{grid-template-columns:1fr}.info.full{grid-column:auto}.section-head{align-items:start;flex-direction:column}.modal-box{padding:18px}}
-
-/* HERETIC DIARY — общий стиль с главной страницей */
-body{
-  background:
-    radial-gradient(ellipse at 50% 0%,rgba(91,42,42,.22),transparent 42%),
-    radial-gradient(ellipse at top,#30272a 0,#1c1a1d 43%,#121214 100%);
-}
-.wrap{max-width:1180px;padding-top:28px}
-header{
-  border-color:#66503a;
-  background:
-    linear-gradient(135deg,rgba(48,34,38,.97),rgba(25,24,27,.98) 58%,rgba(48,37,30,.97));
-  box-shadow:0 18px 55px #0005,inset 0 0 35px #0003;
-}
-.site-mark{
-  display:inline-block;
-  color:#e5d2b0;
-  text-decoration:none;
-  font: bold 11px Arial,sans-serif;
-  letter-spacing:.28em;
-  margin-bottom:20px;
-}
-.site-mark:hover{color:#fff0d0}
-.kicker{color:#c8a66a}
-h1{color:#e4c995}
-nav{
-  position:sticky;
-  top:0;
-  z-index:5;
-  padding:12px 10px;
-  margin:18px 0 24px;
-  background:rgba(22,21,23,.92);
-  border-top:1px solid rgba(143,112,66,.35);
-  border-bottom:1px solid rgba(143,112,66,.35);
-  backdrop-filter:blur(12px);
-}
-.home-link{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  padding:11px 16px;
-  border:1px solid #8f7042;
-  color:#e8d4b0;
-  background:linear-gradient(135deg,#4a292d,#302326);
-  text-decoration:none;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  font:12px Arial,sans-serif;
-  transition:.18s;
-}
-.home-link:hover{background:#63383b;border-color:#c8a66a;color:#fff0d0}
-.tab{transition:.18s}
-.section-head{border-bottom-color:#514637}
-footer{
-  border-top:1px solid rgba(143,112,66,.45);
-  padding:24px 18px 8px;
-  margin-top:54px;
-  color:#a99b88;
-  font:12px Arial,sans-serif;
-  letter-spacing:0;
-  line-height:1.65;
-}
-.footer-brand{
-  display:block;
-  color:#c8a66a;
-  font:bold 10px Arial,sans-serif;
-  letter-spacing:.24em;
-  margin-bottom:8px;
-}
-footer p{max-width:760px;margin:0 auto}
-@media(max-width:650px){
-  .wrap{padding:12px 10px 34px}
-  nav{top:0;gap:7px;padding:10px 7px}
-  .home-link,.tab{padding:10px 11px;font-size:10px}
-  .site-mark{margin-bottom:16px}
-  footer{margin-top:38px;padding:20px 8px 4px}
-}
-
-
-/* HERETIC DIARY — оформление в едином стиле с главной страницей */
-:root{
-  --bg:#171214;
-  --panel:#241b1d;
-  --panel2:#2d2225;
-  --gold:#c9a66b;
-  --gold2:#9a7547;
-  --light:#ead5ad;
-  --ink:#f0e6d6;
-  --muted:#b8a99a;
-  --line:rgba(201,166,107,.28);
-  --red:#8f3037;
-  --green:#657b61;
-}
-html{scroll-behavior:smooth}
-body{
-  color:var(--ink);
-  background:
-    radial-gradient(ellipse at 50% -15%,#8f30373b,transparent 55%),
-    linear-gradient(#1d1618,var(--bg) 55%,#120f10);
-  font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;
-}
-a{color:var(--light)}
-.wrap{width:min(1080px,calc(100% - 36px));max-width:1080px;padding:34px 0 30px}
-.top{
-  position:sticky;top:0;z-index:1000;
-  border-bottom:1px solid var(--line);
-  background:rgba(16,13,14,.92);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-}
-.top-inner{
-  width:min(1080px,calc(100% - 36px));min-height:66px;margin:auto;
-  display:flex;align-items:center;justify-content:space-between;gap:20px;
-}
-.brand{font:17px Georgia,serif;letter-spacing:.18em;color:var(--light);text-decoration:none}
-.all-projects{
-  color:var(--muted);font-size:13px;text-decoration:none;
-  transition:color .18s;
-}
-.all-projects:hover{color:var(--light)}
-header{
-  text-align:center;padding:40px 18px 30px;border:0;border-bottom:1px solid var(--line);
-  background:transparent;box-shadow:none;
-}
-header:before,header:after{color:var(--gold)}
-.kicker{color:var(--gold);font:11px system-ui,sans-serif;letter-spacing:.2em}
-h1{color:var(--light);font-family:Georgia,"Times New Roman",serif;text-shadow:0 2px 18px #0008}
-.subtitle{font:11px system-ui,sans-serif;letter-spacing:.16em;color:var(--muted)}
-.header-rule{background:var(--gold);opacity:.65}
-.intro{color:var(--muted);font:14px/1.7 system-ui,sans-serif}
-nav{
-  position:sticky;top:66px;z-index:900;
-  display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
-  margin:0 0 28px;padding:12px 8px;
-  background:rgba(22,17,19,.94);
-  border-top:1px solid var(--line);border-bottom:1px solid var(--line);
-  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-}
-.home-link{
-  display:inline-flex;align-items:center;justify-content:center;
-  padding:11px 16px;border:1px solid var(--gold2);
-  color:var(--light);background:var(--panel);
-  text-decoration:none;text-transform:uppercase;letter-spacing:.06em;
-  font:12px system-ui,sans-serif;transition:.18s;
-}
-.home-link:hover{background:#3a2529;border-color:var(--gold);color:#fff0d0}
-.tab{
-  border:1px solid var(--line);background:#241b1d;color:var(--muted);
-  padding:11px 17px;text-transform:uppercase;letter-spacing:.06em;
-  font:12px system-ui,sans-serif;transition:.18s;
-}
-.tab.active,.tab:hover{background:#3a2529;border-color:var(--gold);color:var(--light)}
-h2{color:var(--light);font-family:Georgia,"Times New Roman",serif}
-.section-head{border-bottom-color:var(--line)}
-.small,.card p,.match .match-label,.match-note{color:var(--muted)}
-.card,.match,.stat,.modal-box{
-  background:linear-gradient(145deg,#2b2023,#201719);
-  border-color:var(--line);
-}
-.card h3,.profile-title,.champion h3{color:var(--light)}
-.sig{background:#241b1d;border-color:var(--gold2);color:var(--light)}
-.status{border-color:var(--line);color:var(--muted)}
-.btn{border-color:var(--gold2);background:#382328;color:var(--light);font-family:system-ui,sans-serif}
-.btn:hover{background:#503037;border-color:var(--gold)}
-.btn.secondary{background:#241b1d;border-color:var(--line);color:var(--muted)}
-.contender{background:#302326;color:var(--ink)}
-.contender.winner{border-color:var(--green);background:#293329}
-.champion{border-color:var(--gold);background:radial-gradient(ellipse at center,#49352a,#211719 72%)}
-.note{border-left-color:var(--gold);color:var(--muted)}
-.modal-box{border-color:var(--gold2)}
-.profile-placeholder{border-color:var(--gold2);background:linear-gradient(135deg,#302326,#1a1416)}
-.info{border-top-color:var(--line)}
-.info p{color:#d8cbbb}
-footer{
-  border-top:1px solid var(--line);
-  padding:24px 18px 8px;margin-top:54px;
-  color:var(--muted);font:12px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif;
-  letter-spacing:0;text-align:center;
-}
-.footer-brand{display:block;color:var(--gold);font:bold 10px system-ui,sans-serif;letter-spacing:.24em;margin-bottom:8px}
-footer p{max-width:760px;margin:0 auto}
-@media(max-width:650px){
-  .wrap{width:calc(100% - 24px);padding:20px 0 26px}
-  .top-inner{width:calc(100% - 24px);min-height:58px}
-  .brand{font-size:14px}
-  .all-projects{font-size:12px}
-  nav{top:58px;gap:7px;padding:9px 5px}
-  .home-link,.tab{padding:10px 11px;font-size:10px}
-  header{padding:30px 8px 24px}
-  footer{margin-top:38px;padding:20px 8px 4px}
-}
-
-
-/* Финальные точечные правки */
-html,body{min-height:100%}
-body{min-height:100vh;display:flex;flex-direction:column}
-.wrap{flex:1 0 auto;width:min(1080px,calc(100% - 36px));}
-footer{
-  flex:0 0 auto;width:100%;margin-top:0!important;
-  padding:15px 18px 17px!important;
-  border-top:1px solid var(--line);
-  text-align:center;
-}
-footer p{
-  max-width:none;margin:0 auto;
-  white-space:nowrap;font-size:11px;line-height:1.4;
-}
-.intro{font-size:16px!important;line-height:1.65}
-.header-rule{position:relative;width:min(420px,72%);margin:24px auto}
-.header-rule:before,.header-rule:after{
-  content:"✦";position:absolute;top:50%;transform:translateY(-50%);
-  color:var(--gold);font-size:19px;line-height:1;
-  text-shadow:0 0 12px #c9a66b66;
-}
-.header-rule:before{left:-30px}
-.header-rule:after{right:-30px}
-.all-projects{
-  position:relative;display:inline-flex;align-items:center;gap:10px;
-  padding:10px 17px 10px 14px;
-  border:1px solid rgba(201,166,107,.62);
-  border-radius:2px;
-  color:#f0dfc0;
-  background:linear-gradient(135deg,rgba(113,48,55,.42),rgba(48,31,33,.9));
-  box-shadow:inset 0 0 0 1px rgba(201,166,107,.08),0 3px 14px #0005;
-  text-decoration:none;text-transform:uppercase;
-  font-size:11px;font-weight:650;letter-spacing:.13em;
-  transition:background .2s,border-color .2s,box-shadow .2s,transform .2s;
-}
-.all-projects:before{
-  content:"";position:absolute;inset:3px;border:1px solid rgba(201,166,107,.16);
-  pointer-events:none;
-}
-.all-projects:hover{
-  color:#fff0d0;border-color:var(--gold);
-  background:linear-gradient(135deg,rgba(143,48,55,.72),rgba(67,39,41,.98));
-  box-shadow:0 0 18px rgba(143,48,55,.25),0 4px 16px #0007;
-  transform:translateY(-1px);
-}
-.projects-arrow{font-size:16px;color:var(--gold);line-height:1}
-@media(max-width:760px){
-  footer p{white-space:normal;max-width:680px}
-  .intro{font-size:16px!important}
-}
-@media(max-width:480px){
-  .all-projects{padding:9px 11px;gap:7px;font-size:10px;letter-spacing:.08em}
-  .header-rule{width:65%}
-  .header-rule:before{left:-23px}
-  .header-rule:after{right:-23px}
-  footer p{font-size:10px}
-}
-
-
-/* Финальная компоновка страницы и верхний блок в стиле главной */
-html,body{min-height:100%;height:100%}
-body{min-height:100vh;height:auto;display:flex;flex-direction:column}
-.top{flex:0 0 auto}
-.wrap{flex:1 0 auto;width:min(1080px,calc(100% - 36px));}
-footer{flex:0 0 auto;width:100%;margin-top:0!important}
-header{
-  position:relative;
-  border:1px solid var(--line)!important;
-  border-bottom:1px solid var(--line)!important;
-  border-radius:2px;
-  background:
-    linear-gradient(135deg,rgba(65,37,42,.96),rgba(31,22,25,.98) 58%,rgba(66,45,34,.96))!important;
-  box-shadow:0 18px 55px #0005,inset 0 0 35px #0003!important;
-}
-header:before,header:after{content:none!important;display:none!important}
-@media(max-width:650px){
-  .wrap{flex:1 0 auto}
-}
-
-
-/* Убираем резкий переход фона: единый фон на всю высоту окна и при прокрутке */
-html,body{background-color:#171214!important}
-body{
-  background-image:radial-gradient(ellipse at 50% 0%,rgba(143,48,55,.20),transparent 58%)!important;
-  background-repeat:no-repeat!important;
-  background-attachment:fixed!important;
-  background-size:100% 100%!important;
-}
-
-
-/* Вкладки-закладки: турнирная сетка — центральная и активная по умолчанию */
-nav{
-  position:sticky;top:66px;z-index:900;
-  display:grid;grid-template-columns:1fr 1.38fr 1fr;
-  align-items:end;gap:7px;
-  width:min(720px,100%);margin:24px auto 30px;padding:0 12px;
-  background:transparent;border:0;border-bottom:1px solid rgba(201,166,107,.55);
-  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
-}
-.tab{
-  position:relative;min-height:42px;
-  display:flex;align-items:center;justify-content:center;
-  padding:11px 12px 10px;
-  border:1px solid rgba(201,166,107,.32);
-  border-bottom:0;border-radius:5px 5px 0 0;
-  background:linear-gradient(180deg,rgba(71,43,47,.88),rgba(42,29,32,.96));
-  color:#b9a58c;
-  font:11px/1.2 system-ui,-apple-system,"Segoe UI",sans-serif;
-  font-weight:600;letter-spacing:.075em;text-transform:uppercase;
-  box-shadow:inset 0 1px 0 rgba(255,230,190,.06);
-  transition:background .2s,color .2s,border-color .2s,transform .2s;
-}
-.tab:hover{
-  color:#ead5ad;border-color:rgba(201,166,107,.7);
-  background:linear-gradient(180deg,rgba(91,51,55,.96),rgba(52,34,37,.98));
-}
-.tab.active{
-  min-height:49px;margin-bottom:-1px;
-  color:#24191a;
-  border-color:#d6b77f;
-  background:linear-gradient(180deg,#e0c38f 0%,#c9a66b 55%,#ad8754 100%);
-  box-shadow:0 0 18px rgba(201,166,107,.16),inset 0 1px 0 rgba(255,245,220,.6);
-  z-index:2;
-}
-.tab.active:after{
-  content:"";position:absolute;left:10px;right:10px;bottom:4px;
-  height:1px;background:rgba(75,48,35,.35);
-}
-@media(max-width:650px){
-  nav{top:58px;width:100%;gap:5px;padding:0 3px;margin:18px auto 24px}
-  .tab{min-height:40px;padding:9px 5px;font-size:9px;letter-spacing:.025em}
-  .tab.active{min-height:46px}
-}
-@media(max-width:380px){
-  .tab{font-size:8px;padding-left:3px;padding-right:3px}
-}
-
-
-/* Активная закладка — более выразительная типографика */
-.tab.active{
-  font-size:13px;
-  letter-spacing:.085em;
-  font-weight:750;
-}
-@media(max-width:650px){
-  .tab.active{font-size:10px;letter-spacing:.035em}
-}
-@media(max-width:380px){
-  .tab.active{font-size:9px}
-}
-
-
-/* Ещё немного увеличиваем подпись активной вкладки */
-.tab.active{font-size:15px;letter-spacing:.09em}
-@media(max-width:650px){.tab.active{font-size:11px;letter-spacing:.035em}}
-@media(max-width:380px){.tab.active{font-size:10px}}
-
-
-/* === ТУРНИРНАЯ АРЕНА: вертикальный путь к короне === */
-#tournament .section-head{margin-bottom:12px}
-#tournament .section-head h2{font-size:25px}
-#tournament .section-head .small{max-width:720px;font-size:13px}
-#tournament .bracket-tools{justify-content:center;align-items:center;margin:18px 0 13px}
-#tournament #drawBtn{
-  min-width:230px;padding:13px 22px;
-  border:1px solid #dfbd80;background:linear-gradient(180deg,#e0c28d,#bd925b);
-  color:#25191a;font:700 12px system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase;
-  box-shadow:0 5px 18px #0005,inset 0 1px 0 #fff5;transition:transform .2s,box-shadow .2s;
-}
-#tournament #drawBtn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 22px #0007,0 0 18px #c9a66b28}
-#tournament #drawBtn:disabled{opacity:.75;cursor:wait}
-#tournament #resetBtn{padding:11px 15px}
-#tournamentIntro{
-  max-width:850px;margin:0 auto 22px;padding:11px 15px;text-align:center;
-  border-left:2px solid var(--gold2);background:rgba(37,26,29,.8);color:var(--muted);
-  font:12px/1.55 system-ui,sans-serif;
-}
-#tournamentIntro strong{color:var(--light)}
-#bracketArea{position:relative;transition:opacity .25s}
-#bracketArea.drawing{opacity:.55;filter:saturate(.7)}
-.draw-ceremony{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;color:var(--light)}
-.draw-ceremony strong{font:17px Georgia,serif}
-.draw-ceremony span:last-child{color:var(--gold);font-size:11px}
-.draw-sigil{color:var(--gold);font-size:22px;animation:sealPulse .6s ease-in-out infinite alternate}
-@keyframes sealPulse{to{transform:rotate(45deg) scale(1.25);text-shadow:0 0 15px #c9a66b}}
-#tournamentIntro.draw-complete{animation:revealFlash .8s ease}
-@keyframes revealFlash{0%{box-shadow:0 0 0 0 #c9a66b00}40%{box-shadow:0 0 24px 2px #c9a66b55}100%{box-shadow:none}}
-.arena-overview{max-width:940px;margin:0 auto 22px}
-.arena-overview .stats{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 13px}
-.arena-overview .stat{padding:10px 12px;border:1px solid var(--line);background:linear-gradient(145deg,#2d2225,#211719)}
-.arena-overview .stat strong{font:24px Georgia,serif;color:var(--gold)}
-.arena-overview .stat strong small{font:12px system-ui;color:var(--muted)}
-.arena-overview .stat span{font-size:9px;letter-spacing:.13em}
-.tournament-progress{max-width:700px;margin:auto}
-.progress-copy{display:flex;justify-content:space-between;gap:10px;color:var(--muted);font-size:10px;letter-spacing:.05em;margin-bottom:6px}
-.progress-copy span:first-child{color:var(--light);text-transform:uppercase;letter-spacing:.13em}
-.progress-track{height:4px;background:#302326;border:1px solid rgba(201,166,107,.18);overflow:hidden}
-.progress-track span{display:block;height:100%;background:linear-gradient(90deg,#8f3037,#e0be83);box-shadow:0 0 9px #c9a66b66;transition:width .35s}
-.entry-stage,.tree-stage,.final-stage{
-  max-width:1120px;margin:0 auto;
-  border:1px solid rgba(201,166,107,.25);
-  background:linear-gradient(145deg,rgba(44,31,34,.84),rgba(27,20,22,.88));
-  box-shadow:0 12px 32px #0002,inset 0 0 30px #0001;
-  padding:15px 16px 17px;position:relative;
-}
-.stage-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px;padding-bottom:10px;border-bottom:1px solid rgba(201,166,107,.2)}
-.stage-heading h3{font:19px Georgia,serif;color:var(--light);margin:2px 0 0}
-.stage-kicker{font:9px system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--gold2)}
-.stage-count{font:10px system-ui,sans-serif;letter-spacing:.09em;color:var(--muted);text-align:right}
-.prelim-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;max-width:780px;margin:0 auto}
-.match-card{
-  min-width:0;padding:10px 9px 9px;border:1px solid rgba(201,166,107,.35);
-  background:linear-gradient(145deg,#342427,#211719);position:relative;
-  box-shadow:0 5px 14px #0003,inset 0 1px 0 #ffffff08;
-}
-.match-card:before{content:"";position:absolute;top:-1px;left:14px;right:14px;height:2px;background:linear-gradient(90deg,transparent,#9a7547,transparent);opacity:.8}
-.match-card.has-winner{border-color:#c9a66b;box-shadow:0 0 16px #c9a66b16,inset 0 0 20px #c9a66b08}
-.match-label{font:9px system-ui,sans-serif;color:var(--gold);letter-spacing:.13em;text-transform:uppercase;text-align:center;margin:0 0 7px}
-.match-contenders{display:flex;flex-direction:column;gap:4px}
-#tournament .contender{
-  display:flex;justify-content:space-between;align-items:center;gap:5px;
-  min-height:34px;width:100%;margin:0;padding:7px 8px;
-  border:1px solid rgba(201,166,107,.18);background:#211719;color:#eadcc6;
-  font:12px/1.25 Georgia,serif;text-align:left;white-space:normal;overflow-wrap:anywhere;
-  transition:background .16s,border-color .16s;
-}
-#tournament button.contender{cursor:pointer}
-#tournament button.contender:hover:not(:disabled){background:#493035;border-color:#c9a66b}
-#tournament .contender.winner{background:linear-gradient(90deg,#59412c,#3c3028);border-color:#d7b77c;color:#ffe2ac}
-#tournament .contender.loser{opacity:.46}
-#tournament .contender.empty-slot{
-  border-style:dashed;background:rgba(20,15,16,.36);color:#89796e;
-  font:10px/1.25 system-ui,sans-serif;min-height:32px;
-}
-.match-note{font:9px system-ui,sans-serif;color:#8f8074;text-align:center;margin-top:7px;letter-spacing:.03em}
-.match-note.decided{color:#d3ad72}
-.direct-entry{
-  max-width:780px;margin:14px auto 0;display:flex;align-items:center;gap:12px;
-  padding:10px 13px;border:1px dashed rgba(201,166,107,.37);background:rgba(28,20,22,.7);
-}
-.direct-seal{width:34px;height:34px;flex:0 0 34px;display:grid;place-items:center;border:1px solid var(--gold2);border-radius:50%;color:var(--gold);font:15px Georgia,serif}
-.direct-entry strong{display:block;color:var(--light);font:13px Georgia,serif}
-.direct-entry small{display:block;color:var(--muted);font:10px system-ui,sans-serif;margin-top:2px}
-.direct-arrow{margin-left:auto;color:var(--gold);font-size:18px}
-.tree-title{text-align:center;margin:28px 0 15px}
-.tree-title h3{font:26px Georgia,serif;color:var(--light);margin:4px 0}
-.tree-title p{font-size:11px;color:var(--muted);margin:0}
-.tree-stage{padding:14px 13px 16px}
-.stage-heading.compact{margin-bottom:12px}
-.stage-heading.compact h3{font-size:18px}
-.match-row{display:grid;gap:9px;align-items:stretch}
-.match-row.row-eight{grid-template-columns:repeat(8,minmax(0,1fr))}
-.match-row.row-four{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-.match-row.row-two{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px;max-width:780px;margin:auto}
-.tree-connector{height:48px;max-width:1120px;margin:0 auto;position:relative}
-.tree-connector svg{display:block;width:100%;height:100%;overflow:visible}
-.tree-connector path{fill:none;stroke:rgba(201,166,107,.5);stroke-width:1.35;vector-effect:non-scaling-stroke}
-.tree-connector:after{content:"";position:absolute;left:50%;bottom:2px;width:5px;height:5px;border-right:1px solid var(--gold2);border-bottom:1px solid var(--gold2);transform:translateX(-50%) rotate(45deg)}
-.final-stage{max-width:560px;border-color:rgba(201,166,107,.5);background:radial-gradient(ellipse at 50% 0%,#57352d55,transparent 70%),linear-gradient(145deg,#302125,#1b1416);padding:16px 22px 20px;text-align:center}
-.final-stage .stage-heading{text-align:left}
-.final-crown{font-size:34px;line-height:1;color:#d8b77d;text-shadow:0 0 22px #c9a66b44;margin:4px 0 10px}
-.final-stage .match-card{max-width:370px;margin:0 auto;border-color:#a98552;background:linear-gradient(145deg,#47302a,#241719)}
-.final-stage .match-card .contender{min-height:38px;font-size:13px}
-.champion-reveal{display:flex;flex-direction:column;align-items:center;gap:3px;margin:14px auto 0;padding:12px;border-top:1px solid var(--line);max-width:370px}
-.champion-reveal span{font-size:9px;letter-spacing:.18em;color:var(--gold)}
-.champion-reveal strong{font:22px Georgia,serif;color:#f1d7a6}
-.champion-reveal small{font-size:10px;color:var(--muted)}
-@media(max-width:900px){
- .match-row.row-eight{grid-template-columns:repeat(4,minmax(150px,1fr));row-gap:11px}
- .match-row.row-eight .match-card{min-height:130px}
- .tree-connector{height:34px}
-}
-@media(max-width:650px){
- #tournament .section-head h2{font-size:22px}
- #tournament .section-head .small{font-size:12px}
- #tournament .bracket-tools{margin:14px 0 10px}
- #tournament #drawBtn{width:100%;max-width:330px}
- #tournamentIntro{font-size:11px;margin-bottom:16px}
- .arena-overview .stats{gap:6px}
- .arena-overview .stat{padding:8px 3px}
- .arena-overview .stat strong{font-size:20px}
- .arena-overview .stat span{font-size:8px;letter-spacing:.06em}
- .entry-stage,.tree-stage,.final-stage{padding:11px 9px}
- .stage-heading h3{font-size:16px}
- .stage-count{font-size:8px}
- .prelim-grid{gap:8px}
- .match-card{padding:8px 6px}
- #tournament .contender{font-size:11px;padding:6px}
- #tournament .contender.empty-slot{font-size:9px}
- .match-row.row-eight{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- .match-row.row-four{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
- .match-row.row-two{gap:8px}
- .tree-connector{height:28px}
- .tree-title{margin:22px 0 12px}
- .tree-title h3{font-size:22px}
- .direct-entry{padding:8px;gap:8px}
- .direct-entry small{font-size:9px}
- .final-stage{max-width:100%}
- .progress-copy{font-size:9px}
-}
-
-
-/* На узких экранах оставляем вертикальное направление, но убираем широкие ответвления */
-@media(max-width:900px){
-  .tree-connector svg{display:none}
-  .tree-connector{height:30px}
-}
-@media(max-width:650px){
-  .tree-connector{height:24px}
-}
-
-
-/* Вкладки остаются в обычном потоке страницы и не закрепляются при прокрутке */
-nav{
-  position:static!important;
-  top:auto!important;
-  z-index:auto!important;
-}
-
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="top"><div class="top-inner"><a class="brand" href="https://hereticdiary.github.io/">HERETIC DIARY</a><a class="all-projects" href="https://hereticdiary.github.io/"><span>Все проекты</span></a></div></div>
-<div class="wrap">
-<header>
-  <div class="kicker">Архив еретички · Досье № 001</div>
-  <h1>Модный приговор</h1>
-  <div class="subtitle">Королевская битва примархов</div>
-  <div class="header-rule"></div>
-  <p class="intro">Восемнадцать сынов Императора. Одна случайная жеребьёвка. Семнадцать поединков. И только один получит корону самого стильного примарха эпохи начала Ереси Хоруса.</p>
-</header>
-<nav aria-label="Навигация турнира">
-  <button class="tab" data-tab="participants">Участники</button>
-  <button class="tab active" data-tab="tournament">Турнирная сетка</button>
-  <button class="tab" data-tab="hall">Зал славы</button>
-</nav>
-
-<section id="participants" class="section">
-  <div class="section-head"><div><h2>Каталог участников</h2><div class="small">Выбери примарха, чтобы открыть его досье.</div></div><span class="status">18 участников</span></div>
-  <div class="grid" id="participantGrid"></div>
-</section>
-
-<section id="tournament" class="section active">
-  <div class="section-head"><div><h2>Турнирная арена</h2><div class="small">18 примархов. 17 поединков. Один путь к короне. Выбирай победителей прямо в древе турнира.</div></div></div>
-  <div class="bracket-tools">
-    <button class="btn" id="drawBtn">Провести жеребьёвку</button>
-    <button class="btn secondary" id="resetBtn">Сбросить турнир</button>
+<div class="top">
+  <div class="top-inner">
+    <a class="brand" href="https://hereticdiary.github.io/">HERETIC DIARY</a>
+    <a class="all-projects" href="https://hereticdiary.github.io/">Все проекты</a>
   </div>
-  <div id="tournamentIntro" class="note">Перед стартом — жеребьёвка: две предварительные пары и 14 прямых пропусков в основную сетку. Ниже уже показан весь путь к финалу.</div>
-  <div id="bracketArea"></div>
-</section>
+</div>
 
-<section id="hall" class="section">
-  <div class="section-head"><div><h2>Зал славы</h2><div class="small">Здесь появится чемпион, когда завершится турнир.</div></div></div>
-  <div id="hallContent"><div class="empty">Корона пока ждёт своего владельца.</div></div>
-</section>
+<div class="wrap">
+  <header>
+    <div class="kicker">Архив еретички · Досье № 001</div>
+    <h1>Модный приговор</h1>
+    <div class="subtitle">Королевская битва примархов</div>
+    <div class="header-rule"></div>
+    <p class="intro">Восемнадцать сынов Императора. Одна случайная жеребьёвка. Семнадцать поединков. И только один получит корону самого стильного примарха эпохи начала Ереси Хоруса.</p>
+  </header>
 
+  <nav aria-label="Навигация турнира">
+    <button class="tab" data-tab="participants">Участники</button>
+    <button class="tab active" data-tab="tournament">Турнирная сетка</button>
+    <button class="tab" data-tab="hall">Зал славы</button>
+  </nav>
 
+  <section id="participants" class="section">
+    <div class="section-head">
+      <div><h2>Каталог участников</h2><div class="small">Выбери примарха, чтобы открыть его досье.</div></div>
+      <span class="status">18 участников</span>
+    </div>
+    <div class="grid" id="participantGrid"></div>
+  </section>
+
+  <section id="tournament" class="section active">
+    <div class="stats arena-stats" id="arenaStats">
+      <div class="stat"><strong>18</strong><span>Примархов</span></div>
+      <div class="stat"><strong>0<small>/ 17</small></strong><span>Поединков решено</span></div>
+      <div class="stat"><strong>—</strong><span>Одна корона</span></div>
+    </div>
+
+    <div class="arena-controls">
+      <div class="actions">
+        <button class="btn" id="drawBtn">Провести жеребьёвку</button>
+        <button class="btn secondary" id="resetBtn" hidden>Сбросить турнир</button>
+      </div>
+      <p class="small" id="tournamentIntro">Сначала проведём жеребьёвку. После неё пары будут появляться по одной, а результаты сразу отразятся в турнирной сетке ниже.</p>
+    </div>
+
+    <section class="arena-section" aria-live="polite">
+      <div id="arenaContent">
+        <div class="arena-empty">
+          <span class="arena-emblem">✦</span>
+          <strong>Арена ждёт жеребьёвки</strong>
+          <span>После старта здесь появится первая пара примархов.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="bracket-section" id="bracketSection">
+      <div class="bracket-heading">
+        <div>
+          <span class="stage-kicker">Ход турнира</span>
+          <h2>Турнирная сетка</h2>
+        </div>
+        <span class="small" id="bracketSubheading">Результаты будут появляться здесь по мере голосования.</span>
+      </div>
+      <div id="roundHistory" class="round-history" hidden></div>
+      <div id="bracketArea">
+        <div class="bracket-empty">После жеребьёвки здесь появятся пары текущего этапа. Будущие этапы откроются постепенно.</div>
+      </div>
+    </section>
+  </section>
+
+  <section id="hall" class="section">
+    <div class="section-head"><div><h2>Зал славы</h2><div class="small">Здесь появится чемпион, когда завершится турнир.</div></div></div>
+    <div id="hallContent"><div class="empty">Корона пока ждёт своего владельца.</div></div>
+  </section>
 </div>
 
 <footer><p>Независимый фанатский проект. Все права на вселенную Warhammer 40,000, её персонажей, названия и оригинальные материалы принадлежат Games Workshop.</p></footer>
 
-<div class="modal" id="profileModal" aria-modal="true" role="dialog">
+<div class="modal" id="profileModal" aria-modal="true" role="dialog" aria-labelledby="profileTitle">
   <div class="modal-box">
     <button class="close" id="closeModal" aria-label="Закрыть">×</button>
     <div id="profileContent"></div>
   </div>
 </div>
 
-<script>
-const primarchs = [
- {id:1,name:"Лион Эль’Джонсон",legion:"I легион — Тёмные Ангелы",world:"Калибан",symbol:"I",alias:"Первый",bio:"",character:"",armor:"",weapon:""},
- {id:2,name:"Фулгрим",legion:"III легион — Дети Императора",world:"Хемос",symbol:"III",alias:"Фениксий",bio:"",character:"",armor:"",weapon:""},
- {id:3,name:"Пертурабо",legion:"IV легион — Железные Воины",world:"Олимпия",symbol:"IV",alias:"Мастер осады",bio:"",character:"",armor:"",weapon:""},
- {id:4,name:"Джагатай-хан",legion:"V легион — Белые Шрамы",world:"Чогорис",symbol:"V",alias:"Великий хан",bio:"",character:"",armor:"",weapon:""},
- {id:5,name:"Леман Русс",legion:"VI легион — Космические Волки",world:"Фенрис",symbol:"VI",alias:"Волчий король",bio:"",character:"",armor:"",weapon:""},
- {id:6,name:"Рогал Дорн",legion:"VII легион — Имперские Кулаки",world:"Инwit",symbol:"VII",alias:"Имперский скала",bio:"",character:"",armor:"",weapon:""},
- {id:7,name:"Конрад Кёрз",legion:"VIII легион — Повелители Ночи",world:"Нострамо",symbol:"VIII",alias:"Ночной призрак",bio:"",character:"",armor:"",weapon:""},
- {id:8,name:"Сангвиний",legion:"IX легион — Кровавые Ангелы",world:"Баал",symbol:"IX",alias:"Великий Ангел",bio:"",character:"",armor:"",weapon:""},
- {id:9,name:"Феррус Манус",legion:"X легион — Железные Руки",world:"Медуза",symbol:"X",alias:"Горгон",bio:"",character:"",armor:"",weapon:""},
- {id:10,name:"Ангрон",legion:"XII легион — Пожиратели Миров",world:"Нуцерия",symbol:"XII",alias:"Красный Ангел",bio:"",character:"",armor:"",weapon:""},
- {id:11,name:"Робут Жиллиман",legion:"XIII легион — Ультрамарины",world:"Макрагг",symbol:"XIII",alias:"Господарь Ультрамара",bio:"",character:"",armor:"",weapon:""},
- {id:12,name:"Мортарион",legion:"XIV легион — Гвардия Смерти",world:"Барбарус",symbol:"XIV",alias:"Бледный король",bio:"",character:"",armor:"",weapon:""},
- {id:13,name:"Магнус Красный",legion:"XV легион — Тысяча Сынов",world:"Просперо",symbol:"XV",alias:"Красный король",bio:"",character:"",armor:"",weapon:""},
- {id:14,name:"Хорус Луперкаль",legion:"XVI легион — Лунные Волки",world:"Ктания",symbol:"XVI",alias:"Воитель",bio:"",character:"",armor:"",weapon:""},
- {id:15,name:"Лоргар Аврелиан",legion:"XVII легион — Несущие Слово",world:"Колхида",symbol:"XVII",alias:"Первосвященник",bio:"",character:"",armor:"",weapon:""},
- {id:16,name:"Вулкан",legion:"XVIII легион — Саламандры",world:"Nocturne",symbol:"XVIII",alias:"Повелитель огня",bio:"",character:"",armor:"",weapon:""},
- {id:17,name:"Коракс",legion:"XIX легион — Гвардия Ворона",world:"Deliverance (Ликей)",symbol:"XIX",alias:"Тень Императора",bio:"",character:"",armor:"",weapon:""},
- {id:20,name:"Альфарий / Омегон",legion:"XX легион — Альфа-Легион",world:"Не подтверждена однозначно",symbol:"XX",alias:"Два примарха, один участник",bio:"",character:"",armor:"Братья выступают как один участник: их ранняя броня практически идентична.",weapon:""}
-];
-
-let tournament = null;
-const $ = s => document.querySelector(s);
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-function renderParticipants(){
- $('#participantGrid').innerHTML=primarchs.map(p=>`
- <article class="card">
-  <div class="card-top"><span>Легион ${esc(p.symbol)}</span><span class="status">Участник</span></div>
-  <div class="sig">${esc(p.symbol)}</div>
-  <h3>${esc(p.name)}</h3><p>${esc(p.legion)}</p>
-  <div class="open"><button class="btn secondary" data-profile="${p.id}">Открыть досье →</button></div>
- </article>`).join('');
-}
-function openProfile(id){
- const p=primarchs.find(x=>x.id===id); if(!p)return;
- const fields=[
-  ["Кто он","bio","Биография участника будет добавлена в досье."],
-  ["Характер","character","Разберём темперамент, привычки и особенности личности."],
-  ["Броня и стиль","armor","Здесь будет подробный разбор брони начала Ереси Хоруса."],
-  ["Оружие","weapon","Добавим основное оружие и его особенности."]
- ];
- $('#profileContent').innerHTML=`
-  <div class="profile-kicker">Досье участника · Легион ${esc(p.symbol)}</div>
-  <h2 class="profile-title">${esc(p.name)}</h2>
-  <div class="profile-sub">${esc(p.alias)} · ${esc(p.legion)}</div>
-  <div class="profile-placeholder">МЕСТО ДЛЯ ПОРТРЕТА ИЛИ ИЗОБРАЖЕНИЯ БРОНИ<br><br>Добавим подходящий арт после проверки версии образа.</div>
-  <div class="profile-grid">
-   <div class="info"><h4>Родная планета</h4><p>${esc(p.world)}</p></div>
-   <div class="info"><h4>Легион</h4><p>${esc(p.legion)}</p></div>
-   ${fields.map(([title,key,fallback])=>`<div class="info full"><h4>${title}</h4><p>${esc(p[key]||fallback)}</p></div>`).join('')}
-  </div>
-  <div class="note">Историческая рамка проекта: начало Ереси Хоруса. Поздние демонические и послевоенные облики в основной конкурс не включаются.</div>`;
- $('#profileModal').classList.add('show');document.body.style.overflow='hidden';
-}
-function closeProfile(){$('#profileModal').classList.remove('show');document.body.style.overflow='';}
-function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
-function makeMatch(a,b,label){return {a,b,label,winner:null};}
-function drawTournament(){
- const btn=$('#drawBtn');
- if(btn.disabled)return;
- const s=shuffle(primarchs);
- btn.disabled=true;
- btn.textContent="Перемешиваем досье…";
- $('#tournamentIntro').innerHTML=`<div class="draw-ceremony"><span class="draw-sigil">✦</span><strong>Имена перемешиваются</strong><span>${esc(s[0].name)}　·　${esc(s[1].name)}　·　${esc(s[2].name)}</span></div>`;
- $('#bracketArea').classList.add('drawing');
- setTimeout(()=>{
-  const prelim=[makeMatch(s[0],s[1],"Предварительная пара I"),makeMatch(s[2],s[3],"Предварительная пара II")];
-  const byes=s.slice(4);
-  const slots=[...byes,null,null];
-  const r1=[];
-  for(let i=0;i<14;i+=2)r1.push(makeMatch(slots[i],slots[i+1],`1/8 финала · бой ${r1.length+1}`));
-  r1.push(makeMatch(null,null,"1/8 финала · бой 8"));
-  tournament={prelim,byes,rounds:[r1,Array(4).fill(null),Array(2).fill(null),[null]],drawn:true};
-  $('#bracketArea').classList.remove('drawing');
-  renderBracket();
-  $('#tournamentIntro').classList.add('draw-complete');
-  setTimeout(()=>$('#tournamentIntro').classList.remove('draw-complete'),900);
- },1150);
-}
-function advance(){
- if(!tournament)return;
- let prev=tournament.prelim.map(m=>m.winner);
- if(prev.some(x=>!x)){renderBracket();return;}
- let r1=tournament.rounds[0];
- r1[7].a=prev[0];r1[7].b=prev[1];
- for(let round=0;round<3;round++){
-  const matches=tournament.rounds[round];
-  const next=tournament.rounds[round+1];
-  if(!matches.every(m=>m&&m.winner))break;
-  if(round<3 && (!next[0] || !next[0].a)){
-   for(let i=0;i<next.length;i++){
-    next[i]=makeMatch(matches[i*2].winner,matches[i*2+1].winner,
-      round===0?`Четвертьфинал · бой ${i+1}`:round===1?`Полуфинал · бой ${i+1}`:"Гранд-финал");
-   }
-  }
- }
- renderBracket();
-}
-function matchHTML(m,idx,group,placeholders,label){
- const a=m?.a||null,b=m?.b||null,winner=m?.winner||null;
- const slots=[a,b].map((p,i)=>{
-  if(p){
-   return `<button class="contender ${winner===p?'winner':winner&&winner!==p?'loser':''}" data-pick="${group}:${idx}:${i}" ${winner?'disabled':''}><span>${esc(p.name)}</span><span>${winner===p?'♛':'›'}</span></button>`;
-  }
-  const placeholder=placeholders?.[i]||"Место ожидает участника";
-  return `<div class="contender empty-slot"><span>${esc(placeholder)}</span><span>· · ·</span></div>`;
- }).join('');
- const prompt=winner
-  ? `<div class="match-note decided">Победитель определён</div>`
-  : (a&&b
-    ? `<div class="match-note">Выбери победителя</div>`
-    : `<div class="match-note waiting">${esc(m?'Ожидаем участника':'Место откроется после предыдущего этапа')}</div>`);
- return `<article class="match-card ${winner?'has-winner':''}">
-  <div class="match-label">${esc(m?.label||label||"ПОЕДИНОК")}</div>
-  <div class="match-contenders">${slots}</div>
-  ${prompt}
- </article>`;
-}
-function connectorSVG(kind){
- const paths={
-  "8-4":`<path d="M62.5 0V17H187.5V0 M125 17V46 M312.5 0V17H437.5V0 M375 17V46 M562.5 0V17H687.5V0 M625 17V46 M812.5 0V17H937.5V0 M875 17V46"/>`,
-  "4-2":`<path d="M125 0V18H375V0 M250 18V52 M625 0V18H875V0 M750 18V52"/>`,
-  "2-1":`<path d="M250 0V20H750V0 M500 20V58"/>`
- };
- const h=kind==="8-4"?52:kind==="4-2"?58:64;
- return `<div class="tree-connector ${kind}"><svg viewBox="0 0 1000 ${h}" preserveAspectRatio="none" aria-hidden="true">${paths[kind]}</svg></div>`;
-}
-function renderBracket(){
- const drawn=!!tournament;
- const prelim=drawn?tournament.prelim:[null,null];
- const r16=drawn?tournament.rounds[0]:Array(8).fill(null);
- const qf=drawn?tournament.rounds[1]:Array(4).fill(null);
- const sf=drawn?tournament.rounds[2]:Array(2).fill(null);
- const finalRound=drawn?tournament.rounds[3]:[null];
- const completed=countWinners();
- const champ=finalRound[0]?.winner||null;
- const progress=Math.round(completed/17*100);
- const directSlots=drawn?`${tournament.byes.length} мест занято`:"14 мест ожидают участников";
- const prelimPlaceholders=[
-  ["Претендент на место в сетке","Претендент на место в сетке"],
-  ["Претендент на место в сетке","Претендент на место в сетке"]
- ];
- const r16Placeholders=Array.from({length:8},(_,i)=>i===7
-  ? ["Победитель предварительной пары I","Победитель предварительной пары II"]
-  : ["Участник с прямым проходом","Участник с прямым проходом"]);
- const qfPlaceholders=Array.from({length:4},(_,i)=>[
-  `Победитель боя ${i*2+1}`,`Победитель боя ${i*2+2}`
- ]);
- const sfPlaceholders=Array.from({length:2},(_,i)=>[
-  `Победитель ЧФ ${i*2+1}`,`Победитель ЧФ ${i*2+2}`
- ]);
- const finalPlaceholders=[["Победитель ПФ 1","Победитель ПФ 2"]];
- $('#bracketArea').innerHTML=`
-  <div class="arena-overview">
-   <div class="stats">
-    <div class="stat"><strong>18</strong><span>Примархов</span></div>
-    <div class="stat"><strong>${completed}<small>/ 17</small></strong><span>Поединков решено</span></div>
-    <div class="stat"><strong>${champ?'♛':'—'}</strong><span>${champ?'Чемпион':'Одна корона'}</span></div>
-   </div>
-   <div class="tournament-progress">
-    <div class="progress-copy"><span>Путь к короне</span><span>${completed} из 17 решений</span></div>
-    <div class="progress-track"><span style="width:${progress}%"></span></div>
-   </div>
-  </div>
-  <section class="entry-stage">
-   <div class="stage-heading">
-    <div><span class="stage-kicker">Этап 00 · Вход в турнир</span><h3>Предварительные поединки</h3></div>
-    <span class="stage-count">2 боя · 4 участника</span>
-   </div>
-   <div class="prelim-grid">
-    ${prelim.map((m,i)=>matchHTML(m,i,"p",prelimPlaceholders[i],`Предварительная пара ${i+1}`)).join('')}
-   </div>
-   <div class="direct-entry">
-    <span class="direct-seal">14</span>
-    <div><strong>Прямой проход в 1/8 финала</strong><small>${directSlots} · остальные участники минуют предварительный этап</small></div>
-    <span class="direct-arrow">↓</span>
-   </div>
-  </section>
-  <div class="tree-title">
-   <span class="stage-kicker">Главная сетка · движение сверху вниз</span>
-   <h3>Дорога к короне</h3>
-   <p>Победитель каждого поединка спускается на следующий уровень</p>
-  </div>
-  <section class="tree-stage">
-   <div class="stage-heading compact"><div><span class="stage-kicker">Этап 01</span><h3>1/8 финала</h3></div><span class="stage-count">8 поединков · 16 мест</span></div>
-   <div class="match-row row-eight">${r16.map((m,i)=>matchHTML(m,i,"r0",r16Placeholders[i],`Поединок ${String(i+1).padStart(2,'0')}`)).join('')}</div>
-  </section>
-  ${connectorSVG("8-4")}
-  <section class="tree-stage">
-   <div class="stage-heading compact"><div><span class="stage-kicker">Этап 02</span><h3>Четвертьфинал</h3></div><span class="stage-count">4 поединка · 8 мест</span></div>
-   <div class="match-row row-four">${qf.map((m,i)=>matchHTML(m,i,"r1",qfPlaceholders[i],`Четвертьфинал ${i+1}`)).join('')}</div>
-  </section>
-  ${connectorSVG("4-2")}
-  <section class="tree-stage">
-   <div class="stage-heading compact"><div><span class="stage-kicker">Этап 03</span><h3>Полуфинал</h3></div><span class="stage-count">2 поединка · 4 места</span></div>
-   <div class="match-row row-two">${sf.map((m,i)=>matchHTML(m,i,"r2",sfPlaceholders[i],`Полуфинал ${i+1}`)).join('')}</div>
-  </section>
-  ${connectorSVG("2-1")}
-  <section class="final-stage">
-   <div class="stage-heading compact"><div><span class="stage-kicker">Последний этап</span><h3>Гранд-финал</h3></div><span class="stage-count">2 финалиста · 1 корона</span></div>
-   <div class="final-crown">♛</div>
-   ${matchHTML(finalRound[0],0,"r3",finalPlaceholders[0],"За корону примарха")}
-   ${champ?`<div class="champion-reveal"><span>ПОБЕДИТЕЛЬ ТУРНИРА</span><strong>${esc(champ.name)}</strong><small>${esc(champ.legion)}</small></div>`:''}
-  </section>`;
- $('#tournamentIntro').innerHTML=drawn
-  ? `<strong>Жеребьёвка проведена.</strong> Выбирай победителей в активных парах. После каждого решения победитель автоматически займёт своё место в следующем раунде.`
-  : `Перед стартом — жеребьёвка: две предварительные пары и 14 прямых проходов. Вся структура турнира уже перед тобой: от первого боя до финала.`;
- $('#resetBtn').style.display=drawn?'':'none';
- $('#drawBtn').textContent=drawn?'Провести новую жеребьёвку':'Провести жеребьёвку';
- $('#drawBtn').disabled=false;
- $('#hallContent').innerHTML=champ?`<div class="champion"><div class="crown">♛</div><div class="kicker">Победитель турнира</div><h3>${esc(champ.name)}</h3><p class="small">${esc(champ.legion)}</p></div>`:'<div class="empty">Корона пока ждёт своего владельца.</div>';
-}
-function countWinners(){if(!tournament)return 0;return [...tournament.prelim,...tournament.rounds.flat()].filter(m=>m&&m.winner).length;}
-function pick(group,idx,side){
- let m;
- if(group==='p')m=tournament.prelim[idx];
- else m=tournament.rounds[Number(group.slice(1))][idx];
- if(!m||m.winner)return;
- const chosen=side===0?m.a:m.b;if(!chosen)return;
- m.winner=chosen;
- advance();
-}
-document.addEventListener('click',e=>{
- const profile=e.target.closest('[data-profile]');if(profile)openProfile(Number(profile.dataset.profile));
- const pickBtn=e.target.closest('[data-pick]');if(pickBtn){const [g,i,s]=pickBtn.dataset.pick.split(':');pick(g,Number(i),Number(s));}
- const tab=e.target.closest('[data-tab]');if(tab){document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===tab));document.querySelectorAll('.section').forEach(x=>x.classList.toggle('active',x.id===tab.dataset.tab));}
-});
-$('#closeModal').addEventListener('click',closeProfile);
-$('#profileModal').addEventListener('click',e=>{if(e.target.id==='profileModal')closeProfile();});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeProfile();});
-$('#drawBtn').addEventListener('click',()=>{if(tournament&&!confirm('Новая жеребьёвка сбросит текущие результаты. Продолжить?'))return;drawTournament();});
-$('#resetBtn').addEventListener('click',()=>{if(confirm('Полностью сбросить турнир и результаты?')){tournament=null;renderBracket();$('#hallContent').innerHTML='<div class="empty">Корона пока ждёт своего владельца.</div>'; }});
-renderParticipants();renderBracket();
-</script>
+<script src="js/tournament.js"></script>
 </body>
 </html>
