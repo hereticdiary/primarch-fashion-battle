@@ -206,8 +206,8 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   .brand{font-size:14px}.all-projects{padding:9px 11px;font-size:10px;letter-spacing:.08em}
   header{padding:30px 8px 24px}
   .arena-controls{align-items:flex-start;flex-direction:column;gap:11px}
-  #drawBtn{width:100%;max-width:330px}
-  .draw-status{width:100%;max-width:330px;height:48px;min-height:48px}
+  #drawBtn{width:100%;max-width:none}
+  .draw-status{width:100%;max-width:none;height:48px;min-height:48px}
   .fighters-grid{gap:9px}
   .fighter-card{min-height:250px;padding:12px 10px}
   .fighter-card .fighter-actions{flex-direction:column}
