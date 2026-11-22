@@ -304,8 +304,26 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
 }
 .participant-card h3,.participant-legion,.participant-world{position:relative;z-index:1}
 .participant-card h3{
-  max-width:100%;margin:27px 0 7px;color:var(--light);
+  max-width:100%;margin:50px 0 7px;color:var(--light);
   font:normal 23px/1.12 Georgia,"Times New Roman",serif;
+}
+.participant-cta{
+  position:relative;z-index:1;display:flex;align-items:center;gap:9px;
+  margin-top:9px;padding-top:8px;border-top:1px solid rgba(201,166,107,.12);
+  color:rgba(201,166,107,0);font:10px/1.2 system-ui,sans-serif;
+  letter-spacing:.11em;text-transform:uppercase;transition:color .18s,border-color .18s;
+}
+.participant-cta:before{
+  content:"";width:17px;height:1px;background:rgba(201,166,107,.35);
+  transition:width .18s,background .18s;
+}
+.participant-card:hover .participant-cta,
+.participant-card:focus-visible .participant-cta{
+  color:var(--gold);border-color:rgba(201,166,107,.36);
+}
+.participant-card:hover .participant-cta:before,
+.participant-card:focus-visible .participant-cta:before{
+  width:28px;background:var(--gold);
 }
 .participant-card .participant-legion{
   max-width:86%;margin:0;color:#c6b59f;font:12px/1.45 system-ui,sans-serif;
@@ -347,14 +365,14 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
 @media(max-width:760px){
   #participantGrid{grid-template-columns:repeat(auto-fill,minmax(205px,1fr));gap:12px}
   .participant-card{min-height:168px;padding:16px}
-  .participant-card h3{font-size:21px;margin-top:25px}
+  .participant-card h3{font-size:21px;margin-top:43px}
   .participant-roman{font-size:54px}
 }
 @media(max-width:520px){
   #participantGrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
   .participant-card{min-height:168px;padding:13px}
   .participant-card{min-height:164px;padding:13px 12px}
-  .participant-card h3{font-size:18px;line-height:1.12;margin-top:24px}
+  .participant-card h3{font-size:18px;line-height:1.12;margin-top:36px}
   .participant-card .participant-legion{font-size:11px;max-width:94%}
   .participant-roman{right:7px;top:4px;font-size:43px}
   .participant-world{gap:5px;flex-direction:column;align-items:flex-start;padding-top:10px}
