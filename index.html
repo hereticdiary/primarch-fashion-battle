@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#171214">
 <meta name="description" content="Модный приговор — фанатский турнир брони примархов времён Ереси Хоруса.">
 <title>Модный приговор — Битва примархов</title>
-<link rel="stylesheet" href="styles.css?v=20261122-28">
+<link rel="stylesheet" href="styles.css?v=20261122-29">
 </head>
 <body>
 <div class="top">
@@ -40,24 +40,10 @@
   </section>
 
   <section id="tournament" class="section active">
-    <div class="arena-progress" id="arenaStats" aria-live="polite">
-      <div class="progress-head">
-        <div class="progress-title">
-          <span class="progress-kicker">Путь к короне</span>
-          <strong>Прогресс турнира</strong>
-        </div>
-        <div class="progress-count">
-          <strong>0<small> / 17</small></strong>
-          <span>поединков завершено</span>
-        </div>
-      </div>
-      <div class="progress-track" role="progressbar" aria-label="Прогресс турнира" aria-valuemin="0" aria-valuemax="17" aria-valuenow="0">
-        <span class="progress-fill" style="width:0%"></span>
-      </div>
-      <div class="progress-foot">
-        <span>Впереди 17 поединков</span>
-        <span>0%</span>
-      </div>
+    <div class="arena-prelude" id="arenaStats" aria-live="polite">
+      <span class="arena-prelude-mark" aria-hidden="true">✦</span>
+      <strong>Здесь оценивают не силу легионов, а стиль их примархов.</strong>
+      <p>Силуэт, палитра, детали брони и общее впечатление — решаем, чей образ достоин короны.</p>
     </div>
 
     <div class="arena-controls is-idle">
@@ -104,6 +90,6 @@
   </div>
 </div>
 
-<script src="js/tournament.js?v=20261122-28"></script>
+<script src="js/tournament.js?v=20261122-29"></script>
 </body>
 </html>
