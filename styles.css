@@ -86,15 +86,12 @@ h2{margin:0;color:var(--light);font:normal 27px Georgia,"Times New Roman",serif}
 .card p{margin:0;color:var(--muted);font:12px/1.5 system-ui,sans-serif}
 .card .open{margin-top:auto;padding-top:16px}
 .empty{padding:14px;border:1px dashed var(--line);color:#8f877b;text-align:center;font:12px system-ui,sans-serif}
-.arena-prelude{position:relative;margin:0 0 14px;padding:13px 16px 18px;text-align:center;background:radial-gradient(ellipse at 50% 45%,rgba(201,166,107,.07),transparent 72%)}
-.arena-prelude:after{content:"";display:block;width:min(260px,54%);height:1px;margin:15px auto 0;background:linear-gradient(90deg,transparent,rgba(201,166,107,.34),transparent)}
-.arena-prelude-mark{display:block;margin-bottom:5px;color:var(--gold);font-size:19px;text-shadow:0 0 15px rgba(201,166,107,.28)}
+.arena-prelude{margin:0 0 8px;padding:12px 8px 7px;text-align:center}
 .arena-prelude>strong{display:block;color:var(--light);font:normal 18px/1.35 Georgia,serif}
-.arena-prelude p{max-width:620px;margin:7px auto 0;color:var(--muted);font:12px/1.55 system-ui,sans-serif}
-.progress-line-wrap{margin:0 0 20px;padding:0 2px}
-.progress-count{display:block;margin-bottom:7px;color:var(--muted);text-align:right;font:10px/1.2 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;font-variant-numeric:tabular-nums}
-.progress-track{height:4px;overflow:hidden;border-radius:4px;background:rgba(201,166,107,.17)}
-.progress-fill{display:block;width:0;height:100%;border-radius:4px;background:linear-gradient(90deg,#987044,#c9a66b 60%,#ead5ad);box-shadow:0 0 8px rgba(201,166,107,.34);transition:width .45s ease}
+.progress-line-wrap{margin:0 0 8px;padding:0 2px}
+.progress-count{display:block;margin:0 0 4px;color:var(--muted);text-align:right;font:10px/1.2 system-ui,sans-serif;letter-spacing:.1em;font-variant-numeric:tabular-nums}
+.progress-track{height:3px;overflow:hidden;border-radius:3px;background:rgba(201,166,107,.17)}
+.progress-fill{display:block;width:0;height:100%;border-radius:3px;background:linear-gradient(90deg,#987044,#c9a66b 60%,#ead5ad);box-shadow:0 0 6px rgba(201,166,107,.28);transition:width .45s ease}
 .arena-controls{display:flex;align-items:center;justify-content:flex-start;gap:18px;margin:0 0 24px;min-height:54px}
 .draw-status{flex:1;min-width:0;width:100%;height:48px;min-height:48px;padding:0 13px;border:1px solid rgba(201,166,107,.34);background:linear-gradient(90deg,rgba(88,61,39,.38),rgba(44,30,32,.62));display:flex;align-items:center;overflow:hidden}
 .draw-status:empty{visibility:hidden}
@@ -232,9 +229,8 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   .brand{font-size:14px}.all-projects{padding:9px 11px;font-size:10px;letter-spacing:.08em}
   header{padding:30px 8px 24px}
   .arena-controls{align-items:flex-start;flex-direction:column;gap:11px}
-  .arena-prelude{padding:10px 7px 15px}
-  .arena-prelude>strong{font-size:17px}
-  .arena-prelude p{font-size:11px}
+   .arena-prelude{padding:8px 4px 5px}
+  .arena-prelude>strong{font-size:16px}
   #drawBtn{width:100%;max-width:none}
   .draw-status{width:100%;max-width:none;height:48px;min-height:48px}
   .fighters-grid{gap:9px}
