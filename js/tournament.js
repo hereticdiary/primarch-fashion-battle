@@ -114,10 +114,11 @@ function renderParticipants() {
     const legionName = p.legion.replace(/^[IVXLCDM]+\s+легион\s+—\s+/i, '');
     return '<article class="card participant-card" data-profile="' + p.id + '" role="button" tabindex="0" aria-label="Открыть досье: ' + esc(p.name) + '">' +
       '<div class="participant-roman" aria-hidden="true">' + esc(p.symbol) + '</div>' +
-      '<div class="participant-topline"><span>ПРИМАРХ</span><span class="participant-open" aria-hidden="true">↗</span></div>' +
+      '<div class="participant-topline"><span>ПРИМАРХ</span><span class="participant-open" aria-hidden="true">ДОСЬЕ</span></div>' +
       '<h3>' + esc(p.name) + '</h3>' +
       '<p class="participant-legion">' + esc(legionName) + '</p>' +
       '<div class="participant-world"><span>РОДНОЙ МИР</span><strong>' + esc(p.world) + '</strong></div>' +
+      '<div class="participant-cta">Открыть досье</div>' +
     '</article>';
   }).join('');
 }
@@ -131,13 +132,12 @@ function openProfile(id, requestedImageIndex = 0) {
   const imageIndex = ((requestedImageIndex % images.length) + images.length) % images.length;
   const fieldsHtml = fields.map(([title, key]) => '<div class="info full"><h4>' + title + '</h4><p>' + esc(p[key]) + '</p></div>').join('');
   const html = [
-    '<div class="profile-kicker">Досье участника · Легион ' + esc(p.symbol) + '</div>',
+    '<div class="profile-kicker">Досье участника · ' + toRoman(currentProfileIndex + 1) + ' / ' + toRoman(primarchs.length) + '</div>',
     '<h2 class="profile-title" id="profileTitle">' + esc(p.name) + '</h2>',
     '<div class="profile-sub">' + esc(p.alias) + '</div>',
     '<div class="profile-switcher" aria-label="Переключение между примархами">',
-      '<button type="button" data-profile-step="-1" aria-label="Предыдущий примарх">← Предыдущий</button>',
-      '<span>' + String(currentProfileIndex + 1).padStart(2, '0') + ' / ' + primarchs.length + '</span>',
-      '<button type="button" data-profile-step="1" aria-label="Следующий примарх">Следующий →</button>',
+      '<button type="button" data-profile-step="-1" aria-label="Предыдущий примарх">‹</button>',
+      '<button type="button" data-profile-step="1" aria-label="Следующий примарх">›</button>',
     '</div>',
     renderProfileGallery(p, images, imageIndex),
     '<div class="profile-grid">',
@@ -154,6 +154,12 @@ function openProfile(id, requestedImageIndex = 0) {
   document.body.style.overflow = 'hidden';
 }
 
+function toRoman(number) {
+  const values = [[1000, 'M'], [900, 'CM'], [500, 'D'], [400, 'CD'], [100, 'C'], [90, 'XC'], [50, 'L'], [40, 'XL'], [10, 'X'], [9, 'IX'], [5, 'V'], [4, 'IV'], [1, 'I']];
+  let value = number, result = '';
+  for (const [amount, numeral] of values) while (value >= amount) { result += numeral; value -= amount; }
+  return result;
+}
 function stepProfile(direction) {
   if (currentProfileIndex < 0) return;
   const nextIndex = (currentProfileIndex + direction + primarchs.length) % primarchs.length;
