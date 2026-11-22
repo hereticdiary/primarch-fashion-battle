@@ -234,7 +234,6 @@ function drawTournament() {
   $('#drawBtn').classList.remove('primary');
   $('#drawBtn').textContent = 'Провести новую жеребьёвку';
   renderAll();
-  preloadMatchImages(tournament.prelim[1]);
 }
 function createRoundOf16() {
   const matches = [];
