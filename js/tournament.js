@@ -126,6 +126,7 @@ function drawTournament() {
     };
     drawing = false;
     $('#drawBtn').disabled = false;
+    $('#drawBtn').classList.remove('primary');
     $('#drawBtn').textContent = 'Провести новую жеребьёвку';
     $('#resetBtn').hidden = false;
     $('#tournamentIntro').textContent = 'Жеребьёвка завершена. Проголосуй в первой паре — следующая появится после короткой сцены победы.';
@@ -136,9 +137,9 @@ function drawTournament() {
 function createRoundOf16() {
   const matches = [];
   for (let i = 0; i < 14; i += 2) {
-    matches.push(makeMatch(tournament.byes[i], tournament.byes[i + 1], `1/8 финала · бой ${matches.length + 1}`));
+    matches.push(makeMatch(tournament.byes[i], tournament.byes[i + 1], `Бой ${matches.length + 1}`));
   }
-  matches.push(makeMatch(tournament.prelim[0].winner, tournament.prelim[1].winner, '1/8 финала · бой 8'));
+  matches.push(makeMatch(tournament.prelim[0].winner, tournament.prelim[1].winner, 'Бой 8'));
   tournament.rounds[0] = matches;
 }
 function createNextRound(roundIndex) {
@@ -148,9 +149,7 @@ function createNextRound(roundIndex) {
   for (let i = 0; i < nextSize; i++) {
     const left = previous[i * 2].winner;
     const right = previous[i * 2 + 1].winner;
-    const label = roundIndex === 0 ? `Четвертьфинал · бой ${i + 1}`
-      : roundIndex === 1 ? `Полуфинал · бой ${i + 1}`
-      : 'Финал за корону';
+    const label = roundIndex === 2 ? 'За корону' : `Бой ${i + 1}`;
     next.push(makeMatch(left, right, label));
   }
   tournament.rounds[roundIndex + 1] = next;
@@ -193,7 +192,7 @@ function vote(side) {
     if (tournament.champion) {
       $('#tournamentIntro').textContent = 'Турнир завершён. Чемпион коронован и занял своё место в Зале славы.';
     }
-  }, 1800);
+  }, 3000);
 }
 
 function getRoundMatches(index) {
@@ -249,7 +248,7 @@ function renderArena() {
   };
   let result = '';
   if (isResolved) {
-    result = `<div class="vote-result"><strong>Голос принят · Победитель — ${esc(match.winner.name)}!</strong><span>${stageIndex === 4 ? 'Финальный голос принят. Корона почти нашла владельца…' : isStageEnd ? 'Этап завершён. Готовим следующий раунд…' : 'Следующая пара появится через мгновение…'}</span></div>`;
+    result = `<div class="vote-result"><strong>Голос принят · Победитель — ${esc(match.winner.name)}!</strong><span>${stageIndex === 4 ? 'Финальный голос принят. Корона почти нашла владельца…' : isStageEnd ? 'Этап завершён. Готовим следующий раунд…' : 'Следующая пара появится через 3 секунды…'}</span></div>`;
   }
   $('#arenaContent').innerHTML = `
     <div class="arena-eyebrow">${esc(stageName)} · ${esc(match.label)}</div>
