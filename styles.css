@@ -377,3 +377,19 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   .participant-world{flex-direction:row;align-items:baseline}
   .participant-world strong{text-align:right}
 }
+
+
+/* Compact touch layout for side navigation and visible card affordance. */
+@media(max-width:760px){
+  .profile-switcher{
+    position:relative;top:auto;left:auto;width:auto;height:auto;transform:none;
+    justify-content:space-between;margin:12px 0 5px;padding:8px 0;
+    border-top:1px solid rgba(201,166,107,.18);border-bottom:1px solid rgba(201,166,107,.18);
+    pointer-events:auto;
+  }
+  .profile-switcher button{
+    position:static!important;width:44px;height:42px;border-radius:3px;
+    background:rgba(18,14,15,.5);font-size:32px;box-shadow:none;
+  }
+  .participant-cta{color:var(--gold);border-color:rgba(201,166,107,.3)}
+}
