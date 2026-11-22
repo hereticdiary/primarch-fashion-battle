@@ -97,6 +97,9 @@ h2{margin:0;color:var(--light);font:normal 27px Georgia,"Times New Roman",serif}
 .draw-status strong{display:block;min-width:0;overflow:hidden;color:#f0d39a;font:normal 15px/1.2 Georgia,serif;white-space:nowrap;text-overflow:ellipsis}
 #drawBtn{min-width:230px;height:48px;padding:0 22px;box-shadow:0 5px 18px #0005,inset 0 1px 0 #fff5}
 #drawBtn.primary{box-shadow:0 0 0 1px rgba(255,226,172,.22),0 7px 22px rgba(201,166,107,.24),inset 0 1px 0 #fff8}
+.arena-controls.is-idle{justify-content:center;align-items:center;gap:0;min-height:82px;margin:16px 0 28px}
+.arena-controls.is-idle #drawBtn{width:min(420px,100%);min-width:0;height:64px;padding:0 32px;font-size:13px;letter-spacing:.14em}
+.arena-controls.is-idle .draw-status{display:none}
 .arena-section{max-width:980px;margin:0 auto 34px}
 .arena-empty{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;border:1px dashed rgba(201,166,107,.32);background:linear-gradient(145deg,rgba(44,31,34,.6),rgba(27,20,22,.65));text-align:center}
 .arena-emblem{color:var(--gold);font-size:28px;text-shadow:0 0 18px #c9a66b55}
