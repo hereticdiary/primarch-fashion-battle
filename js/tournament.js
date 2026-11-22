@@ -185,7 +185,7 @@ function vote(side) {
     }
     votingLocked = false;
     renderAll();
-  }, 3000);
+  }, 2300);
 }
 
 function getRoundMatches(index) {
