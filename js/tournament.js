@@ -225,11 +225,9 @@ function renderParticipants() {
     const legionName = p.legion.replace(/^[IVXLCDM]+\s+легион\s+—\s+/i, '');
     return '<article class="card participant-card" data-profile="' + p.id + '" role="button" tabindex="0" aria-label="Открыть досье: ' + esc(p.name) + '">' +
       '<div class="participant-roman" aria-hidden="true">' + esc(p.symbol) + '</div>' +
-      '<div class="participant-topline"><span>ПРИМАРХ</span></div>' +
       '<h3>' + esc(p.name) + '</h3>' +
       '<p class="participant-legion">' + esc(legionName) + '</p>' +
-      '<div class="participant-world"><span>РОДНОЙ МИР</span><strong>' + esc(p.world) + '</strong></div>' +
-      '<div class="participant-cta">Открыть досье</div>' +
+      '<div class="participant-world"><span>МИР</span><strong>' + esc(p.world) + '</strong></div>' +
     '</article>';
   }).join('');
 }
