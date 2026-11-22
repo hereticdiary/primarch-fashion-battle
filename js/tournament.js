@@ -149,10 +149,11 @@ function openProfile(id, requestedImageIndex = 0) {
     '<div class="note">Историческая рамка проекта: Великий крестовый поход и начало Ереси Хоруса. Описания брони и оружия относятся к этому периоду; поздние демонические и послевоенные облики не смешиваются с ранними версиями.</div>'
   ].join('');
   $('#profileContent').innerHTML = html;
+  document.body.style.overflow = 'hidden';
   $('#profileModal').classList.add('show');
   $('#profileModal').scrollTop = 0;
   syncProfileSwitcherPosition();
-  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => requestAnimationFrame(syncProfileSwitcherPosition));
 }
 
 function toRoman(number) {
