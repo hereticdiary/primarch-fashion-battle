@@ -323,12 +323,12 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
 .participant-world strong{color:#e2cda9;text-align:right;font:normal 12px/1.35 Georgia,"Times New Roman",serif}
 
 .profile-switcher{
-  position:fixed;z-index:1101;top:50vh;left:50%;width:min(760px,calc(100vw - 40px));
-  height:0;margin:0;padding:0;transform:translate(-50%,-50%);
-  display:flex;align-items:center;justify-content:space-between;border:0;
+  position:fixed;z-index:1101;top:50vh;left:0;right:0;width:auto;
+  height:0;margin:0;padding:0;transform:none;display:block;border:0;
   pointer-events:none;
 }
 .profile-switcher button{
+  position:fixed;top:50vh;transform:translateY(-50%);
   pointer-events:auto;display:grid;place-items:center;width:46px;height:62px;
   padding:0;border:1px solid rgba(201,166,107,.52);border-radius:4px;
   background:rgba(20,15,16,.92);color:var(--light);line-height:0;
@@ -337,8 +337,8 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
 }
 .profile-arrow{display:block;width:23px;height:23px;overflow:visible}
 .profile-arrow path{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.profile-switcher button:first-child{position:absolute;left:-58px}
-.profile-switcher button:last-child{position:absolute;right:-58px}
+.profile-switcher button:first-child{left:max(8px,calc(50% - 438px))}
+.profile-switcher button:last-child{right:max(8px,calc(50% - 438px))}
 .profile-switcher button:hover{background:#503037;border-color:var(--gold);color:#fff0cf}
 .profile-source{
   display:flex;flex-wrap:wrap;align-items:baseline;gap:5px;margin-top:18px;padding-top:12px;
@@ -394,4 +394,20 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
     background:rgba(18,14,15,.5);font-size:32px;box-shadow:none;
   }
   .participant-cta{color:var(--gold);border-color:rgba(201,166,107,.3)}
+}
+
+@media(max-width:900px){
+  .profile-switcher{
+    position:relative;top:auto;left:auto;right:auto;width:auto;height:auto;
+    display:flex;align-items:center;justify-content:space-between;
+    transform:none;margin:12px 0 5px;padding:8px 0;
+    border-top:1px solid rgba(201,166,107,.18);
+    border-bottom:1px solid rgba(201,166,107,.18);
+    pointer-events:auto;
+  }
+  .profile-switcher button{
+    position:static;top:auto;transform:none;
+    width:44px;height:42px;border-radius:3px;
+    background:rgba(18,14,15,.5);font-size:32px;box-shadow:none;
+  }
 }
