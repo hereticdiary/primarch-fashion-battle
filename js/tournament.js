@@ -93,7 +93,7 @@ function saveHallArchive() {
 }
 function archiveCompletedTournament() {
   if (!getChampion()) return;
-  hallTournaments.unshift(createHallEntry(tournament));
+  hallTournaments = [createHallEntry(tournament)];
   saveHallArchive();
   clearCurrentTournamentSave();
 }
@@ -105,7 +105,10 @@ function restoreMatchReferences(match) {
 }
 function restoreSavedTournament() {
   const savedHall = safeReadStorage(HALL_SAVE_KEY, []);
-  hallTournaments = Array.isArray(savedHall) ? savedHall : [];
+  hallTournaments = Array.isArray(savedHall) ? savedHall.slice(0, 1) : [];
+  if (Array.isArray(savedHall) && savedHall.length !== hallTournaments.length) {
+    saveHallArchive();
+  }
   const saved = safeReadStorage(CURRENT_SAVE_KEY, null);
   if (!saved || saved.version !== 1 || !saved.tournament) return;
 
