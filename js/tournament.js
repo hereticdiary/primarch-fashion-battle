@@ -96,6 +96,14 @@ function drawTournament() {
   if (drawing) return;
   if (tournament && !window.confirm('Новая жеребьёвка сбросит текущие результаты. Продолжить?')) return;
 
+  const tabs = document.querySelector('nav[aria-label="Навигация турнира"]');
+  if (tabs) {
+    const stickyHeader = document.querySelector('.top');
+    const topOffset = stickyHeader ? stickyHeader.getBoundingClientRect().height : 0;
+    const targetY = window.scrollY + tabs.getBoundingClientRect().top - topOffset - 8;
+    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+  }
+
   clearTimeout(transitionTimer);
   tournament = null;
   activeRoundIndex = -1;
