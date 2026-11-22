@@ -28,6 +28,7 @@ let viewedRoundIndex = -1;
 let votingLocked = false;
 let drawing = false;
 let currentProfileIndex = -1;
+const preloadedPrimarchImages = new Map();
 let transitionTimer = null;
 
 function esc(value) {
@@ -53,6 +54,20 @@ function countWinners() {
 }
 function getChampion() { return tournament?.champion || null; }
 function totalRoundsAvailable() { return activeRoundIndex + 2; }
+function preloadPrimarchImage(src) {
+  if (!src || preloadedPrimarchImages.has(src)) return;
+  const image = new Image();
+  image.decoding = 'async';
+  image.fetchPriority = 'low';
+  image.src = src;
+  preloadedPrimarchImages.set(src, image);
+}
+
+function preloadMatchImages(match) {
+  if (!match) return;
+  preloadPrimarchImage(match.a?.image);
+  preloadPrimarchImage(match.b?.image);
+}
 function championMarkup(champion) {
   return `
     <div class="champion">
@@ -86,7 +101,7 @@ function renderProfileGallery(primarch, images, activeIndex) {
   return `
     <div class="profile-gallery" data-gallery-profile="${primarch.id}" data-gallery-current="${activeIndex}">
       <div class="profile-art">
-        <img src="${esc(item.src)}" alt="${esc(item.title || primarch.name)}" loading="lazy" decoding="async">
+        <img src="${esc(item.src)}" alt="${esc(item.title || primarch.name)}" loading="eager" fetchpriority="high" decoding="async">
         ${hasMany ? `
           <button class="gallery-arrow gallery-prev" type="button" data-gallery-step="-1" aria-label="Предыдущее изображение">‹</button>
           <button class="gallery-arrow gallery-next" type="button" data-gallery-step="1" aria-label="Следующее изображение">›</button>
@@ -219,6 +234,7 @@ function drawTournament() {
   $('#drawBtn').classList.remove('primary');
   $('#drawBtn').textContent = 'Провести новую жеребьёвку';
   renderAll();
+  preloadMatchImages(tournament.prelim[1]);
 }
 function createRoundOf16() {
   const matches = [];
@@ -249,6 +265,17 @@ function vote(side) {
   const winner = side === 0 ? match.a : match.b;
   if (!winner) return;
   match.winner = winner;
+  if (activeMatchIndex + 1 < matches.length) {
+    preloadMatchImages(matches[activeMatchIndex + 1]);
+  } else if (allResolved(matches) && activeRoundIndex < 3) {
+    if (activeRoundIndex === -1) {
+      preloadPrimarchImage(tournament.byes[0]?.image);
+      preloadPrimarchImage(tournament.byes[1]?.image);
+    } else {
+      preloadPrimarchImage(matches[0]?.winner?.image);
+      preloadPrimarchImage(matches[1]?.winner?.image);
+    }
+  }
   votingLocked = true;
   renderAll();
   transitionTimer = setTimeout(() => {
@@ -316,7 +343,7 @@ function renderArena() {
     return `
       <article class="card fighter-card ${isWinner ? 'is-winner' : ''} ${isLoser ? 'is-loser' : ''}">
         <div class="card-top"><span>Легион ${esc(p.symbol)}</span><span class="status">${isWinner ? 'Победитель' : isLoser ? 'Участник' : 'Претендент'}</span></div>
-        <div class="fighter-art"><img src="${esc(p.image)}" alt="${esc(p.name)}" loading="lazy"></div>
+        <div class="fighter-art"><img src="${esc(p.image)}" alt="${esc(p.name)}" loading="eager" fetchpriority="high" decoding="async"></div>
         <h3>${esc(p.name)}</h3><p>${esc(p.legion)}</p>
         <div class="fighter-actions">
           <button class="btn primary vote-button" data-vote="${side}" ${isResolved ? 'disabled' : ''}>${isResolved ? (isWinner ? 'Победитель' : 'Голос принят') : 'Проголосовать'}</button>
