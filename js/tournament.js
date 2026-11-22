@@ -132,12 +132,12 @@ function openProfile(id, requestedImageIndex = 0) {
   const imageIndex = ((requestedImageIndex % images.length) + images.length) % images.length;
   const fieldsHtml = fields.map(([title, key]) => '<div class="info full"><h4>' + title + '</h4><p>' + esc(p[key]) + '</p></div>').join('');
   const html = [
-    '<div class="profile-kicker">Досье участника · ' + toRoman(currentProfileIndex + 1) + ' / ' + toRoman(primarchs.length) + '</div>',
+    '<div class="profile-kicker">Досье участника · Легион ' + esc(p.symbol) + ' / XX</div>',
     '<h2 class="profile-title" id="profileTitle">' + esc(p.name) + '</h2>',
     '<div class="profile-sub">' + esc(p.alias) + '</div>',
     '<div class="profile-switcher" aria-label="Переключение между примархами">',
-      '<button type="button" data-profile-step="-1" aria-label="Предыдущий примарх">‹</button>',
-      '<button type="button" data-profile-step="1" aria-label="Следующий примарх">›</button>',
+      '<button type="button" data-profile-step="-1" aria-label="Предыдущий примарх"><svg class="profile-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4 7 12l8 8"/></svg></button>',
+      '<button type="button" data-profile-step="1" aria-label="Следующий примарх"><svg class="profile-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 4 8 8-8 8"/></svg></button>',
     '</div>',
     renderProfileGallery(p, images, imageIndex),
     '<div class="profile-grid">',
