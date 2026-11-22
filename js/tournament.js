@@ -65,6 +65,47 @@ function championMarkup(champion) {
     </div>`;
 }
 function stageLabel(index) { return ROUND_NAMES[index + 1]; }
+const PRIMARY_ART_SOURCE = "https://www.israelllona.com/horusheresylegions";
+
+function getProfileImages(primarch) {
+  const primary = {
+    src: primarch.image,
+    title: "Основная иллюстрация",
+    author: "Israel Llona",
+    source: PRIMARY_ART_SOURCE
+  };
+  const additional = Array.isArray(primarch.extraImages) ? primarch.extraImages : [];
+  return [primary, ...additional];
+}
+
+function renderProfileGallery(primarch, images, activeIndex) {
+  const item = images[activeIndex];
+  const hasMany = images.length > 1;
+  return `
+    <div class="profile-gallery" data-gallery-profile="${primarch.id}" data-gallery-current="${activeIndex}">
+      <div class="profile-art">
+        <img src="${esc(item.src)}" alt="${esc(item.title || primarch.name)}" loading="lazy" decoding="async">
+        ${hasMany ? `
+          <button class="gallery-arrow gallery-prev" type="button" data-gallery-step="-1" aria-label="Предыдущее изображение">‹</button>
+          <button class="gallery-arrow gallery-next" type="button" data-gallery-step="1" aria-label="Следующее изображение">›</button>
+        ` : ""}
+      </div>
+      <div class="gallery-credit">
+        <span class="gallery-count">${activeIndex + 1} / ${images.length}</span>
+        <span>Автор: <strong>${esc(item.author || "Автор не указан")}</strong></span>
+        ${item.source ? `<a href="${esc(item.source)}" target="_blank" rel="noopener noreferrer">${esc(item.sourceLabel || "Открыть работу / источник")} ↗</a>` : ""}
+      </div>
+      ${hasMany ? `
+        <div class="gallery-thumbnails" aria-label="Другие изображения">
+          ${images.map((image, index) => `
+            <button class="gallery-thumb ${index === activeIndex ? "active" : ""}" type="button" data-gallery-index="${index}" data-gallery-profile="${primarch.id}" aria-label="Изображение ${index + 1}">
+              <img src="${esc(image.src)}" alt="" loading="lazy">
+            </button>
+          `).join("")}
+        </div>
+      ` : ""}
+    </div>`;
+}
 
 function renderParticipants() {
   $('#participantGrid').innerHTML = primarchs.map(p => `
@@ -76,7 +117,7 @@ function renderParticipants() {
     </article>`).join('');
 }
 
-function openProfile(id) {
+function openProfile(id, requestedImageIndex = 0) {
   const p = primarchs.find(item => item.id === id);
   if (!p) return;
   const fields = [
@@ -85,11 +126,13 @@ function openProfile(id) {
     ["Броня и стиль", "armor", "Здесь будет подробный разбор брони начала Ереси Хоруса."],
     ["Оружие", "weapon", "Добавим основное оружие и его особенности."]
   ];
+  const images = getProfileImages(p);
+  const imageIndex = ((requestedImageIndex % images.length) + images.length) % images.length;
   $('#profileContent').innerHTML = `
     <div class="profile-kicker">Досье участника · Легион ${esc(p.symbol)}</div>
     <h2 class="profile-title" id="profileTitle">${esc(p.name)}</h2>
     <div class="profile-sub">${esc(p.alias)} · ${esc(p.legion)}</div>
-    <div class="profile-art"><img src="${esc(p.image)}" alt="${esc(p.name)} — полный образ" loading="lazy" decoding="async"></div>
+    ${renderProfileGallery(p, images, imageIndex)}
     <div class="profile-grid">
       <div class="info"><h4>Родной мир</h4><p>${esc(p.world)}</p></div>
       <div class="info"><h4>Легион</h4><p>${esc(p.legion)}</p></div>
@@ -330,6 +373,19 @@ function renderAll() {
 
 // Делегирование событий: работает и для карточек, которые перерисовываются после каждого голоса.
 document.addEventListener('click', event => {
+  const galleryStep = event.target.closest('[data-gallery-step]');
+  if (galleryStep) {
+    const gallery = galleryStep.closest('[data-gallery-profile]');
+    if (gallery) {
+      openProfile(Number(gallery.dataset.galleryProfile), Number(gallery.dataset.galleryCurrent) + Number(galleryStep.dataset.galleryStep));
+    }
+    return;
+  }
+  const galleryThumb = event.target.closest('[data-gallery-index]');
+  if (galleryThumb) {
+    openProfile(Number(galleryThumb.dataset.galleryProfile), Number(galleryThumb.dataset.galleryIndex));
+    return;
+  }
   const profileButton = event.target.closest('[data-profile]');
   if (profileButton) {
     openProfile(Number(profileButton.dataset.profile));
