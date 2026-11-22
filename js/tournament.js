@@ -309,14 +309,7 @@ function renderDrawStatus() {
     status.innerHTML = '';
     return;
   }
-  const stageIndex = activeRoundIndex + 1;
-  const isStageEnd = activeMatchIndex === matches.length - 1;
-  const message = stageIndex === 4
-    ? 'Финальный голос принят. Корона почти нашла владельца…'
-    : isStageEnd
-      ? 'Этап завершён. Готовим следующий раунд…'
-      : 'Скоро появятся новые претенденты…';
-  status.innerHTML = `<strong>Голос принят · Победитель — ${esc(match.winner.name)}!</strong><span>${message}</span>`;
+  status.innerHTML = `<strong>Голос принят · Победитель — ${esc(match.winner.name)}!</strong>`;
 }
 
 function renderAll() {
