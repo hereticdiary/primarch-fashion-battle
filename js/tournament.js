@@ -120,9 +120,6 @@ function restoreSavedTournament() {
     const finalMatch = tournament.rounds?.[3]?.[0];
     if (finalMatch?.winner) tournament.champion = finalMatch.winner;
   }
-  $('#drawBtn').classList.remove('primary');
-  $('#drawBtn').textContent = 'Провести новую жеребьёвку';
-
   if (pendingTransition) {
     votingLocked = true;
     transitionTimer = setTimeout(completeVoteTransition, 2300);
@@ -330,9 +327,8 @@ function closeProfile() {
   currentProfileIndex = -1;
 }
 
-function drawTournament() {
-  if (drawing) return;
-  if (tournament && !window.confirm('Новая жеребьёвка сбросит текущие результаты. Продолжить?')) return;
+function startTournament() {
+  if (drawing || tournament) return;
 
   const tabs = document.querySelector('nav[aria-label="Навигация турнира"]');
   if (tabs) {
@@ -343,6 +339,7 @@ function drawTournament() {
   }
 
   clearTimeout(transitionTimer);
+  transitionTimer = null;
   tournament = null;
   activeRoundIndex = -1;
   activeMatchIndex = 0;
@@ -362,13 +359,33 @@ function drawTournament() {
   };
 
   drawing = false;
-  $('#drawBtn').disabled = false;
-  $('#drawBtn').classList.remove('primary');
-  $('#drawBtn').textContent = 'Провести новую жеребьёвку';
   pendingTransition = false;
   saveCurrentTournament();
   renderAll();
 }
+
+function resetTournament() {
+  if (drawing) return;
+
+  clearTimeout(transitionTimer);
+  transitionTimer = null;
+  tournament = null;
+  activeRoundIndex = -1;
+  activeMatchIndex = 0;
+  viewedRoundIndex = -1;
+  votingLocked = false;
+  drawing = false;
+  pendingTransition = false;
+
+  clearCurrentTournamentSave();
+  renderAll();
+}
+
+function handleDrawButtonClick() {
+  if (tournament) resetTournament();
+  else startTournament();
+}
+
 function createRoundOf16() {
   const matches = [];
   for (let i = 0; i < 14; i += 2) {
@@ -461,6 +478,18 @@ function getRoundMatches(index) {
   if (index === -1) return tournament.prelim;
   return tournament.rounds[index] || [];
 }
+function renderDrawButton() {
+  const controls = $('.arena-controls');
+  const button = $('#drawBtn');
+  const isActive = Boolean(tournament);
+
+  controls.classList.toggle('is-idle', !isActive);
+  controls.classList.toggle('is-active', isActive);
+  button.classList.toggle('primary', !isActive);
+  button.textContent = isActive ? 'Сбросить поединок' : 'Начать поединок';
+  button.disabled = drawing;
+}
+
 function renderStats() {
   const completed = countWinners();
   const champion = getChampion();
@@ -470,7 +499,15 @@ function renderStats() {
     <div class="stat"><strong>${champion ? '♛' : '—'}</strong><span>${champion ? 'Чемпион' : 'Одна корона'}</span></div>`;
 }
 function renderArena() {
-  if (!tournament) return;
+  if (!tournament) {
+    $('#arenaContent').innerHTML = `
+      <div class="arena-empty">
+        <span class="arena-emblem">✦</span>
+        <strong>Арена ждёт начала поединка</strong>
+        <span>Нажми «Начать поединок», чтобы случайным образом выбрать первую пару.</span>
+      </div>`;
+    return;
+  }
   const champion = getChampion();
   if (champion) {
     $('#arenaContent').innerHTML = championMarkup(champion);
@@ -642,6 +679,7 @@ function renderDrawStatus() {
 }
 
 function renderAll() {
+  renderDrawButton();
   renderStats();
   renderDrawStatus();
   renderArena();
@@ -712,7 +750,7 @@ document.addEventListener('keydown', event => {
   if (event.key === 'ArrowLeft') { event.preventDefault(); stepProfile(-1); }
   else if (event.key === 'ArrowRight') { event.preventDefault(); stepProfile(1); }
 });
-$('#drawBtn').addEventListener('click', drawTournament);
+$('#drawBtn').addEventListener('click', handleDrawButtonClick);
 
 
 renderParticipants();
