@@ -328,16 +328,24 @@ function closeProfile() {
   currentProfileIndex = -1;
 }
 
-function startTournament() {
-  if (drawing || tournament) return;
+function scrollToTournamentTabs() {
+  requestAnimationFrame(() => {
+    const tabs = document.querySelector('nav[aria-label="Навигация турнира"]');
+    if (!tabs) return;
 
-  const tabs = document.querySelector('nav[aria-label="Навигация турнира"]');
-  if (tabs) {
     const stickyHeader = document.querySelector('.top');
     const topOffset = stickyHeader ? stickyHeader.getBoundingClientRect().height : 0;
-    const targetY = window.scrollY + tabs.getBoundingClientRect().top - topOffset - 8;
-    window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
-  }
+    const targetY = window.scrollY + tabs.getBoundingClientRect().top - topOffset - 10;
+
+    window.scrollTo({
+      top: Math.max(0, targetY),
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+    });
+  });
+}
+
+function startTournament() {
+  if (drawing || tournament) return;
 
   clearTimeout(transitionTimer);
   transitionTimer = null;
@@ -363,6 +371,7 @@ function startTournament() {
   pendingTransition = false;
   saveCurrentTournament();
   renderAll();
+  scrollToTournamentTabs();
 }
 
 function resetTournament() {
