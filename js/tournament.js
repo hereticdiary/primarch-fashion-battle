@@ -31,6 +31,106 @@ let currentProfileIndex = -1;
 const preloadedPrimarchImages = new Map();
 let transitionTimer = null;
 
+let pendingTransition = false;
+let hallTournaments = [];
+const CURRENT_SAVE_KEY = "primarchFashionBattle.current.v1";
+const HALL_SAVE_KEY = "primarchFashionBattle.hall.v1";
+
+function safeReadStorage(key, fallback) {
+  try {
+    const raw = localStorage.getItem(key);
+    return raw ? JSON.parse(raw) : fallback;
+  } catch (error) {
+    console.warn("Не удалось прочитать сохранение турнира:", error);
+    return fallback;
+  }
+}
+function saveCurrentTournament() {
+  if (!tournament) return;
+  try {
+    localStorage.setItem(CURRENT_SAVE_KEY, JSON.stringify({
+      version: 1,
+      tournament,
+      activeRoundIndex,
+      activeMatchIndex,
+      viewedRoundIndex,
+      pendingTransition
+    }));
+  } catch (error) {
+    console.warn("Не удалось сохранить текущий турнир:", error);
+  }
+}
+function clearCurrentTournamentSave() {
+  try { localStorage.removeItem(CURRENT_SAVE_KEY); }
+  catch (error) { console.warn("Не удалось удалить сохранение турнира:", error); }
+}
+function compactPrimarch(p) {
+  if (!p) return null;
+  return { id:p.id, name:p.name, image:p.image, legion:p.legion, symbol:p.symbol };
+}
+function compactMatch(match) {
+  if (!match) return null;
+  return {
+    a:compactPrimarch(match.a),
+    b:compactPrimarch(match.b),
+    label:match.label || "",
+    winnerId:match.winner?.id ?? null
+  };
+}
+function createHallEntry(source) {
+  const champion = source.champion || getChampion();
+  return {
+    id: String(Date.now()) + "-" + Math.random().toString(36).slice(2, 8),
+    completedAt: new Date().toISOString(),
+    champion: compactPrimarch(champion),
+    prelim: (source.prelim || []).map(compactMatch),
+    rounds: (source.rounds || []).map(round => Array.isArray(round) ? round.map(compactMatch) : null)
+  };
+}
+function saveHallArchive() {
+  try { localStorage.setItem(HALL_SAVE_KEY, JSON.stringify(hallTournaments)); }
+  catch (error) { console.warn("Не удалось сохранить Зал славы:", error); }
+}
+function archiveCompletedTournament() {
+  if (!getChampion()) return;
+  hallTournaments.unshift(createHallEntry(tournament));
+  hallTournaments = hallTournaments.slice(0, 50);
+  saveHallArchive();
+  clearCurrentTournamentSave();
+}
+function restoreMatchReferences(match) {
+  if (!match || !match.a || !match.b) return;
+  const winnerId = match.winner?.id ?? null;
+  match.winner = winnerId === null ? null
+    : (match.a.id === winnerId ? match.a : match.b.id === winnerId ? match.b : null);
+}
+function restoreSavedTournament() {
+  const savedHall = safeReadStorage(HALL_SAVE_KEY, []);
+  hallTournaments = Array.isArray(savedHall) ? savedHall : [];
+  const saved = safeReadStorage(CURRENT_SAVE_KEY, null);
+  if (!saved || saved.version !== 1 || !saved.tournament) return;
+
+  tournament = saved.tournament;
+  (tournament.prelim || []).forEach(restoreMatchReferences);
+  (tournament.rounds || []).forEach(round => Array.isArray(round) && round.forEach(restoreMatchReferences));
+  activeRoundIndex = Number.isInteger(saved.activeRoundIndex) ? saved.activeRoundIndex : -1;
+  activeMatchIndex = Number.isInteger(saved.activeMatchIndex) ? saved.activeMatchIndex : 0;
+  viewedRoundIndex = Number.isInteger(saved.viewedRoundIndex) ? saved.viewedRoundIndex : activeRoundIndex;
+  pendingTransition = Boolean(saved.pendingTransition);
+
+  if (tournament.champion) {
+    const finalMatch = tournament.rounds?.[3]?.[0];
+    if (finalMatch?.winner) tournament.champion = finalMatch.winner;
+  }
+  $('#drawBtn').classList.remove('primary');
+  $('#drawBtn').textContent = 'Провести новую жеребьёвку';
+
+  if (pendingTransition) {
+    votingLocked = true;
+    transitionTimer = setTimeout(completeVoteTransition, 2300);
+  }
+}
+
 function esc(value) {
   return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
 }
@@ -233,6 +333,8 @@ function drawTournament() {
   $('#drawBtn').disabled = false;
   $('#drawBtn').classList.remove('primary');
   $('#drawBtn').textContent = 'Провести новую жеребьёвку';
+  pendingTransition = false;
+  saveCurrentTournament();
   renderAll();
 }
 function createRoundOf16() {
@@ -276,32 +378,50 @@ function vote(side) {
     }
   }
   votingLocked = true;
+  pendingTransition = true;
+  saveCurrentTournament();
   renderAll();
-  transitionTimer = setTimeout(() => {
-    const finished = allResolved(matches);
-    if (finished) {
-      if (activeRoundIndex === -1) {
-        createRoundOf16();
-        activeRoundIndex = 0;
-      } else if (activeRoundIndex < 3) {
-        if (activeRoundIndex === 2) {
-          createNextRound(2);
-          activeRoundIndex = 3;
-        } else {
-          createNextRound(activeRoundIndex);
-          activeRoundIndex += 1;
-        }
-      } else {
-        tournament.champion = match.winner;
-      }
-      activeMatchIndex = 0;
-      viewedRoundIndex = activeRoundIndex;
-    } else {
-      activeMatchIndex += 1;
-    }
+  transitionTimer = setTimeout(completeVoteTransition, 2300);
+}
+
+function completeVoteTransition() {
+  if (!tournament || !pendingTransition) return;
+  const matches = currentMatches();
+  const match = matches[activeMatchIndex];
+  if (!match || !match.winner) {
+    pendingTransition = false;
     votingLocked = false;
-    renderAll();
-  }, 2300);
+    saveCurrentTournament();
+    return;
+  }
+
+  const finished = allResolved(matches);
+  if (finished) {
+    if (activeRoundIndex === -1) {
+      createRoundOf16();
+      activeRoundIndex = 0;
+    } else if (activeRoundIndex < 3) {
+      if (activeRoundIndex === 2) {
+        createNextRound(2);
+        activeRoundIndex = 3;
+      } else {
+        createNextRound(activeRoundIndex);
+        activeRoundIndex += 1;
+      }
+    } else {
+      tournament.champion = match.winner;
+    }
+    activeMatchIndex = 0;
+    viewedRoundIndex = activeRoundIndex;
+  } else {
+    activeMatchIndex += 1;
+  }
+
+  pendingTransition = false;
+  votingLocked = false;
+  if (getChampion()) archiveCompletedTournament();
+  else saveCurrentTournament();
+  renderAll();
 }
 
 function getRoundMatches(index) {
@@ -406,11 +526,57 @@ function renderBracket() {
     <div class="bracket-grid ${roundClass}">${matches.map(renderBracketMatch).join('')}</div>
     ${stageDone ? '<div class="bracket-stage-complete">ЭТАП ЗАВЕРШЁН</div>' : ''}`;
 }
+function hallWinnerNodes(matches) {
+  return (matches || []).filter(match => match?.winnerId !== null && match?.winnerId !== undefined)
+    .map(match => match.a?.id === match.winnerId ? match.a : match.b?.id === match.winnerId ? match.b : null)
+    .filter(Boolean);
+}
+function hallNodeMarkup(p, large = false) {
+  return `
+    <button type="button" class="hall-node ${large ? 'hall-node-champion' : ''}" data-profile="${p.id}" aria-label="Открыть досье: ${esc(p.name)}">
+      <span class="hall-node-art"><img src="${esc(p.image)}" alt="" loading="lazy" decoding="async"></span>
+      <span class="hall-node-name">${esc(p.name)}</span>
+      ${large ? `<span class="hall-node-legion">${esc(p.legion)}</span>` : ''}
+    </button>`;
+}
+function hallLevelMarkup(title, participants, levelClass) {
+  if (!participants.length) return "";
+  return `
+    <section class="hall-level ${levelClass}">
+      <h3>${esc(title)}</h3>
+      <div class="hall-level-grid">${participants.map(p => hallNodeMarkup(p)).join("")}</div>
+    </section>`;
+}
+function renderHallEntry(entry, index) {
+  const date = new Date(entry.completedAt);
+  const dateLabel = Number.isNaN(date.getTime()) ? "Дата не указана" : date.toLocaleDateString("ru-RU", {day:"numeric", month:"long", year:"numeric"});
+  const rounds = entry.rounds || [];
+  const finalists = hallWinnerNodes(rounds[2]);
+  const quarterWinners = hallWinnerNodes(rounds[1]);
+  const roundOf16Winners = hallWinnerNodes(rounds[0]);
+  const prelimWinners = hallWinnerNodes(entry.prelim);
+  return `
+    <article class="hall-entry">
+      <div class="hall-entry-heading">
+        <div><span class="hall-entry-date">ТУРНИР · ${esc(dateLabel)}</span><h3>Модный приговор</h3></div>
+        <span class="hall-entry-number">#${hallTournaments.length - index}</span>
+      </div>
+      <div class="hall-tree">
+        <div class="hall-champion-label">♛ ЧЕМПИОН ТУРНИРА</div>
+        ${entry.champion ? hallNodeMarkup(entry.champion, true) : '<div class="empty">Победитель не найден</div>'}
+        ${hallLevelMarkup("Победители полуфиналов · финалисты", finalists, "hall-level-finalists")}
+        ${hallLevelMarkup("Победители четвертьфиналов", quarterWinners, "hall-level-quarter")}
+        ${hallLevelMarkup("Победители 1/8 финала", roundOf16Winners, "hall-level-r16")}
+        ${hallLevelMarkup("Победители предварительного этапа", prelimWinners, "hall-level-prelim")}
+      </div>
+    </article>`;
+}
 function renderHall() {
-  const champion = getChampion();
-  $('#hallContent').innerHTML = champion
-    ? championMarkup(champion)
-    : '<div class="empty">Корона пока ждёт своего владельца.</div>';
+  if (!hallTournaments.length) {
+    $('#hallContent').innerHTML = '<div class="empty">Пока ни один турнир не завершён. Первый чемпион появится здесь вместе с деревом своего пути к короне.</div>';
+    return;
+  }
+  $('#hallContent').innerHTML = `<div class="hall-archive">${hallTournaments.map(renderHallEntry).join("")}</div>`;
 }
 function renderDrawStatus() {
   const status = $('#drawStatus');
@@ -469,6 +635,7 @@ document.addEventListener('click', event => {
   if (historyButton) {
     if (votingLocked) return;
     viewedRoundIndex = Number(historyButton.dataset.roundView);
+    saveCurrentTournament();
     renderRoundHistory();
     renderBracket();
     return;
@@ -501,4 +668,5 @@ $('#drawBtn').addEventListener('click', drawTournament);
 
 
 renderParticipants();
+restoreSavedTournament();
 renderAll();
