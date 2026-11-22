@@ -228,6 +228,7 @@ function renderParticipants() {
       '<h3>' + esc(p.name) + '</h3>' +
       '<p class="participant-legion">' + esc(legionName) + '</p>' +
       '<div class="participant-world"><span>МИР</span><strong>' + esc(p.world) + '</strong></div>' +
+      '<div class="participant-cta">Открыть досье</div>' +
     '</article>';
   }).join('');
 }
