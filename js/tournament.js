@@ -151,6 +151,7 @@ function openProfile(id, requestedImageIndex = 0) {
   $('#profileContent').innerHTML = html;
   $('#profileModal').classList.add('show');
   $('#profileModal').scrollTop = 0;
+  syncProfileSwitcherPosition();
   document.body.style.overflow = 'hidden';
 }
 
@@ -166,6 +167,15 @@ function stepProfile(direction) {
   openProfile(primarchs[nextIndex].id);
 }
 
+function syncProfileSwitcherPosition() {
+  const modal = $('#profileModal');
+  const modalBox = modal?.querySelector('.modal-box');
+  const switcher = modal?.querySelector('.profile-switcher');
+  if (!modal || !modal.classList.contains('show') || !modalBox || !switcher) return;
+  const rect = modalBox.getBoundingClientRect();
+  switcher.style.setProperty('--profile-modal-left', rect.left + 'px');
+  switcher.style.setProperty('--profile-modal-width', rect.width + 'px');
+}
 function closeProfile() {
   $('#profileModal').classList.remove('show');
   document.body.style.overflow = '';
@@ -448,6 +458,7 @@ document.addEventListener('keydown', event => {
     openProfile(Number(event.target.dataset.profile));
   }
 });
+window.addEventListener('resize', syncProfileSwitcherPosition);
 $('#closeModal').addEventListener('click', closeProfile);
 $('#profileModal').addEventListener('click', event => { if (event.target.id === 'profileModal') closeProfile(); });
 document.addEventListener('keydown', event => {
