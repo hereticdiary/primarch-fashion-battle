@@ -4,7 +4,7 @@
   --red:#8f3037;--green:#657b61;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
+html{scroll-behavior:smooth;scrollbar-gutter:stable}
 body{
   margin:0;min-height:100vh;display:flex;flex-direction:column;color:var(--ink);
   background-color:#171214;
@@ -183,7 +183,7 @@ h2{margin:0;color:var(--light);font:normal 27px Georgia,"Times New Roman",serif}
 .champion{margin:20px 0;padding:25px;border:1px solid var(--gold);background:radial-gradient(ellipse at center,#49352a,#211719 72%);text-align:center}
 .champion .crown{color:var(--gold);font-size:38px}
 .champion h3{margin:8px;color:#f0d49d;font:normal 27px Georgia,serif}
-.modal{display:none;position:fixed;inset:0;z-index:1100;overflow:auto;padding:20px;background:#000c}
+.modal{display:none;position:fixed;inset:0;z-index:1100;overflow:auto;scrollbar-gutter:stable;padding:20px;background:#000c}
 .modal.show{display:block}
 .modal-box{position:relative;max-width:760px;margin:25px auto;padding:24px;border:1px solid var(--gold2);background:linear-gradient(145deg,#2b2023,#201719);box-shadow:0 20px 70px #000}
 .close{position:absolute;top:10px;right:14px;border:0;background:none;color:var(--gold);font-size:27px}
