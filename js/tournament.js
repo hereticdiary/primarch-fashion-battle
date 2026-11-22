@@ -612,7 +612,7 @@ function renderHallEntry(entry, index) {
         <div class="hall-champion-label">♛ ЧЕМПИОН ТУРНИРА</div>
         ${entry.champion ? hallNodeMarkup(entry.champion, true) : '<div class="empty">Победитель не найден</div>'}
         ${hallLevelMarkup("Финалист", finalist, "hall-level-finalists", seen)}
-        ${hallLevelMarkup("Выбыли в полуфинале", semifinalists, "hall-level-finalists", seen)}
+        ${hallLevelMarkup("Выбыли в полуфинале", semifinalists, "hall-level-semifinalists", seen)}
         ${hallLevelMarkup("Выбыли в четвертьфинале", quarterfinalists, "hall-level-quarter", seen)}
         ${hallLevelMarkup("Выбыли в 1/8 финала", roundOf16, "hall-level-r16", seen)}
         ${hallLevelMarkup("Выбыли на предварительном этапе", preliminary, "hall-level-prelim", seen)}
