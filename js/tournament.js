@@ -72,7 +72,8 @@ function getProfileImages(primarch) {
     src: primarch.image,
     title: "Основная иллюстрация",
     author: "Israel Llona",
-    source: PRIMARY_ART_SOURCE
+    source: PRIMARY_ART_SOURCE,
+    sourceLabel: "Портфолио: Horus Heresy: Legions"
   };
   const additional = Array.isArray(primarch.extraImages) ? primarch.extraImages : [];
   return [primary, ...additional];
