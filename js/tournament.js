@@ -94,7 +94,6 @@ function saveHallArchive() {
 function archiveCompletedTournament() {
   if (!getChampion()) return;
   hallTournaments.unshift(createHallEntry(tournament));
-  hallTournaments = hallTournaments.slice(0, 50);
   saveHallArchive();
   clearCurrentTournamentSave();
 }
@@ -526,9 +525,14 @@ function renderBracket() {
     <div class="bracket-grid ${roundClass}">${matches.map(renderBracketMatch).join('')}</div>
     ${stageDone ? '<div class="bracket-stage-complete">ЭТАП ЗАВЕРШЁН</div>' : ''}`;
 }
-function hallWinnerNodes(matches) {
-  return (matches || []).filter(match => match?.winnerId !== null && match?.winnerId !== undefined)
-    .map(match => match.a?.id === match.winnerId ? match.a : match.b?.id === match.winnerId ? match.b : null)
+function hallLosers(matches) {
+  return (matches || [])
+    .filter(match => match?.winnerId !== null && match?.winnerId !== undefined)
+    .map(match => {
+      if (match.a?.id === match.winnerId) return match.b;
+      if (match.b?.id === match.winnerId) return match.a;
+      return null;
+    })
     .filter(Boolean);
 }
 function hallNodeMarkup(p, large = false) {
@@ -539,22 +543,32 @@ function hallNodeMarkup(p, large = false) {
       ${large ? `<span class="hall-node-legion">${esc(p.legion)}</span>` : ''}
     </button>`;
 }
-function hallLevelMarkup(title, participants, levelClass) {
-  if (!participants.length) return "";
+function hallLevelMarkup(title, participants, levelClass, seen) {
+  const unique = participants.filter(p => {
+    if (!p || seen.has(p.id)) return false;
+    seen.add(p.id);
+    return true;
+  });
+  if (!unique.length) return "";
   return `
     <section class="hall-level ${levelClass}">
       <h3>${esc(title)}</h3>
-      <div class="hall-level-grid">${participants.map(p => hallNodeMarkup(p)).join("")}</div>
+      <div class="hall-level-grid">${unique.map(p => hallNodeMarkup(p)).join("")}</div>
     </section>`;
 }
 function renderHallEntry(entry, index) {
   const date = new Date(entry.completedAt);
   const dateLabel = Number.isNaN(date.getTime()) ? "Дата не указана" : date.toLocaleDateString("ru-RU", {day:"numeric", month:"long", year:"numeric"});
   const rounds = entry.rounds || [];
-  const finalists = hallWinnerNodes(rounds[2]);
-  const quarterWinners = hallWinnerNodes(rounds[1]);
-  const roundOf16Winners = hallWinnerNodes(rounds[0]);
-  const prelimWinners = hallWinnerNodes(entry.prelim);
+  const seen = new Set();
+  if (entry.champion) seen.add(entry.champion.id);
+
+  const finalist = hallLosers(rounds[3]);
+  const semifinalists = hallLosers(rounds[2]);
+  const quarterfinalists = hallLosers(rounds[1]);
+  const roundOf16 = hallLosers(rounds[0]);
+  const preliminary = hallLosers(entry.prelim);
+
   return `
     <article class="hall-entry">
       <div class="hall-entry-heading">
@@ -564,10 +578,11 @@ function renderHallEntry(entry, index) {
       <div class="hall-tree">
         <div class="hall-champion-label">♛ ЧЕМПИОН ТУРНИРА</div>
         ${entry.champion ? hallNodeMarkup(entry.champion, true) : '<div class="empty">Победитель не найден</div>'}
-        ${hallLevelMarkup("Победители полуфиналов · финалисты", finalists, "hall-level-finalists")}
-        ${hallLevelMarkup("Победители четвертьфиналов", quarterWinners, "hall-level-quarter")}
-        ${hallLevelMarkup("Победители 1/8 финала", roundOf16Winners, "hall-level-r16")}
-        ${hallLevelMarkup("Победители предварительного этапа", prelimWinners, "hall-level-prelim")}
+        ${hallLevelMarkup("Финалист", finalist, "hall-level-finalists", seen)}
+        ${hallLevelMarkup("Выбыли в полуфинале", semifinalists, "hall-level-quarter", seen)}
+        ${hallLevelMarkup("Выбыли в четвертьфинале", quarterfinalists, "hall-level-r16", seen)}
+        ${hallLevelMarkup("Выбыли в 1/8 финала", roundOf16, "hall-level-prelim", seen)}
+        ${hallLevelMarkup("Выбыли на предварительном этапе", preliminary, "hall-level-prelim", seen)}
       </div>
     </article>`;
 }
