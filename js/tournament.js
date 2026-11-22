@@ -107,8 +107,6 @@ function drawTournament() {
   const shuffled = shuffle(primarchs);
   $('#drawBtn').disabled = true;
   $('#drawBtn').textContent = 'Перемешиваем досье…';
-  $('#resetBtn').hidden = true;
-  $('#tournamentIntro').textContent = 'Жеребьёвка перемешивает участников и распределяет их по парам…';
   $('#arenaContent').innerHTML = `
     <div class="draw-ceremony"><span class="sigil">✦</span><strong>Жеребьёвка проводится</strong><span>Участники занимают свои места в турнирной сетке</span></div>`;
   $('#bracketArea').innerHTML = '<div class="bracket-empty">Жеребьёвка распределяет пары…</div>';
@@ -128,8 +126,6 @@ function drawTournament() {
     $('#drawBtn').disabled = false;
     $('#drawBtn').classList.remove('primary');
     $('#drawBtn').textContent = 'Провести новую жеребьёвку';
-    $('#resetBtn').hidden = false;
-    $('#tournamentIntro').textContent = 'Жеребьёвка завершена. Проголосуй в первой паре — следующая появится после короткой сцены победы.';
     renderAll();
   }, 1150);
 }
@@ -189,9 +185,6 @@ function vote(side) {
     }
     votingLocked = false;
     renderAll();
-    if (tournament.champion) {
-      $('#tournamentIntro').textContent = 'Турнир завершён. Чемпион коронован и занял своё место в Зале славы.';
-    }
   }, 3000);
 }
 
@@ -297,12 +290,11 @@ function renderBracket() {
   const index = viewedRoundIndex;
   const matches = getRoundMatches(index);
   const roundClass = index === -1 ? 'prelim' : ['r16','qf','sf','final'][index];
-  const title = ROUND_NAMES[index + 1];
   const isCurrent = index === activeRoundIndex;
   const stageDone = allResolved(matches);
-  $('#bracketSubheading').textContent = isCurrent ? 'Текущий этап · результаты обновляются после каждого голоса.' : 'Завершённый этап · можно вернуться к текущему раунду через навигацию выше.';
+  $('#bracketSubheading').textContent = isCurrent ? 'Текущий этап' : 'Завершённый этап';
   $('#bracketArea').innerHTML = `
-    <div class="bracket-view-heading"><h3>${esc(title)}</h3><span>${matches.filter(match => match.winner).length} из ${matches.length} поединков решено${stageDone ? ' · этап завершён' : ''}</span></div>
+    <div class="bracket-view-heading"><span>${matches.filter(match => match.winner).length} из ${matches.length} поединков решено${stageDone ? ' · этап завершён' : ''}</span></div>
     <div class="bracket-grid ${roundClass}">${matches.map(renderBracketMatch).join('')}</div>
     ${stageDone ? '<div class="bracket-stage-complete">ЭТАП ЗАВЕРШЁН</div>' : ''}`;
 }
@@ -350,23 +342,7 @@ $('#closeModal').addEventListener('click', closeProfile);
 $('#profileModal').addEventListener('click', event => { if (event.target.id === 'profileModal') closeProfile(); });
 document.addEventListener('keydown', event => { if (event.key === 'Escape') closeProfile(); });
 $('#drawBtn').addEventListener('click', drawTournament);
-$('#resetBtn').addEventListener('click', () => {
-  if (!window.confirm('Полностью сбросить турнир и результаты?')) return;
-  clearTimeout(transitionTimer);
-  clearTimeout(drawTimer);
-  tournament = null;
-  activeRoundIndex = -1;
-  activeMatchIndex = 0;
-  viewedRoundIndex = -1;
-  votingLocked = false;
-  drawing = false;
-  $('#drawBtn').disabled = false;
-  $('#drawBtn').textContent = 'Провести жеребьёвку';
-  $('#resetBtn').hidden = true;
-  $('#tournamentIntro').textContent = 'Сначала проведём жеребьёвку. После неё пары будут появляться по одной, а результаты сразу отразятся в турнирной сетке ниже.';
-  $('#arenaContent').innerHTML = '<div class="arena-empty"><span class="arena-emblem">✦</span><strong>Арена ждёт жеребьёвки</strong><span>После старта здесь появится первая пара примархов.</span></div>';
-  renderAll();
-});
+
 
 renderParticipants();
 renderAll();
