@@ -343,7 +343,9 @@ function renderArena() {
     return `
       <article class="card fighter-card ${isWinner ? 'is-winner' : ''} ${isLoser ? 'is-loser' : ''}">
         <div class="card-top"><span>Легион ${esc(p.symbol)}</span><span class="status">${isWinner ? 'Победитель' : isLoser ? 'Участник' : 'Претендент'}</span></div>
-        <div class="fighter-art"><img src="${esc(p.image)}" alt="${esc(p.name)}" loading="eager" fetchpriority="high" decoding="async"></div>
+        <button type="button" class="fighter-art fighter-art-trigger" data-profile="${p.id}" aria-label="Открыть досье: ${esc(p.name)}">
+          <img src="${esc(p.image)}" alt="" loading="eager" fetchpriority="high" decoding="async">
+        </button>
         <h3>${esc(p.name)}</h3><p>${esc(p.legion)}</p>
         <div class="fighter-actions">
           <button class="btn primary vote-button" data-vote="${side}" ${isResolved ? 'disabled' : ''}>${isResolved ? (isWinner ? 'Победитель' : 'Голос принят') : 'Проголосовать'}</button>
