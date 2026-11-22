@@ -86,11 +86,19 @@ h2{margin:0;color:var(--light);font:normal 27px Georgia,"Times New Roman",serif}
 .card p{margin:0;color:var(--muted);font:12px/1.5 system-ui,sans-serif}
 .card .open{margin-top:auto;padding-top:16px}
 .empty{padding:14px;border:1px dashed var(--line);color:#8f877b;text-align:center;font:12px system-ui,sans-serif}
-.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 15px}
-.stat{padding:11px 12px;border:1px solid var(--line);background:linear-gradient(145deg,#2d2225,#211719);text-align:center}
-.stat strong{display:block;color:var(--gold);font:normal 26px Georgia,serif}
-.stat strong small{color:var(--muted);font:12px system-ui,sans-serif}
-.stat span{color:var(--muted);font:9px system-ui,sans-serif;letter-spacing:.13em;text-transform:uppercase}
+.arena-progress{margin:0 0 16px;padding:16px 20px 14px;border:1px solid rgba(201,166,107,.3);background:linear-gradient(110deg,rgba(143,48,55,.2),transparent 62%),linear-gradient(145deg,#2d2225,#211719);box-shadow:inset 0 1px 0 rgba(255,255,255,.035)}
+.progress-head{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:13px}
+.progress-title{display:flex;flex-direction:column;gap:3px}
+.progress-kicker{color:var(--gold);font:9px system-ui,sans-serif;letter-spacing:.18em;text-transform:uppercase}
+.progress-title>strong{color:var(--light);font:normal 19px Georgia,serif}
+.progress-count{display:flex;align-items:baseline;gap:9px}
+.progress-count>strong{color:var(--gold);font:normal 26px Georgia,serif;white-space:nowrap}
+.progress-count>strong small{color:var(--muted);font:13px system-ui,sans-serif}
+.progress-count>span{color:var(--muted);font:9px system-ui,sans-serif;letter-spacing:.11em;text-transform:uppercase}
+.progress-track{height:13px;overflow:hidden;border:1px solid rgba(201,166,107,.25);background:#120e10;box-shadow:inset 0 2px 5px #0009}
+.progress-fill{display:block;width:0;height:100%;background:linear-gradient(90deg,#842b35,#c94b51 62%,#e2bd78);box-shadow:0 0 13px rgba(201,76,82,.38);transition:width .45s ease}
+.progress-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:9px;color:var(--muted);font:11px system-ui,sans-serif}
+.progress-foot>strong{color:var(--light);font:normal 13px Georgia,serif}
 .arena-controls{display:flex;align-items:center;justify-content:flex-start;gap:18px;margin:0 0 24px;min-height:54px}
 .draw-status{flex:1;min-width:0;width:100%;height:48px;min-height:48px;padding:0 13px;border:1px solid rgba(201,166,107,.34);background:linear-gradient(90deg,rgba(88,61,39,.38),rgba(44,30,32,.62));display:flex;align-items:center;overflow:hidden}
 .draw-status:empty{visibility:hidden}
@@ -98,7 +106,8 @@ h2{margin:0;color:var(--light);font:normal 27px Georgia,"Times New Roman",serif}
 #drawBtn{min-width:230px;height:48px;padding:0 22px;box-shadow:0 5px 18px #0005,inset 0 1px 0 #fff5}
 #drawBtn.primary{box-shadow:0 0 0 1px rgba(255,226,172,.22),0 7px 22px rgba(201,166,107,.24),inset 0 1px 0 #fff8}
 .arena-controls.is-idle{justify-content:center;align-items:center;gap:0;min-height:82px;margin:16px 0 28px}
-.arena-controls.is-idle #drawBtn{width:min(420px,100%);min-width:0;height:64px;padding:0 32px;font-size:18px;letter-spacing:.14em}
+.arena-controls.is-idle #drawBtn{width:min(420px,100%);min-width:0;height:64px;padding:0 32px;font-size:18px;letter-spacing:.14em;background:linear-gradient(180deg,#c94b55,#922b37);border-color:#eb8b83;color:#fff0dc;box-shadow:0 0 0 1px rgba(235,139,131,.24),0 8px 26px rgba(177,43,57,.34),inset 0 1px 0 rgba(255,255,255,.24);text-shadow:0 1px 2px #5b1920}
+.arena-controls.is-idle #drawBtn:hover:not(:disabled){background:linear-gradient(180deg,#df5b63,#aa3441);border-color:#ffc0a5;box-shadow:0 0 0 1px rgba(255,192,165,.34),0 10px 30px rgba(190,49,64,.44),inset 0 1px 0 rgba(255,255,255,.3);transform:translateY(-2px)}
 .arena-controls.is-idle .draw-status{display:none}
 .arena-section{max-width:980px;margin:0 auto 34px}
 .arena-empty{min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:24px;border:1px dashed rgba(201,166,107,.32);background:linear-gradient(145deg,rgba(44,31,34,.6),rgba(27,20,22,.65));text-align:center}
@@ -227,6 +236,10 @@ footer p{max-width:none;margin:0 auto;white-space:nowrap;font-size:11px}
   .brand{font-size:14px}.all-projects{padding:9px 11px;font-size:10px;letter-spacing:.08em}
   header{padding:30px 8px 24px}
   .arena-controls{align-items:flex-start;flex-direction:column;gap:11px}
+  .progress-head{align-items:flex-start}
+  .progress-title>strong{font-size:17px}
+  .progress-count{flex-direction:column;align-items:flex-end;gap:1px}
+  .progress-count>strong{font-size:23px}
   #drawBtn{width:100%;max-width:none}
   .draw-status{width:100%;max-width:none;height:48px;min-height:48px}
   .fighters-grid{gap:9px}
