@@ -52,6 +52,18 @@ function countWinners() {
 }
 function getChampion() { return tournament?.champion || null; }
 function totalRoundsAvailable() { return activeRoundIndex + 2; }
+function championMarkup(champion) {
+  return `
+    <div class="champion">
+      <div class="crown">♛</div>
+      <div class="kicker">Победитель турнира</div>
+      <h3>${esc(champion.name)}</h3>
+      <p class="small">${esc(champion.legion)}</p>
+      <div class="champion-art">
+        <img src="${esc(champion.image)}" alt="${esc(champion.name)} — чемпион турнира" decoding="async">
+      </div>
+    </div>`;
+}
 function stageLabel(index) { return ROUND_NAMES[index + 1]; }
 
 function renderParticipants() {
@@ -204,9 +216,7 @@ function renderArena() {
   if (!tournament) return;
   const champion = getChampion();
   if (champion) {
-    $('#arenaContent').innerHTML = `
-      <div class="champion"><div class="crown">♛</div><div class="kicker">Победитель турнира</div>
-        <h3>${esc(champion.name)}</h3><p class="small">${esc(champion.legion)}</p></div>`;
+    $('#arenaContent').innerHTML = championMarkup(champion);
     return;
   }
   const matches = currentMatches();
@@ -214,9 +224,7 @@ function renderArena() {
   if (!match) {
     const champion = getChampion();
     if (champion) {
-      $('#arenaContent').innerHTML = `
-        <div class="champion"><div class="crown">♛</div><div class="kicker">Победитель турнира</div>
-          <h3>${esc(champion.name)}</h3><p class="small">${esc(champion.legion)}</p></div>`;
+      $('#arenaContent').innerHTML = championMarkup(champion);
     }
     return;
   }
@@ -294,7 +302,7 @@ function renderBracket() {
 function renderHall() {
   const champion = getChampion();
   $('#hallContent').innerHTML = champion
-    ? `<div class="champion"><div class="crown">♛</div><div class="kicker">Победитель турнира</div><h3>${esc(champion.name)}</h3><p class="small">${esc(champion.legion)}</p></div>`
+    ? championMarkup(champion)
     : '<div class="empty">Корона пока ждёт своего владельца.</div>';
 }
 function renderDrawStatus() {
