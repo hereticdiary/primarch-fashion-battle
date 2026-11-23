@@ -18,7 +18,7 @@ let profileLoadToken = 0;
 
 function loadProfileDossiers() {
   if (!profileDossiersPromise) {
-    profileDossiersPromise = fetch("data/primarch-dossiers.json?v=20261122-1")
+    profileDossiersPromise = fetch("data/primarch-dossiers.json?v=20261123-1")
       .then(response => {
         if (!response.ok) throw new Error("Не удалось загрузить данные досье");
         return response.json();
